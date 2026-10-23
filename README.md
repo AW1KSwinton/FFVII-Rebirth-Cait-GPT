@@ -5,6 +5,9 @@ Connect an MCP-capable agent to game telemetry, navigation, exploration, combat,
 menus, save handling, and Queen's Blood tools. The model chooses its actions;
 the harness validates observations and sends bounded controller input.
 
+Contributions target `master`; see [contributing](CONTRIBUTING.md) for scope,
+privacy and the owner-reviewed merge workflow.
+
 ## Start in simulation
 
 Requires Python 3.11 or newer and Git. Run from this repository:
