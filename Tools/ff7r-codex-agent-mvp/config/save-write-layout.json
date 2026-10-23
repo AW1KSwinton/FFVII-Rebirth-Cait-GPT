@@ -1,0 +1,16 @@
+{
+  "slot_node": "Txt_ListNum",
+  "row_button_node": "Button_00",
+  "prompt_slot_node": "",
+  "yes_node": "Btn_00",
+  "no_node": "Btn_01",
+  "yes_text": "$menu_save_load_0002_0001",
+  "no_text": "$menu_save_load_0002_0002",
+  "row_selection": {
+    "list_class": "EndVirtualScrollBox",
+    "owner_class": "MainMenu_SaveData_Test_C",
+    "user_index": 0,
+    "widget_name": "SaveData_ScrollBox",
+    "world_path": "/Temp/Untitled_1.MenuRenderingWorld"
+  }
+}

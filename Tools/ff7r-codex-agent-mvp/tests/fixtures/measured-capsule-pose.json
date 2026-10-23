@@ -1,0 +1,38 @@
+{
+  "name": "Cloud",
+  "hp": 901,
+  "max_hp": 5961,
+  "mp": 22,
+  "max_mp": 62,
+  "atb": 0.0,
+  "controlled_character": "Cloud",
+  "position": {
+    "x": -26006.6875,
+    "y": -227162.203125,
+    "z": 5424.128906
+  },
+  "rotation": {
+    "pitch": -0.011049,
+    "yaw": 86.822105,
+    "roll": -0.014648
+  },
+  "locomotion": {
+    "reference": "upright_capsule_bottom",
+    "feet_position": {
+      "x": -26006.6875,
+      "y": -227162.203125,
+      "z": 5336.128906
+    },
+    "capsule_radius_cm": 34.0,
+    "capsule_half_height_cm": 88.0,
+    "velocity_cm_s": {
+      "x": 0.0,
+      "y": 0.0,
+      "z": 0.0
+    },
+    "grounded": true,
+    "movement_mode": -1
+  },
+  "controller_state": 1,
+  "actor_id": "PC0000_00_Cloud_Standard_C /Game/Level/Game/EndGame.EndGame:PersistentLevel.PC0000_00_Cloud_Standard_C_2147481124"
+}

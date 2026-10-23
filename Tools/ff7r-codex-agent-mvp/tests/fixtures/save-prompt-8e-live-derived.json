@@ -1,0 +1,689 @@
+{
+  "provenance": "Derived from preserved live save-prompt-8E-native-observed.json; only dialog instance numeric ID scrubbed to777. Original unchanged. Diagnostic shape does not authorize Yes.",
+  "dialog": {
+    "class": "Com_Window_01_C",
+    "full_id": "Com_Window_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777",
+    "id": "Com_Window_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777",
+    "node_walk": {
+      "depth_limit": 12,
+      "node_limit": 128,
+      "truncated": false,
+      "visited": 62
+    },
+    "nodes": [
+      {
+        "class": "EndCanvasPanel",
+        "depth": 0,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Pnl",
+        "kind": "panel",
+        "name": "All_Pnl",
+        "opacity": 1,
+        "visible": true
+      },
+      {
+        "class": "EndBorder",
+        "depth": 1,
+        "full_id": "EndBorder /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.BlackBg",
+        "kind": "panel",
+        "name": "BlackBg",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Pnl",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 1,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_All_Window",
+        "kind": "panel",
+        "name": "Pnl_All_Window",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Pnl",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 2,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Nut_Com_Window_00",
+        "kind": "panel",
+        "name": "All_Nut_Com_Window_00",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_All_Window",
+        "visible": true
+      },
+      {
+        "class": "EndTextBlock",
+        "depth": 2,
+        "full_id": "EndTextBlock /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Txt_Btn",
+        "kind": "text",
+        "name": "Txt_Btn",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_All_Window",
+        "text": "",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 3,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Bg",
+        "kind": "image",
+        "name": "Bg",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Nut_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 3,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_BgStar",
+        "kind": "panel",
+        "name": "Pnl_BgStar",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Nut_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 3,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Frame",
+        "kind": "image",
+        "name": "Frame",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Nut_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "VerticalBox",
+        "depth": 3,
+        "full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_Com_Window_00",
+        "kind": "panel",
+        "name": "Pnl_Com_Window_00",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.All_Nut_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 4,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Star1",
+        "kind": "image",
+        "name": "Star1",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_BgStar",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 4,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.RIGHT",
+        "kind": "image",
+        "name": "RIGHT",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_BgStar",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 4,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Star2",
+        "kind": "image",
+        "name": "Star2",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_BgStar",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 4,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.LEFT",
+        "kind": "image",
+        "name": "LEFT",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_BgStar",
+        "visible": true
+      },
+      {
+        "class": "EndBorder",
+        "depth": 4,
+        "full_id": "EndBorder /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Text_Border",
+        "kind": "panel",
+        "name": "Text_Border",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "VerticalBox",
+        "depth": 4,
+        "full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Nut_Btn",
+        "kind": "panel",
+        "name": "Nut_Btn",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_Com_Window_00",
+        "visible": true
+      },
+      {
+        "class": "EndTextBlock",
+        "depth": 4,
+        "full_id": "EndTextBlock /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Txt_Sub",
+        "kind": "text",
+        "name": "Txt_Sub",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Pnl_Com_Window_00",
+        "text": "",
+        "visible": false
+      },
+      {
+        "class": "VerticalBox",
+        "depth": 5,
+        "full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Text_Box",
+        "kind": "panel",
+        "name": "Text_Box",
+        "opacity": 1,
+        "parent_full_id": "EndBorder /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Text_Border",
+        "visible": true
+      },
+      {
+        "class": "Com_Btn_01_C",
+        "depth": 5,
+        "full_id": "Com_Btn_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00",
+        "kind": "user",
+        "name": "Btn_00",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Nut_Btn",
+        "visible": true
+      },
+      {
+        "class": "Com_Btn_01_C",
+        "depth": 5,
+        "full_id": "Com_Btn_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01",
+        "kind": "user",
+        "name": "Btn_01",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Nut_Btn",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 6,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "kind": "panel",
+        "name": "CenterIcon",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Text_Box",
+        "visible": true
+      },
+      {
+        "class": "EndTextBlock",
+        "depth": 6,
+        "full_id": "EndTextBlock /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Txt",
+        "kind": "text",
+        "name": "Txt",
+        "opacity": 1,
+        "parent_full_id": "VerticalBox /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Text_Box",
+        "text": "Save your progress to this slot?",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 6,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.All_Common_Btn",
+        "kind": "panel",
+        "name": "All_Common_Btn",
+        "opacity": 1,
+        "parent_full_id": "Com_Btn_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 6,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.All_Common_Btn",
+        "kind": "panel",
+        "name": "All_Common_Btn",
+        "opacity": 1,
+        "parent_full_id": "Com_Btn_01_C /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01",
+        "visible": true
+      },
+      {
+        "class": "Spacer",
+        "depth": 7,
+        "full_id": "Spacer /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Spacer_107",
+        "kind": "other",
+        "name": "Spacer_107",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconLineRight",
+        "kind": "image",
+        "name": "IconLineRight",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconLineLeft",
+        "kind": "image",
+        "name": "IconLineLeft",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconBase2",
+        "kind": "image",
+        "name": "IconBase2",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconBaseLight",
+        "kind": "image",
+        "name": "IconBaseLight",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": false
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconFrame",
+        "kind": "image",
+        "name": "IconFrame",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconFrame_1Light",
+        "kind": "image",
+        "name": "IconFrame_1Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": false
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.IconFrame_2Light",
+        "kind": "image",
+        "name": "IconFrame_2Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": false
+      },
+      {
+        "class": "EndImage",
+        "depth": 7,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Title_Icon",
+        "kind": "image",
+        "name": "Title_Icon",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.CenterIcon",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 7,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_All",
+        "kind": "panel",
+        "name": "Pnl_All",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.All_Common_Btn",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 7,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_All",
+        "kind": "panel",
+        "name": "Pnl_All",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.All_Common_Btn",
+        "visible": true
+      },
+      {
+        "class": "EndButton",
+        "depth": 8,
+        "full_id": "EndButton /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Button_00",
+        "hovered": false,
+        "keyboard_focus": false,
+        "kind": "other",
+        "name": "Button_00",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_All",
+        "properties": {
+          "CanPress": "true",
+          "ClickMethod": "0",
+          "Clipping": "0",
+          "Cursor": "1",
+          "FakeDisabled": "false",
+          "FlowDirectionPreference": "0",
+          "GuideText": "",
+          "HelpText": "",
+          "IgnoreKeyRepeat": "true",
+          "IsFocusable": "true",
+          "IsForceHovered": "false",
+          "PressMethod": "0",
+          "RenderOpacity": "1.0",
+          "TouchMethod": "0",
+          "Visibility": "0",
+          "bCreatedByConstructionScript": "false",
+          "bIsEnabled": "true",
+          "bIsVariable": "true",
+          "bIsVolatile": "false",
+          "bOverride_Cursor": "false"
+        },
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 8,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Center",
+        "kind": "panel",
+        "name": "Pnl_Center",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_All",
+        "visible": true
+      },
+      {
+        "class": "EndTextBlock",
+        "depth": 8,
+        "full_id": "EndTextBlock /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Txt",
+        "kind": "text",
+        "name": "Txt",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_All",
+        "text": "$menu_save_load_0002_0001",
+        "visible": true
+      },
+      {
+        "class": "EndButton",
+        "depth": 8,
+        "full_id": "EndButton /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Button_00",
+        "hovered": true,
+        "keyboard_focus": false,
+        "kind": "other",
+        "name": "Button_00",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_All",
+        "properties": {
+          "CanPress": "true",
+          "ClickMethod": "0",
+          "Clipping": "0",
+          "Cursor": "1",
+          "FakeDisabled": "false",
+          "FlowDirectionPreference": "0",
+          "GuideText": "",
+          "HelpText": "",
+          "IgnoreKeyRepeat": "true",
+          "IsFocusable": "true",
+          "IsForceHovered": "false",
+          "PressMethod": "0",
+          "RenderOpacity": "1.0",
+          "TouchMethod": "0",
+          "Visibility": "0",
+          "bCreatedByConstructionScript": "false",
+          "bIsEnabled": "true",
+          "bIsVariable": "true",
+          "bIsVolatile": "false",
+          "bOverride_Cursor": "false"
+        },
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 8,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Center",
+        "kind": "panel",
+        "name": "Pnl_Center",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_All",
+        "visible": true
+      },
+      {
+        "class": "EndTextBlock",
+        "depth": 8,
+        "full_id": "EndTextBlock /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Txt",
+        "kind": "text",
+        "name": "Txt",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_All",
+        "text": "$menu_save_load_0002_0002",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 9,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Base",
+        "kind": "image",
+        "name": "Base",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Center",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 9,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "kind": "panel",
+        "name": "Pnl_Hover",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Center",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 9,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Base",
+        "kind": "image",
+        "name": "Base",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Center",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 9,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "kind": "panel",
+        "name": "Pnl_Hover",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Center",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Base_Hover",
+        "kind": "image",
+        "name": "Base_Hover",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Base_Hover_Light",
+        "kind": "image",
+        "name": "Base_Hover_Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 10,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Light",
+        "kind": "panel",
+        "name": "Pnl_Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Cursor_Right",
+        "kind": "image",
+        "name": "Cursor_Right",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Cursor_Left",
+        "kind": "image",
+        "name": "Cursor_Left",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Base_Hover",
+        "kind": "image",
+        "name": "Base_Hover",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Base_Hover_Light",
+        "kind": "image",
+        "name": "Base_Hover_Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndCanvasPanel",
+        "depth": 10,
+        "full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Light",
+        "kind": "panel",
+        "name": "Pnl_Light",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Cursor_Right",
+        "kind": "image",
+        "name": "Cursor_Right",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 10,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Cursor_Left",
+        "kind": "image",
+        "name": "Cursor_Left",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Hover",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.LightDotL",
+        "kind": "image",
+        "name": "LightDotL",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.LightDotR",
+        "kind": "image",
+        "name": "LightDotR",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.DecoR",
+        "kind": "image",
+        "name": "DecoR",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.DecoL",
+        "kind": "image",
+        "name": "DecoL",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_00.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.LightDotL",
+        "kind": "image",
+        "name": "LightDotL",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.LightDotR",
+        "kind": "image",
+        "name": "LightDotR",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.DecoR",
+        "kind": "image",
+        "name": "DecoR",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Light",
+        "visible": true
+      },
+      {
+        "class": "EndImage",
+        "depth": 11,
+        "full_id": "EndImage /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.DecoL",
+        "kind": "image",
+        "name": "DecoL",
+        "opacity": 1,
+        "parent_full_id": "EndCanvasPanel /Temp/Untitled_1.MenuRenderingWorld:Com_Window_01_C_777.WidgetTree.Btn_01.WidgetTree.Pnl_Light",
+        "visible": true
+      }
+    ]
+  },
+  "distribution_note": "Sanitized regression projection; local paths removed. Original evidence is not distributed."
+}

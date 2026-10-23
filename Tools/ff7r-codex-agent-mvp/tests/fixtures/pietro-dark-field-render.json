@@ -1,0 +1,234 @@
+{
+  "frames": [
+    {
+      "source": "pietro-edit-route-660",
+      "observation": {
+        "monotonic_t": 414552.8982176,
+        "timestamp_utc": "2026-10-08T08:45:11.794Z",
+        "sequence": 33330,
+        "position": {
+          "x": 55805.484375,
+          "y": -21113.980469,
+          "z": 3106.717773
+        },
+        "position_reference": "upright_capsule_bottom",
+        "actor_origin": {
+          "x": 55805.484375,
+          "y": -21113.980469,
+          "z": 3194.717773
+        },
+        "grounded": true,
+        "velocity_cm_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "actor_yaw": 12.147888,
+        "camera_yaw": -79.999863,
+        "actor_id": "PC0000_00_Cloud_Standard_C /Game/Level/Game/EndGame.EndGame:PersistentLevel.PC0000_00_Cloud_Standard_C_2147474902",
+        "session_id": "attach-20261008T074149Z-b679c2c7",
+        "world_id": "EndGame",
+        "map_id": "EndGame",
+        "process_valid": true,
+        "executable_valid": true,
+        "controllable": true,
+        "loading": false,
+        "in_menu": false,
+        "in_cutscene": false,
+        "in_combat": false,
+        "in_interaction": false,
+        "lease_active": true,
+        "actuator_neutral": true,
+        "telemetry_age_seconds": 0.133811,
+        "topology_session_id": "attach-20261008T074149Z-b679c2c7",
+        "process_id": 24388,
+        "executable_sha256": "37D952FABBFA2B710F8AE6490997C9755E4E57B4FD545078C9BAAF46C9B233D7",
+        "telemetry_gameplay_ready": true,
+        "dynamic_obstacles": {
+          "source_identity": "agent_service.telemetry.nearby_actors",
+          "base_sequence": 33330,
+          "sampled_at_ms": 1791449111794,
+          "complete": false,
+          "observed_actor_count": 0,
+          "accepted_actor_count": 0,
+          "rejected_actor_count": 0,
+          "rejection_reason_codes": [
+            "producer_completeness_unproven"
+          ]
+        }
+      },
+      "render_confirmation": {
+        "ready": false,
+        "reason": "render_classifier_non_gameplay",
+        "captured_at_utc": "2026-10-08T08:45:11.988209Z",
+        "classifier_label": "title_prompt",
+        "metrics": {
+          "whole_nonblack": 0.28125,
+          "left_menu_nonblack": 0.18181818181818182,
+          "right_background_nonblack": 0.3092105263157895,
+          "logo_nonblack": 0.3237639553429027,
+          "title_prompt_nonblack": 0.06493506493506493,
+          "luminance_mean": 0.06475931815087146,
+          "luminance_stddev": 0.07378873301630011,
+          "edge_fraction": 0.08917480035492457
+        },
+        "capture": {
+          "ok": true,
+          "captured_at_utc": "2026-10-08T08:45:11.988209Z",
+          "capture_method": "print_window",
+          "background_capture": false,
+          "hwnd": 23333352,
+          "pid": 24388,
+          "process_name": "ff7rebirth_.exe",
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 1536,
+            "bottom": 864
+          },
+          "width": 1536,
+          "height": 864,
+          "sequence": 33331,
+          "image_path": "fixture-source/ff7r-20261008T084511.988209Z-seq33331.bmp",
+          "sha256": "23184a1934508e9b768a61723b358a994a544d045991e213e126d079617c2647",
+          "pixel_sha256": "73f23b79fb11cf06ec8c2b49efc8932a38df630bb886b2c4568f2555120456bd",
+          "startup_frame": {
+            "label": "gameplay",
+            "metrics": {
+              "whole_nonblack": 0.28125,
+              "left_menu_nonblack": 0.18181818181818182,
+              "right_background_nonblack": 0.3092105263157895,
+              "logo_nonblack": 0.3237639553429027,
+              "title_prompt_nonblack": 0.06493506493506493,
+              "luminance_mean": 0.06475931815087146,
+              "luminance_stddev": 0.07378873301630011,
+              "edge_fraction": 0.08917480035492457
+            },
+            "classification_basis": "regional_brightness_heuristic",
+            "render_classifier_label": "title_prompt",
+            "telemetry_override": "fresh_loaded_gameplay"
+          },
+          "telemetry_sequence": 33331,
+          "map_id": "EndGame",
+          "telemetry_age_seconds": 0.308504,
+          "camera_bearing_degrees": -79.999863
+        }
+      }
+    },
+    {
+      "source": "pietro-edit-route-retry-660",
+      "observation": {
+        "monotonic_t": 414733.6553602,
+        "timestamp_utc": "2026-10-08T08:48:12.563Z",
+        "sequence": 34869,
+        "position": {
+          "x": 55805.484375,
+          "y": -21113.980469,
+          "z": 3106.717773
+        },
+        "position_reference": "upright_capsule_bottom",
+        "actor_origin": {
+          "x": 55805.484375,
+          "y": -21113.980469,
+          "z": 3194.717773
+        },
+        "grounded": true,
+        "velocity_cm_s": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "actor_yaw": 12.147888,
+        "camera_yaw": -79.999863,
+        "actor_id": "PC0000_00_Cloud_Standard_C /Game/Level/Game/EndGame.EndGame:PersistentLevel.PC0000_00_Cloud_Standard_C_2147474902",
+        "session_id": "attach-20261008T074149Z-b679c2c7",
+        "world_id": "EndGame",
+        "map_id": "EndGame",
+        "process_valid": true,
+        "executable_valid": true,
+        "controllable": true,
+        "loading": false,
+        "in_menu": false,
+        "in_cutscene": false,
+        "in_combat": false,
+        "in_interaction": false,
+        "lease_active": true,
+        "actuator_neutral": true,
+        "telemetry_age_seconds": 0.122277,
+        "topology_session_id": "attach-20261008T074149Z-b679c2c7",
+        "process_id": 24388,
+        "executable_sha256": "37D952FABBFA2B710F8AE6490997C9755E4E57B4FD545078C9BAAF46C9B233D7",
+        "telemetry_gameplay_ready": true,
+        "dynamic_obstacles": {
+          "source_identity": "agent_service.telemetry.nearby_actors",
+          "base_sequence": 34869,
+          "sampled_at_ms": 1791449292563,
+          "complete": false,
+          "observed_actor_count": 0,
+          "accepted_actor_count": 0,
+          "rejected_actor_count": 0,
+          "rejection_reason_codes": [
+            "producer_completeness_unproven"
+          ]
+        }
+      },
+      "render_confirmation": {
+        "ready": false,
+        "reason": "render_classifier_non_gameplay",
+        "captured_at_utc": "2026-10-08T08:48:12.749129Z",
+        "classifier_label": "title_prompt",
+        "metrics": {
+          "whole_nonblack": 0.28618421052631576,
+          "left_menu_nonblack": 0.17862838915470494,
+          "right_background_nonblack": 0.2993421052631579,
+          "logo_nonblack": 0.3189792663476874,
+          "title_prompt_nonblack": 0.10245310245310245,
+          "luminance_mean": 0.0658043239379085,
+          "luminance_stddev": 0.07271533970706785,
+          "edge_fraction": 0.08740017746228926
+        },
+        "capture": {
+          "ok": true,
+          "captured_at_utc": "2026-10-08T08:48:12.749129Z",
+          "capture_method": "print_window",
+          "background_capture": false,
+          "hwnd": 23333352,
+          "pid": 24388,
+          "process_name": "ff7rebirth_.exe",
+          "rect": {
+            "left": 0,
+            "top": 0,
+            "right": 1536,
+            "bottom": 864
+          },
+          "width": 1536,
+          "height": 864,
+          "sequence": 34870,
+          "image_path": "fixture-source/ff7r-20261008T084812.749129Z-seq34870.bmp",
+          "sha256": "b042802ebd559f03f638c61e28998303029b2a87c14a944b028aca26f50aaac7",
+          "pixel_sha256": "cc68632e74222c296bdb498eef6e37b06dc0567da7e70ad45bc103a85be0509e",
+          "startup_frame": {
+            "label": "gameplay",
+            "metrics": {
+              "whole_nonblack": 0.28618421052631576,
+              "left_menu_nonblack": 0.17862838915470494,
+              "right_background_nonblack": 0.2993421052631579,
+              "logo_nonblack": 0.3189792663476874,
+              "title_prompt_nonblack": 0.10245310245310245,
+              "luminance_mean": 0.0658043239379085,
+              "luminance_stddev": 0.07271533970706785,
+              "edge_fraction": 0.08740017746228926
+            },
+            "classification_basis": "regional_brightness_heuristic",
+            "render_classifier_label": "title_prompt",
+            "telemetry_override": "fresh_loaded_gameplay"
+          },
+          "telemetry_sequence": 34870,
+          "map_id": "EndGame",
+          "telemetry_age_seconds": 0.22326,
+          "camera_bearing_degrees": -79.999863
+        }
+      }
+    }
+  ]
+}

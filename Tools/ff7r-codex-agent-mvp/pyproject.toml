@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ff7r-codex-agent"
+version = "0.1.0"
+description = "Safe local MCP bridge MVP for controlling FFVII Rebirth"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp>=1.2,<2",
+]
+
+[project.optional-dependencies]
+windows = ["pydirectinput>=1.0.4"]
+gamepad = ["vgamepad"]
+dev = ["pytest>=8", "lupa>=2.8"]
+
+[project.scripts]
+ff7r-agent = "ff7r_agent.cli:main"
+ff7r-agent-mcp = "ff7r_agent.mcp_runtime_server:main"
+ff7r-agent-mcp-legacy = "ff7r_agent.mcp_server:main"
+ff7r-navigate = "ff7r_agent.navigation_mission:main"
+ff7r-approach-npc = "ff7r_agent.npc_approach:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

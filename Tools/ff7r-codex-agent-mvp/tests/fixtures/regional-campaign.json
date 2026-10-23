@@ -1,0 +1,56 @@
+{
+  "regional_ids": [
+    "oba1110_Actor_CardGamer01",
+    "oba1110_Actor_CardGamer02",
+    "oba1110_Actor_CardGamer03",
+    "oba1310_Actor_CardGamer01",
+    "oba1310_Actor_CardGamer02",
+    "oba1310_Actor_CardGamer03",
+    "oba1300_Actor_CardGamer01",
+    "oba1300_Actor_CardGamer02",
+    "oba1300_Actor_CardGamer03",
+    "oba2260_Actor_CardGamer01",
+    "oba2260_Actor_CardGamer02",
+    "oba2260_Actor_CardGamer03",
+    "oba2350_Actor_Gentleman01_Bf",
+    "oba2360_Actor_CardGamer01",
+    "oba2360_Actor_CardGamer02",
+    "oba2360_Actor_CardGamer03",
+    "oba2360_Actor_Wise",
+    "oba2410_Actor_CardGamer01",
+    "oba2410_Actor_CardGamer02",
+    "oba2410_Actor_CardGamer03",
+    "oba2500_Actor_CardGamer01",
+    "oba2500_Actor_CardGamer02",
+    "oba2500_Actor_CardGamer03",
+    "oba2610_Actor_CardGamer01",
+    "oba2610_Actor_CardGamer02",
+    "oba2610_Actor_CardGamer03",
+    "oba2110_Actor_CardGamer01",
+    "oba2110_Actor_CardGamer02",
+    "oba2110_Actor_CardGamer03",
+    "oba2400_Actor_CardGamer01"
+  ],
+  "aliases": [
+    [
+      "oba2610_Actor_CardGamer01_PreIcon",
+      "oba2610_Actor_CardGamer01"
+    ],
+    [
+      "oba2350_Actor_Gentleman01_Af",
+      "oba2350_Actor_Gentleman01_Bf"
+    ],
+    [
+      "oba2100_CardRiddle_01_AmorReggie",
+      "oba2100_CardRiddle_01"
+    ],
+    [
+      "oba2100_CardRiddle_02_AmorReggie",
+      "oba2100_CardRiddle_02"
+    ],
+    [
+      "oba2100_CardRiddle_03_AmorReggie",
+      "oba2100_CardRiddle_03"
+    ]
+  ]
+}

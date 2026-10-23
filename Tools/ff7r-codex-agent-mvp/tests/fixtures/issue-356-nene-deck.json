@@ -1,0 +1,42 @@
+{
+  "source_record": "qb-match-history-rehearsal/1791830465226-9ab42305-e8d3-4335-8bb7-3833ba907d12.json",
+  "source_sha256": "1cb2630e966ce0ca370d2800cda1f9aa3572338a947f050c960bfb217313b1d2",
+  "fixture_notes": "Selected deck and final player cards from the unchanged raw record. Tests construct synthetic telemetry and StepClock timing; this is not a raw replay.",
+  "deck": [
+    "card_id_000",
+    "card_id_000",
+    "card_id_019",
+    "card_id_019",
+    "card_id_024",
+    "card_id_024",
+    "card_id_116",
+    "card_id_001",
+    "card_id_001",
+    "card_id_016",
+    "card_id_016",
+    "card_id_049",
+    "card_id_015",
+    "card_id_075",
+    "card_id_075"
+  ],
+  "player_cards": [
+    {
+      "card_id": "card_id_001",
+      "row": 0,
+      "column": 0,
+      "power": 3
+    },
+    {
+      "card_id": "card_id_077",
+      "row": 1,
+      "column": 0,
+      "power": 2
+    },
+    {
+      "card_id": "card_id_001",
+      "row": 2,
+      "column": 0,
+      "power": 3
+    }
+  ]
+}

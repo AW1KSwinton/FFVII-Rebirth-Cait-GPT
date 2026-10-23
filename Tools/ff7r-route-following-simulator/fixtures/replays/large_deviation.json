@@ -1,0 +1,4 @@
+{
+  "route_plan": {"status":"complete","reason_code":"route_plan_complete","requested_start":{"x":0,"y":0,"z":0},"requested_end":{"x":1000,"y":0,"z":0},"resolved_start":{"x":0,"y":0,"z":0},"resolved_end":{"x":1000,"y":0,"z":0},"start_ref":1001,"end_ref":1004,"polygon_corridor":[1001,1002,1003,1004],"portals":[],"waypoints":[{"x":0,"y":0,"z":0},{"x":500,"y":0,"z":0},{"x":1000,"y":0,"z":0}],"total_estimated_path_length_m":10,"validation":{"waypoints_finite":true,"movement_sent":false},"movement_sent":false},
+  "telemetry":[{"t":0,"position":{"x":0,"y":0,"z":0},"heading":0},{"t":1,"position":{"x":200,"y":400,"z":0},"heading":45},{"t":2,"position":{"x":300,"y":800,"z":0},"heading":75}]
+}

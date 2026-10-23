@@ -1,0 +1,12 @@
+{
+  "name": "ffvii-rebirth-cait-gpt-capture",
+  "private": true,
+  "type": "module",
+  "description": "Optional game-only OBS capture adapter",
+  "scripts": {
+    "test": "node --test Tools/ff7r-codex-agent-mvp/tests/obs_game_capture.test.mjs"
+  },
+  "dependencies": {
+    "obs-websocket-js": "^5.0.6"
+  }
+}

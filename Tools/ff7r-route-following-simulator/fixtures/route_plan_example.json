@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source": "shipping_detour",
+  "executable_sha256": "37D952FABBFA2B710F8AE6490997C9755E4E57B4FD545078C9BAAF46C9B233D7",
+  "status": "complete",
+  "reason_code": "route_plan_complete",
+  "requested_start": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "requested_end": {"x": 1000.0, "y": 0.0, "z": 0.0},
+  "resolved_start": {"x": 0.0, "y": 0.0, "z": 0.0},
+  "resolved_end": {"x": 1000.0, "y": 0.0, "z": 0.0},
+  "start_ref": 1001,
+  "end_ref": 1004,
+  "polygon_corridor": [1001, 1002, 1003, 1004],
+  "portals": [
+    {"from_ref": 1001, "to_ref": 1002, "link_ref": 2001, "source_edge": 0, "target_edge": 2, "left": {"x": 250.0, "y": -50.0, "z": 0.0}, "right": {"x": 250.0, "y": 50.0, "z": 0.0}, "side": 128},
+    {"from_ref": 1002, "to_ref": 1003, "link_ref": 2002, "source_edge": 0, "target_edge": 2, "left": {"x": 750.0, "y": -50.0, "z": 0.0}, "right": {"x": 750.0, "y": 50.0, "z": 0.0}, "side": 128}
+  ],
+  "waypoints": [
+    {"x": 0.0, "y": 0.0, "z": 0.0},
+    {"x": 500.0, "y": 0.0, "z": 0.0},
+    {"x": 1000.0, "y": 0.0, "z": 0.0}
+  ],
+  "total_estimated_path_length_m": 10.0,
+  "start_resolution": {"status": "resolved", "reason_code": "point_inside_polygon", "selected_ref": 1001},
+  "end_resolution": {"status": "resolved", "reason_code": "point_inside_polygon", "selected_ref": 1004},
+  "validation": {"waypoints_finite": true, "waypoint_sequence_nonempty": true, "waypoint_start_matches_resolved": true, "waypoint_end_matches_resolved": true, "movement_sent": false},
+  "diagnostics": {"synthetic_fixture": true},
+  "movement_sent": false
+}

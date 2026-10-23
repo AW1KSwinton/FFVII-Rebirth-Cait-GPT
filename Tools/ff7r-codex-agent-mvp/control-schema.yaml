@@ -1,0 +1,409 @@
+version: 1
+name: ff7r-autonomous-control-schema
+purpose: >-
+  A telemetry-first contract for fast, bounded exploration and repeatable mod
+  testing. Every action is preceded by a fresh observation and followed by
+  evidence; no action is an unbounded key hold.
+
+combat_observation:
+  operation: observe_combat
+  producer_contract: ff7r-combat-readonly-v1
+  presence_contract: ff7r-combat-presence-v1
+  entry_exit_signal: observed_is_in_battle_boolean_in_existing_base_tick
+  activation: active_combat_only
+  idle_combat_file_checks: 0
+  idle_combat_roster_reads: 0
+  active_roster_reads: once_per_new_valid_request_nonce
+  on_exit_or_unknown: disable_reader_and_release_own_pending_query
+  input: none
+  input_authority: false
+  default_timeout_seconds: 3
+  maximum_timeout_seconds: 8
+  maximum_party: 16
+  maximum_enemies: 64
+  maximum_response_bytes: 262144
+  maximum_snapshot_age_seconds: 2.5
+  timestamp_precision: seconds
+  inactive_timestamp_precision: base_telemetry
+  phases: [active, inactive, unknown]
+  binding: request_nonce_advancing_source_sequence_process_creation_map_world_controlled_actor
+  unavailable: [current_atb, battle_instance_id, command_ui, battle_result, pressure, stagger, status_effects]
+  incomplete_roster: explicitly_reported_never_interpreted_as_victory
+  validation_status: offline_candidate_live_acceptance_pending
+
+operating_patterns:
+  - id: survey_and_path_following
+    rule: >-
+      Plan the next leg from the map and target telemetry, aim the camera along
+      the intended path, survey in approximately 60 degree increments, then
+      use an adaptive cardinal or vector movement chunk and re-observe. A
+      vector chunk may combine forward progress with a lateral A/D component
+      when the reviewed path bends around an obstacle.
+  - id: telemetry_first_measurement
+    rule: >-
+      Use runtime position, yaw, map identity, nearby actors, and interactables
+      for measurement; use screenshots to resolve path geometry, obstacles, and
+      visual identity; use the map for high-level route structure.
+  - id: stalled_movement_recovery
+    rule: >-
+      If fresh telemetry shows no displacement, diagnose before repeating:
+      reverse with S, try A or D perpendicular escape, use Space only when a
+      terrain step is plausible, then survey again.
+  - id: route_before_steps
+    rule: >-
+      Build a route envelope from live target/map/navmesh evidence before
+      acting. Historical landmarks and recorded waypoints are design-time
+      evidence only and must not steer runtime navigation by default. Treat map
+      scale as unavailable unless supplied by verified map telemetry or
+      explicitly measured evidence.
+  - id: evidence_fusion_segment
+    rule: >-
+      Use navigate-next-segment to fuse a complete runtime route leg when one
+      exists with local clearance and post-action movement evidence. A final
+      target vector is only a low-confidence tie-breaker and is never a route.
+      Human traversal recordings are design-time comparison data and are not
+      runtime inputs.
+
+lifecycle:
+  open: session-open
+  heartbeat: session-heartbeat
+  close: session-close
+  # The session lasts as long as the game process it is bound to; --seconds is
+  # accepted by open and heartbeat for older callers and ignored.
+  lifetime: game_process
+  guarantees:
+    - The session is owner- and Windows-session-bound, and bound to the game
+      process (PID plus creation token); it ends when that game exits.
+    - Each CLI/MCP action still has its normal duration, telemetry, foreground,
+      process, pause/menu, target, and emergency-stop gates.
+    - A safety stop or explicit close de-arms the session; it is not silently
+      reclaimed.
+    - Tasks borrow an open session and leave it open; only an explicit close,
+      stop or a failure with input possibly in flight ends it.
+    - Closing the session never force-closes the game.
+
+observation:
+  - name: observe_game
+    source: runtime_telemetry
+    side_effect: none
+  - name: observe_map_telemetry
+    source: runtime_telemetry_and_optional_design_store
+    side_effect: none
+    caveat: map UI markers are included only when the validated runtime map sidecar is fresh.
+  - name: observe_map_ui
+    source: validated_runtime_map_ui_sidecar
+    side_effect: none
+    caveat: requires a paused map page and two stable producer samples; stale or unresolved data is unavailable.
+  - name: capture_game_window
+    source: foreground_window_capture
+    side_effect: writes_evidence
+    use_when: telemetry cannot resolve path geometry or visual identity.
+  - name: get_navigation_context
+    source: runtime_telemetry_and_optional_design_store
+    side_effect: none
+  - name: plan_navigation_route
+    source: live_telemetry_and_optional_explicit_route
+    side_effect: none
+  - name: diagnose_navigation_stall
+    source: runtime_telemetry
+    side_effect: none
+  - name: navigate_next_segment
+    source: runtime_telemetry_runtime_path_clearance_map_and_optional_visual_evidence
+    side_effect: bounded_input_and_writes_evidence
+    caveat: >-
+      Requires an explicit control-session lease on Windows. Screenshots are
+      captured as evidence only; they are not silently classified as paths.
+    movement_vector: >-
+      Optional forward-biased normalized x/y correction. It is accepted only
+      with a matching structured visual review and fresh non-blocking walkable
+      capsule evidence on the requested lateral side, and is bounded to 3 m.
+  - name: run_local_navigation_episode
+    source: local_python_executor_and_runtime_telemetry
+    side_effect: bounded_input_and_writes_evidence
+    caveat: >-
+      One MCP call runs several short observe/plan/move/validate cycles inside
+      the agent process. It requires a route bearing for a bare target
+      coordinate, never calls MCP recursively, captures no normal-cycle
+      screenshots, and stops on uncertainty with one optional terminal frame.
+    bounds: >-
+      Defaults are 8 seconds, 12 metres total, 8 cycles, and at most 2 seconds
+      and 3 metres per local segment; all caller limits have lower hard caps.
+
+queens_blood:
+  schema_version: 1
+  payload:
+    required: [active, phase, cursor, hand, legal_moves, board]
+    optional: [match_id, screen, begin_match_available, match_screen, turn,
+               player_score, opponent_score, winner, reflection]
+    pre_match_signal: >-
+      The producer must set begin_match_available or match_screen true, or
+      export screen as one of prematch, pre_match, match_menu, begin_match,
+      start_match, or deck_select. A generic menu or screenshot is not enough.
+  observation:
+    - name: observe_queens_blood
+      source: exact_sequence_queen_blood_sidecar
+      side_effect: none
+      caveat: >-
+        The sidecar is admitted only when its base_sequence exactly equals the
+        base state.json sequence. After Begin Match has been sent, identified
+        hand cards produce an explicit inferred mulligan state even if the
+        probe's raw screen label remains deck_select. The explicit
+        infer_current_hand_is_mulligan flag restores that inference after a
+        worker restart without sending input. Invalid or incomplete reflected
+        data is unavailable.
+    - name: observe_queens_blood_prematch
+      source: exact_sequence_queen_blood_sidecar
+      side_effect: none
+      requires: [explicit_pre_match_signal]
+  actions:
+    - name: initiate_queens_blood_match
+      behavior: >-
+        Interact with the currently observed usable NPC, confirm bounded
+        default dialogue options, send F3 only after the producer exports the
+        explicit pre-match signal, confirm the default start option, then wait
+        for identified hand cards. Their appearance after Begin Match infers
+        the mulligan state when the producer's raw screen label is stale.
+      requires: [live_game, fresh_advancing_telemetry, explicit_pre_match_signal]
+      verification: identified_hand_after_begin_match
+    - name: play_queens_blood_turn
+      behavior: >-
+        Select one producer-exported legal move, navigate the exported cursor
+        with bounded directional taps, confirm the card and confirm its board
+        cell, then wait for an advancing sequence.
+      requires: [active_player_turn, cursor, legal_moves, fresh_telemetry]
+      verification: advancing_base_sequence_and_changed_queen_blood_payload
+    - name: select_queens_blood_cards
+      behavior: >-
+        Navigate to one or more exported hand slots with bounded directional
+        taps and verify each hovered slot from fresh cursor telemetry. This
+        primitive does not mark mulligans or place cards on the board.
+      requires: [active_queen_blood_hand, cursor, fresh_telemetry]
+      verification: every_requested_hand_slot_hover_verified
+    - name: mulligan_cards
+      behavior: >-
+        Use the generic hand-slot selector without changing its navigation
+        timing (200 ms), verify the in-game cursor on the requested card, then
+        left-click for 1000 ms. The desktop pointer is placed in a blank game
+        client margin solely to deliver the click; it does not target the card.
+        Retry up to five times while fresh telemetry confirms the focused card
+        remains unselected. After those clicks, use virtual X360 A/confirm as a
+        fallback and verify its marker from fresh telemetry. Submit only after
+        the requested marker is observed, then verify the changed turn-one
+        hand. An explicit recovery flag may infer an already-started mulligan
+        from the current identified hand after a worker restart; it must not
+        issue another Begin Match input.
+      requires: [mulligan_screen, cursor, fresh_telemetry]
+      verification: changed_requested_slots_and_stable_unchanged_slots
+    - name: play_queens_blood
+      behavior: >-
+        Run a bounded observe/plan/place loop while the opponent and resolve
+        phases advance in-game. Stop on missing legal moves, stale telemetry,
+        unresolved cursor, timeout, or an unverified turn transition.
+  policy:
+    - Never infer a legal move from a screenshot.
+    - Never send input when the producer has not exported a legal move and cursor.
+    - A dispatched tap is not a successful turn until the card-game sequence advances.
+  validation_status: source_and_offline_tests_only_live_field_reconciliation_pending
+
+movement:
+  default_pulse_ms: 1000
+  fine_pulse_ms: 250
+  adaptive_chunk_ms:
+    default: 3000
+    maximum: 20000
+  long_clearance_chunk_m:
+    maximum: 40
+    authorization: fresh long-range capsule, swept, navmesh, or equivalent walkability evidence
+  cardinal_controls:
+    forward: W
+    backward: S
+    left: A
+    right: D
+  actions:
+    - move-direction
+    - travel-direction-chunk
+    - travel-sprint-chunk
+    - travel-vector-chunk
+    - move
+    - navigate-next-segment
+    - run-local-navigation-episode
+  sprint:
+    key: Shift
+    default: false
+    requires: fresh capsule, swept, walkable-surface, or navmesh corridor evidence
+  vector_controls:
+    x: "negative=A, positive=D"
+    y: "negative=S, positive=W"
+    normalized: true
+    deadzone: 0.2
+  backend:
+    default: keyboard_mouse
+    optional: virtual_x360_left_stick
+    selection: FF7R_INPUT_BACKEND=windows_gamepad
+    non_movement_controls: keyboard_mouse
+  rule: >-
+    Prefer adaptive chunks for traversal. Use a diagonal vector when the
+    camera is correctly aimed and a lateral component preserves path progress
+    around a visually reviewed obstacle. Use 250 ms only for narrow corrections
+    after the path is already understood. Sprint is opt-in and only permitted
+    on a freshly verified walkable corridor; ordinary movement remains the
+    fallback whenever walkability is uncertain.
+
+camera:
+  survey_degrees: 60
+  maximum_single_pulse_pixels: 400
+  estimated_pixels_per_degree: 21.40925
+  actions:
+    - survey-camera
+    - look-camera
+    - calibrate-camera-horizontal
+  rule: >-
+    The survey helper splits a requested turn into bounded pulses and reports
+    camera telemetry after each pulse. It does not claim that map markers were
+    discovered when the runtime does not expose them.
+
+map:
+  verified_controls:
+    open: {key: Tab, hold_ms: 500}
+    top_level_tab_previous: {key: Q, hold_ms: 500}
+    top_level_tab_next: {key: E, hold_ms: 500}
+    region_world_toggle: {key: F3, hold_ms: 500}
+    page_selection_previous: {key: Z, hold_ms: 500, scope: page_local}
+    page_selection_next: {key: X, hold_ms: 500, scope: page_local}
+    drop_pin: {key: F2, hold_ms: 500, status: supported_but_live_visual_effect_unconfirmed}
+    present_past_toggle: {key: R, hold_ms: 500, status: visible_but_not_independently_live_verified}
+    corresponding_view: {key: G, hold_ms: 500, status: visible_but_not_independently_live_verified}
+  rule: >-
+    Z/X are not POI controls. Their meaning is page-local and was observed to
+    change quest/assignment selections. Never infer POI semantics from them.
+  unverified_controls:
+    fast_travel_prompt: {key: Enter, hold_ms: 500, binding: map_fast_travel, status: must_open_FastTravel_C_or_nothing_more_is_sent}
+    cursor: {keys: WASD_or_left_stick, pulse_ms: 30-1200, status: response_measured_per_run}
+
+map_query:
+  producer: FF7RTelemetryExporter/scripts/map_query.lua
+  trigger: on_demand_request_file_only
+  request: map-query.request (request_id|expiry|snapshot|heights_or_-)
+  response: map-query.json (answered once per request_id)
+  requires: area map open (AreaMap_C visible)
+  projection: affine fit of UEndNaviMap.ConvertToPosition2D over 7 world points around the player, inverted
+  alignment_evidence: [PlayerPosIndicator, icon distance labels]
+  height_sources: [UEndMenuNaviMapHeightData validated against player height, single live actor within 4 m for NPC pins, caller z]
+  operations:
+    - name: observe_map_pins
+      side_effect: registers_map_targets
+    - name: map_point_to_world
+      spaces: [map_local, screen, cursor]
+      side_effect: registers_map_target
+    - name: get_map_target
+      side_effect: none
+    - name: fast_travel_via_map
+      input_default: none_until_explicit_execute
+      input_bound: cursor pulses (probe + <= max_cursor_steps x 2), one map_fast_travel, one confirm
+      verification: FastTravel_C visible before confirm; arrival within arrival_radius_m of pin
+  route_handoff: 'Navigate-To.ps1 --map-target-id <target_id>'
+  navigable_requires: resolved z
+  validation_status: implemented_offline_live_validation_pending
+
+safety:
+  always:
+    - release_all after every input call
+    - re-observe after every movement or camera pulse
+    - stop on stale telemetry, process loss, foreground loss, map change,
+      pause/menu, combat/target acquisition, or emergency stop
+  never:
+    - use unbounded key holds
+    - infer a target identity from an unverified screenshot alone
+    - treat configured external paths as proof that a capability is connected
+
+evidence:
+  record:
+    - telemetry sequence before/after
+    - map identity
+    - world position and camera yaw
+    - requested and actual hold duration
+    - release reason
+    - screenshot path when visual evidence is used
+  durable_store: '%LOCALAPPDATA%\\ff7r-agent\\known-world.json'
+  recorded_route_policy: >-
+    The durable store is retained for design-time evidence. Runtime route use is
+    disabled by default and requires FF7R_USE_RECORDED_ROUTES=1.
+
+entity_interaction_mission:
+  entrypoint: 'Navigate-To.ps1 --target-id <live-id> | --target-kind <kind>'
+  execute: 'explicit --execute; default is route preflight only'
+  resolution: exact_live_id_or_single_unambiguous_kind
+  feeds: [nearby_interactables, nearby_actors, nearby_interactable]
+  navigation: existing_cached_topology_live_route_adapter
+  controller: existing_pulse_policy
+  staging_radius_m: 4.0
+  final_target_offset_m: 1.25
+  final_routes_maximum: 3
+  final_route_commands_maximum: 32
+  final_route_seconds_maximum: 60
+  total_budget: original_mission_timeout_and_max_cycles
+  target_motion_from_initial_m_maximum: 4.0
+  admission:
+    worker_operation: interact_with_entity
+    worker_action_seconds_maximum: 10
+    telemetry_age_seconds_maximum: 0.5
+    advancing_samples: 2
+    target_motion_between_samples_m_maximum: 0.10
+    player_motion_between_samples_m_maximum: 0.05
+    measured_player_speed_m_s_maximum: 0.5
+    horizontal_range_m_maximum: 2.5
+    vertical_range_m_maximum: 1.5
+    heading_error_degrees_maximum: 45
+    requires: same_client_lease_pid_world_map_player_target_and_explicit_affordance
+    ambiguity: refuse_competing_usable_nearby_targets
+    input: existing_use_interaction_250ms
+    replay_policy: consume_durable_lease_token_before_input_never_retry
+  verification:
+    observation_seconds_maximum: 8
+    advancing_confirmations: 2
+    signals: [interaction_state_changed, menu_opened, loading_started, world_transition,
+              target_opened, target_became_unusable, target_prompt_changed,
+              target_disappeared_from_complete_feed, bench_lifecycle_changed]
+    absence_requires: explicitly_complete_feed_before_and_after_and_stationary_player
+    never_success: [input_sent_alone, pause_alone, stale_telemetry, repeated_sequence,
+                    synthetic_interaction_started, unexplained_identity_change]
+  cleanup: release_input_latch_arm_and_close_owned_session_even_on_failure
+  evidence: exclusive_mission_directory_with_rpc_responses_result_and_sha256_index
+  validation_status: offline_tests_only_live_validation_pending
+
+queens_blood_match:
+  contract: queens_blood.schema_version_1
+  entrypoint: 'agent_call initiate_queens_blood_match | ff7r-agent initiate-queens-blood-match'
+  target: currently observed usable NPC, or an already-open NPC dialogue
+  dialogue: bounded default-option Yes confirmations using Enter
+  begin_match: F3 after the canonical explicit producer-reported Queen's Blood pre-match signal
+  popup: one bounded default-option Yes confirmation after F3
+  limits:
+    dialogue_confirmations_maximum: 16
+    timeout_seconds_maximum: 60
+  verification:
+    requires: [fresh_advancing_telemetry, queen_blood_prematch_screen, active_queen_blood_match]
+    side_effect: bounded_input_and_action_evidence
+  policy:
+    - Never send F3 without an explicit Queen's Blood pre-match signal.
+    - Never treat a sent key as proof that the match started.
+    - Release input and latch the emergency stop on every exit path.
+  validation_status: offline_tests_only_live_field_reconciliation_pending
+
+map_poi_interaction_mission:
+  entrypoint: 'Navigate-To.ps1 --poi-id <MapIconInfo.Name> [--target-kind <kind>] [--actor-name <exact-name>]'
+  observation: observe_map_poi
+  release: release_map_poi
+  input_default: none_until_explicit_execute
+  catalog_identity: MapIconInfo.Name_to_ObjectID
+  coordinate_getters: [EndFieldAPI.GetEndTargetPointLocation, EndBattleAPI.GetLayoutTransform]
+  getter_agreement_cm: 1
+  source_binding: exact_sequence_timestamp_map_player_identity_and_position
+  staging_radius_m: 4
+  live_entity_marker_radius_m: 10
+  live_entity_marker_height_m: 3
+  handoff: existing_entity_interaction_mission
+  request_expiry_seconds_maximum: 1500
+  ownership: exclusive_request_id
+  unsupported: [pixel_conversion, selected_cursor, dropped_pins, socket_offsets, nonzero_offsets]
+  validation_status: getter_coordinates_live_confirmed_actor_handoff_pending

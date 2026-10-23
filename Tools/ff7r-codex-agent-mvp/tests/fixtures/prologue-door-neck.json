@@ -1,0 +1,1792 @@
+{
+  "evidence": "2026-10-13 FFVII Rebirth prologue (Zack, EndGame): geom-zack.json trimmed to the tiles with a vertex inside unreal x 900..1700, y 58100..59500; overlay_entry is the obstacle the dry run mission-dry2 kept in ff7r-static-obstacle-overlay-v1.",
+  "synthetic": [
+    "door_bounds.extent.z",
+    "door_actor",
+    "door_actor_class"
+  ],
+  "overlay_entry": {
+    "obstacle_id": "sweep-595d0d78d328f870",
+    "center": {
+      "x": 1295.986694,
+      "y": 58810.265625,
+      "z": 870.812683
+    },
+    "radius_m": 0.16019531,
+    "cloud_clearance_m": 0.45,
+    "uncertainty_margin_m": 0.1,
+    "effective_radius_m": 0.71019531,
+    "shape": "capsule",
+    "half_length_m": 0.8448974600000001,
+    "heading_degrees": 0.0,
+    "confidence": 0.9,
+    "evidence_count": 1,
+    "first_sequence": 15846,
+    "last_sequence": 15846,
+    "first_t": 848821.0638588,
+    "last_t": 848821.0638588,
+    "provenance": [
+      "route_sweep_actor_bounds"
+    ],
+    "persistence": "session",
+    "probe_bearing_degrees": null,
+    "route_bearing_degrees": null,
+    "promotion_reason": null,
+    "promotion_evidence": []
+  },
+  "door_actor": "BG0000_00_AutoDoorGate_Standard_C /Game/Level/Game/EndGame.EndGame:PersistentLevel.BG0000_00_AutoDoorGate_Standard_C_1",
+  "door_actor_class": "BG0000_00_AutoDoorGate_Standard_C",
+  "door_bounds": {
+    "origin": {
+      "x": 1295.986694,
+      "y": 58810.265625,
+      "z": 870.812683
+    },
+    "extent": {
+      "x": 100.50927700000001,
+      "y": 16.019531,
+      "z": 145.0
+    }
+  },
+  "topology": {
+    "capture_world_id": "EndGame",
+    "capture_map_id": "EndGame",
+    "schema_version": 2,
+    "source": "ue4ss_native_detour_geometry_dump",
+    "geometry_mode": "shipping_extended_poly_record_diagnostic",
+    "coordinate_space": "recast",
+    "coordinate_transform_to_unreal": "x=-recast.x,y=-recast.z,z=recast.y",
+    "movement_sent": false,
+    "status": "complete",
+    "reason_code": "geometry_export_complete",
+    "tiles": [
+      {
+        "lookup_index": 509,
+        "tile_index": 689,
+        "tile_index_valid": true,
+        "salt": 5,
+        "x": -2,
+        "y": -61,
+        "layer": 0,
+        "poly_count": 3,
+        "vert_count": 6,
+        "max_link_count": 20,
+        "vertices": [
+          {
+            "x": -1980,
+            "y": 670,
+            "z": -60360
+          },
+          {
+            "x": -1980,
+            "y": 670,
+            "z": -60270
+          },
+          {
+            "x": -1980,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -990,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -990,
+            "y": 660,
+            "z": -60390
+          },
+          {
+            "x": -1980,
+            "y": 660,
+            "z": -60390
+          }
+        ],
+        "polygons": [
+          {
+            "index": 0,
+            "first_link": 8,
+            "vertex_count": 3,
+            "vertex_indices": [
+              4,
+              5,
+              0
+            ],
+            "neighbors": [
+              32774,
+              32772,
+              2,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 212598733668352,
+                "next": 6,
+                "edge": 0,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 106944685670400,
+                "next": 0,
+                "edge": 1,
+                "side": 4,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177401476677633,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "first_link": 2,
+            "vertex_count": 3,
+            "vertex_indices": [
+              4,
+              0,
+              1
+            ],
+            "neighbors": [
+              1,
+              0,
+              3,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177401476677632,
+                "next": 1,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177401476677634,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "first_link": 5,
+            "vertex_count": 4,
+            "vertex_indices": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "neighbors": [
+              32772,
+              32770,
+              32768,
+              2,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259393,
+                "next": 4,
+                "edge": 1,
+                "side": 2,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177399329193984,
+                "next": 7,
+                "edge": 2,
+                "side": 0,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 106944685670403,
+                "next": 3,
+                "edge": 0,
+                "side": 4,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177401476677633,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          }
+        ],
+        "off_mesh_connections": []
+      },
+      {
+        "lookup_index": 639,
+        "tile_index": 679,
+        "tile_index_valid": true,
+        "salt": 3,
+        "x": -2,
+        "y": -59,
+        "layer": 2,
+        "poly_count": 7,
+        "vert_count": 17,
+        "max_link_count": 29,
+        "vertices": [
+          {
+            "x": -1455,
+            "y": 730,
+            "z": -58380
+          },
+          {
+            "x": -1440,
+            "y": 730,
+            "z": -58200
+          },
+          {
+            "x": -1530,
+            "y": 520,
+            "z": -57585
+          },
+          {
+            "x": -1620,
+            "y": 520,
+            "z": -57495
+          },
+          {
+            "x": -1710,
+            "y": 520,
+            "z": -57525
+          },
+          {
+            "x": -1740,
+            "y": 520,
+            "z": -57495
+          },
+          {
+            "x": -1740,
+            "y": 520,
+            "z": -57420
+          },
+          {
+            "x": -1170,
+            "y": 520,
+            "z": -57420
+          },
+          {
+            "x": -1155,
+            "y": 520,
+            "z": -57450
+          },
+          {
+            "x": -1335,
+            "y": 520,
+            "z": -57465
+          },
+          {
+            "x": -1380,
+            "y": 520,
+            "z": -57555
+          },
+          {
+            "x": -1320,
+            "y": 730,
+            "z": -58155
+          },
+          {
+            "x": -1260,
+            "y": 730,
+            "z": -58305
+          },
+          {
+            "x": -1275,
+            "y": 730,
+            "z": -58410
+          },
+          {
+            "x": -1425,
+            "y": 730,
+            "z": -58410
+          },
+          {
+            "x": -1290,
+            "y": 730,
+            "z": -58230
+          },
+          {
+            "x": -1575,
+            "y": 520,
+            "z": -57540
+          }
+        ],
+        "polygons": [
+          {
+            "index": 0,
+            "first_link": 0,
+            "vertex_count": 4,
+            "vertex_indices": [
+              4,
+              5,
+              6,
+              3
+            ],
+            "neighbors": [
+              0,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107011257663492,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "first_link": 2,
+            "vertex_count": 4,
+            "vertex_indices": [
+              2,
+              10,
+              11,
+              1
+            ],
+            "neighbors": [
+              6,
+              0,
+              4,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107011257663493,
+                "next": 1,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663491,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "first_link": 3,
+            "vertex_count": 3,
+            "vertex_indices": [
+              7,
+              8,
+              9
+            ],
+            "neighbors": [
+              0,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107011257663492,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "first_link": 33,
+            "vertex_count": 6,
+            "vertex_indices": [
+              13,
+              14,
+              0,
+              1,
+              11,
+              12
+            ],
+            "neighbors": [
+              32774,
+              0,
+              0,
+              2,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259402,
+                "next": 11,
+                "edge": 255,
+                "side": 102,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259396,
+                "next": 30,
+                "edge": 0,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 107011257663494,
+                "next": 4,
+                "edge": 255,
+                "side": 192,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663489,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "first_link": 10,
+            "vertex_count": 4,
+            "vertex_indices": [
+              6,
+              7,
+              9,
+              3
+            ],
+            "neighbors": [
+              32770,
+              3,
+              6,
+              1,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107009110179845,
+                "next": 7,
+                "edge": 0,
+                "side": 2,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 107011257663490,
+                "next": 6,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663493,
+                "next": 5,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663488,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "first_link": 32,
+            "vertex_count": 4,
+            "vertex_indices": [
+              2,
+              3,
+              9,
+              10
+            ],
+            "neighbors": [
+              0,
+              5,
+              0,
+              2,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107011257663494,
+                "next": 9,
+                "edge": 255,
+                "side": 208,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663492,
+                "next": 8,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663489,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 6,
+            "first_link": 31,
+            "vertex_count": 2,
+            "vertex_indices": [
+              15,
+              16
+            ],
+            "neighbors": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": 32769,
+            "area": 38,
+            "type": 1,
+            "links": [
+              {
+                "ref": 107011257663493,
+                "next": 29,
+                "edge": 1,
+                "side": 192,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 107011257663491,
+                "next": 4294967295,
+                "edge": 0,
+                "side": 208,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          }
+        ],
+        "off_mesh_connections": [
+          {
+            "start": [
+              -1290,
+              730,
+              -58230
+            ],
+            "end": [
+              -1575,
+              520,
+              -57540
+            ],
+            "radius": 30,
+            "height": 40,
+            "user_id": 0,
+            "poly": 6,
+            "side": 128,
+            "flags": 64
+          }
+        ]
+      },
+      {
+        "lookup_index": 1344,
+        "tile_index": 688,
+        "tile_index_valid": true,
+        "salt": 5,
+        "x": -1,
+        "y": -61,
+        "layer": 0,
+        "poly_count": 1,
+        "vert_count": 4,
+        "max_link_count": 12,
+        "vertices": [
+          {
+            "x": -990,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": 0,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": 0,
+            "y": 740,
+            "z": -60390
+          },
+          {
+            "x": -990,
+            "y": 660,
+            "z": -60390
+          }
+        ],
+        "polygons": [
+          {
+            "index": 0,
+            "first_link": 2,
+            "vertex_count": 4,
+            "vertex_indices": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "neighbors": [
+              32770,
+              32768,
+              32774,
+              32772,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775749,
+                "next": 1,
+                "edge": 0,
+                "side": 2,
+                "bmin": 146,
+                "bmax": 255
+              },
+              {
+                "ref": 177388591775746,
+                "next": 0,
+                "edge": 0,
+                "side": 2,
+                "bmin": 0,
+                "bmax": 146
+              },
+              {
+                "ref": 177397181710338,
+                "next": 4,
+                "edge": 1,
+                "side": 0,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177412214095872,
+                "next": 3,
+                "edge": 2,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177401476677634,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 4,
+                "bmin": 0,
+                "bmax": 255
+              }
+            ]
+          }
+        ],
+        "off_mesh_connections": []
+      },
+      {
+        "lookup_index": 2622,
+        "tile_index": 684,
+        "tile_index_valid": true,
+        "salt": 5,
+        "x": -2,
+        "y": -60,
+        "layer": 0,
+        "poly_count": 11,
+        "vert_count": 23,
+        "max_link_count": 47,
+        "vertices": [
+          {
+            "x": -1980,
+            "y": 720,
+            "z": -59340
+          },
+          {
+            "x": -1875,
+            "y": 720,
+            "z": -59340
+          },
+          {
+            "x": -1665,
+            "y": 720,
+            "z": -58995
+          },
+          {
+            "x": -1530,
+            "y": 720,
+            "z": -58980
+          },
+          {
+            "x": -1500,
+            "y": 720,
+            "z": -58920
+          },
+          {
+            "x": -1380,
+            "y": 720,
+            "z": -58920
+          },
+          {
+            "x": -1335,
+            "y": 720,
+            "z": -58860
+          },
+          {
+            "x": -1350,
+            "y": 730,
+            "z": -58725
+          },
+          {
+            "x": -1395,
+            "y": 730,
+            "z": -58680
+          },
+          {
+            "x": -1425,
+            "y": 730,
+            "z": -58410
+          },
+          {
+            "x": -1275,
+            "y": 730,
+            "z": -58410
+          },
+          {
+            "x": -1260,
+            "y": 730,
+            "z": -58620
+          },
+          {
+            "x": -1230,
+            "y": 730,
+            "z": -58635
+          },
+          {
+            "x": -1260,
+            "y": 730,
+            "z": -58680
+          },
+          {
+            "x": -1245,
+            "y": 720,
+            "z": -58860
+          },
+          {
+            "x": -1215,
+            "y": 720,
+            "z": -58890
+          },
+          {
+            "x": -1050,
+            "y": 720,
+            "z": -58875
+          },
+          {
+            "x": -1035,
+            "y": 720,
+            "z": -58905
+          },
+          {
+            "x": -990,
+            "y": 720,
+            "z": -58905
+          },
+          {
+            "x": -990,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -1980,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -1245,
+            "y": 730,
+            "z": -58627.5
+          },
+          {
+            "x": -1440,
+            "y": 730,
+            "z": -58395
+          }
+        ],
+        "polygons": [
+          {
+            "index": 0,
+            "first_link": 48,
+            "vertex_count": 3,
+            "vertex_indices": [
+              11,
+              12,
+              13
+            ],
+            "neighbors": [
+              0,
+              0,
+              5,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259402,
+                "next": 0,
+                "edge": 255,
+                "side": 224,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259396,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "first_link": 21,
+            "vertex_count": 4,
+            "vertex_indices": [
+              20,
+              0,
+              1,
+              19
+            ],
+            "neighbors": [
+              32772,
+              0,
+              8,
+              32774,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177401476677634,
+                "next": 20,
+                "edge": 3,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 106942538186753,
+                "next": 1,
+                "edge": 0,
+                "side": 4,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "first_link": 2,
+            "vertex_count": 3,
+            "vertex_indices": [
+              3,
+              4,
+              5
+            ],
+            "neighbors": [
+              0,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "first_link": 3,
+            "vertex_count": 3,
+            "vertex_indices": [
+              15,
+              16,
+              17
+            ],
+            "neighbors": [
+              0,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "first_link": 19,
+            "vertex_count": 6,
+            "vertex_indices": [
+              8,
+              9,
+              10,
+              11,
+              13,
+              7
+            ],
+            "neighbors": [
+              0,
+              32770,
+              0,
+              1,
+              9,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 107011257663491,
+                "next": 5,
+                "edge": 1,
+                "side": 2,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177390739259392,
+                "next": 4,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259400,
+                "next": 4294967295,
+                "edge": 4,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "first_link": 7,
+            "vertex_count": 4,
+            "vertex_indices": [
+              6,
+              14,
+              15,
+              5
+            ],
+            "neighbors": [
+              9,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259400,
+                "next": 6,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 6,
+            "first_link": 18,
+            "vertex_count": 3,
+            "vertex_indices": [
+              17,
+              18,
+              19
+            ],
+            "neighbors": [
+              0,
+              32768,
+              8,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775746,
+                "next": 8,
+                "edge": 1,
+                "side": 0,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 7,
+            "first_link": 14,
+            "vertex_count": 6,
+            "vertex_indices": [
+              3,
+              5,
+              15,
+              17,
+              19,
+              1
+            ],
+            "neighbors": [
+              3,
+              6,
+              4,
+              7,
+              2,
+              10
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259394,
+                "next": 13,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259397,
+                "next": 12,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259395,
+                "next": 11,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259398,
+                "next": 10,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259393,
+                "next": 9,
+                "edge": 4,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259401,
+                "next": 4294967295,
+                "edge": 5,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 8,
+            "first_link": 16,
+            "vertex_count": 4,
+            "vertex_indices": [
+              7,
+              13,
+              14,
+              6
+            ],
+            "neighbors": [
+              5,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259396,
+                "next": 15,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259397,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 9,
+            "first_link": 17,
+            "vertex_count": 3,
+            "vertex_indices": [
+              1,
+              2,
+              3
+            ],
+            "neighbors": [
+              0,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177390739259399,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 10,
+            "first_link": 49,
+            "vertex_count": 2,
+            "vertex_indices": [
+              21,
+              22
+            ],
+            "neighbors": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "flags": 32769,
+            "area": 38,
+            "type": 1,
+            "links": [
+              {
+                "ref": 107011257663491,
+                "next": 47,
+                "edge": 1,
+                "side": 98,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177390739259392,
+                "next": 4294967295,
+                "edge": 0,
+                "side": 240,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          }
+        ],
+        "off_mesh_connections": [
+          {
+            "start": [
+              -1245,
+              730,
+              -58627.5
+            ],
+            "end": [
+              -1440,
+              730,
+              -58395
+            ],
+            "radius": 30,
+            "height": 40,
+            "user_id": 0,
+            "poly": 10,
+            "side": 2,
+            "flags": 192
+          }
+        ]
+      },
+      {
+        "lookup_index": 3457,
+        "tile_index": 683,
+        "tile_index_valid": true,
+        "salt": 5,
+        "x": -1,
+        "y": -60,
+        "layer": 0,
+        "poly_count": 7,
+        "vert_count": 16,
+        "max_link_count": 38,
+        "vertices": [
+          {
+            "x": -990,
+            "y": 720,
+            "z": -58905
+          },
+          {
+            "x": -795,
+            "y": 730,
+            "z": -58890
+          },
+          {
+            "x": -750,
+            "y": 730,
+            "z": -58830
+          },
+          {
+            "x": -555,
+            "y": 740,
+            "z": -58800
+          },
+          {
+            "x": -525,
+            "y": 740,
+            "z": -59055
+          },
+          {
+            "x": -480,
+            "y": 740,
+            "z": -59100
+          },
+          {
+            "x": -420,
+            "y": 740,
+            "z": -59100
+          },
+          {
+            "x": -420,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -990,
+            "y": 720,
+            "z": -59400
+          },
+          {
+            "x": -285,
+            "y": 750,
+            "z": -59085
+          },
+          {
+            "x": -255,
+            "y": 750,
+            "z": -59055
+          },
+          {
+            "x": -285,
+            "y": 750,
+            "z": -58755
+          },
+          {
+            "x": 0,
+            "y": 730,
+            "z": -58710
+          },
+          {
+            "x": 0,
+            "y": 740,
+            "z": -58770
+          },
+          {
+            "x": 0,
+            "y": 740,
+            "z": -58890
+          },
+          {
+            "x": 0,
+            "y": 720,
+            "z": -59400
+          }
+        ],
+        "polygons": [
+          {
+            "index": 0,
+            "first_link": 0,
+            "vertex_count": 4,
+            "vertex_indices": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "neighbors": [
+              0,
+              0,
+              0,
+              3,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775746,
+                "next": 4294967295,
+                "edge": 3,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "first_link": 2,
+            "vertex_count": 3,
+            "vertex_indices": [
+              5,
+              6,
+              7
+            ],
+            "neighbors": [
+              0,
+              7,
+              3,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775750,
+                "next": 1,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177388591775746,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 2,
+            "first_link": 15,
+            "vertex_count": 6,
+            "vertex_indices": [
+              4,
+              5,
+              7,
+              8,
+              0,
+              1
+            ],
+            "neighbors": [
+              0,
+              2,
+              32774,
+              32772,
+              0,
+              1
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177399329193984,
+                "next": 14,
+                "edge": 2,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177390739259398,
+                "next": 4,
+                "edge": 3,
+                "side": 4,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177388591775745,
+                "next": 3,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177388591775744,
+                "next": 4294967295,
+                "edge": 5,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 3,
+            "first_link": 13,
+            "vertex_count": 3,
+            "vertex_indices": [
+              11,
+              12,
+              13
+            ],
+            "neighbors": [
+              0,
+              32768,
+              5,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177386444292106,
+                "next": 5,
+                "edge": 1,
+                "side": 0,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177388591775748,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 4,
+            "first_link": 7,
+            "vertex_count": 4,
+            "vertex_indices": [
+              11,
+              13,
+              14,
+              10
+            ],
+            "neighbors": [
+              4,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775747,
+                "next": 6,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177388591775749,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 5,
+            "first_link": 12,
+            "vertex_count": 5,
+            "vertex_indices": [
+              9,
+              10,
+              14,
+              15,
+              7
+            ],
+            "neighbors": [
+              0,
+              5,
+              32768,
+              32774,
+              7,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177386444292100,
+                "next": 16,
+                "edge": 2,
+                "side": 0,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177399329193984,
+                "next": 9,
+                "edge": 3,
+                "side": 6,
+                "bmin": 0,
+                "bmax": 255
+              },
+              {
+                "ref": 177388591775748,
+                "next": 8,
+                "edge": 1,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177388591775750,
+                "next": 4294967295,
+                "edge": 4,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          },
+          {
+            "index": 6,
+            "first_link": 11,
+            "vertex_count": 3,
+            "vertex_indices": [
+              7,
+              6,
+              9
+            ],
+            "neighbors": [
+              2,
+              0,
+              6,
+              0,
+              0,
+              0
+            ],
+            "flags": 1,
+            "area": 63,
+            "type": 0,
+            "links": [
+              {
+                "ref": 177388591775745,
+                "next": 10,
+                "edge": 0,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              },
+              {
+                "ref": 177388591775749,
+                "next": 4294967295,
+                "edge": 2,
+                "side": 128,
+                "bmin": 0,
+                "bmax": 0
+              }
+            ]
+          }
+        ],
+        "off_mesh_connections": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,5890 @@
+{
+  "provenance": {
+    "sources": [
+      {
+        "path": "fixture-source/20261007T104049980754-observe_queens_blood.json",
+        "sha256": "12cc90d53a200ea2e315fc15e9f1cb91441e3d67c8d6e8003f6fbb086a1cf6f7"
+      },
+      {
+        "path": "fixture-source/20261007T131621907012-get_edit_queens_blood_deck_status.json",
+        "sha256": "fcde0b5f32db13f6c5b510142a3d3dbb26cb1cf8fa9bd54035d48f311ddd60b0"
+      },
+      {
+        "path": "fixture-source/20261007T131959142799-observe_queens_blood.json",
+        "sha256": "719c3d52125742dbb5ddba02eb6002ede373e6c5fedb8f98dbed2c22eff22f87"
+      },
+      {
+        "path": "fixture-source/20261007T132108928726-get_mulligan_cards_status.json",
+        "sha256": "7f01f0f1f8605ab23c2a357a67caa33779393ff94600fb8a313f687fd0a9c589"
+      },
+      {
+        "path": "fixture-source/attempt-1-move-01.json",
+        "sha256": "28604785014f7415c70c5a7f7879978a31d32415abdc7910081aec73bb00786d"
+      },
+      {
+        "path": "fixture-source/attempt-1-move-08.json",
+        "sha256": "eadb61095d3b59f7d83f46aab21971f71af5206c99829fd506a20ba7a5ee26c0"
+      },
+      {
+        "path": "fixture-source/attempt-1-finish-refusal.json",
+        "sha256": "38c9df6215e1cf851d2c80de056362ce064e1d80053da83fba859ab39c45f6fe"
+      }
+    ],
+    "projection": "queen_blood payloads only; reflection/talk_menu/consumer telemetry metadata omitted; no game-state or timing invented here"
+  },
+  "deck": {
+    "cursor": {
+      "area": "unknown"
+    },
+    "deck_screen": {
+      "enemy": {
+        "shown": true,
+        "enemy_name": "$card_opponent_GONGV_02"
+      },
+      "shown": true,
+      "detail": {
+        "totals": [
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.BouterRank.WidgetTree.Txt_EnemyNum",
+            "text": "2/3",
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardDeckList.WidgetTree.Txt_TotalNumber",
+            "text": "15/15",
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Txt_TotalNumber",
+            "text": "15/15",
+            "shown": true
+          }
+        ],
+        "hovered": {
+          "card_id": "card_id_000",
+          "unique_id": 1.0,
+          "name_id": "$en_SecuritySoldier_Standard",
+          "name": "Security Officer",
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Information.WidgetTree",
+          "popup": "Information"
+        },
+        "resolved": [
+          {
+            "card_id": "card_id_059",
+            "unique_id": 55.0,
+            "popup_shown": true,
+            "name_id": "$en_Morbol_GreatEnd2",
+            "name": "Great Malboro",
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.CardInfo.WidgetTree",
+            "popup": "CardInfo"
+          },
+          {
+            "card_id": "card_id_000",
+            "unique_id": 1.0,
+            "name_id": "$en_SecuritySoldier_Standard",
+            "name": "Security Officer",
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Information.WidgetTree",
+            "popup": "Information"
+          }
+        ],
+        "texts": [
+          {
+            "name": "Txt_Info",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "text": "$cardtext_card_noAbility",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "text": "$en_SecuritySoldier_Standard",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "text": "1",
+            "shown": true
+          },
+          {
+            "name": "Txt_Info",
+            "text": "When played, lower the power of allied and enemy cards on affected tiles by 6.",
+            "shown": true
+          },
+          {
+            "name": "Txt_Name",
+            "text": "$en_Morbol_GreatEnd2",
+            "shown": true
+          },
+          {
+            "name": "Txt_Num_01",
+            "text": "55",
+            "shown": true
+          }
+        ]
+      },
+      "windows": {
+        "CardDeckList": false,
+        "DeckList": true,
+        "Card_ListAll": false,
+        "DeckCopy": true,
+        "PresetTop": false,
+        "Card_EditListNew": true,
+        "EnemyInformation": true,
+        "CardList_Player": true,
+        "SortWindow": false
+      },
+      "deck": {
+        "shown": true,
+        "list": {
+          "rows": [
+            {
+              "position": 0.0,
+              "rows": [],
+              "item_count": 5.0,
+              "selected": 0.0
+            },
+            {
+              "position": 1.0,
+              "rows": [],
+              "item_count": 5.0,
+              "selected": -1.0
+            },
+            {
+              "position": 2.0,
+              "rows": [],
+              "item_count": 5.0,
+              "selected": -1.0
+            }
+          ],
+          "item_count": 3.0,
+          "selected": 0.0
+        },
+        "total": "15/15"
+      },
+      "observed": true,
+      "billboards": [
+        {
+          "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Card_Full.MainMenu_Card_Card_Full_C:WidgetTree.Billboard_CardBack",
+          "shown": false
+        },
+        {
+          "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_EnemyInformation.MainMenu_Card_EnemyInformation_C:WidgetTree.Billboard_DeckThumbnail",
+          "name": "Security Officer",
+          "card_id": "card_id_000",
+          "shown": true
+        },
+        {
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.Card_View.WidgetTree.Card_Full.WidgetTree.Billboard_CardBack",
+          "shown": false
+        },
+        {
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.Card_View.WidgetTree.Card_Full.WidgetTree.Billboard_Thumbnail",
+          "name": "Security Officer",
+          "card_id": "card_id_000",
+          "shown": true
+        },
+        {
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.Card_Full.WidgetTree.Billboard_CardBack",
+          "shown": false
+        },
+        {
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.Card_Full.WidgetTree.Billboard_Thumbnail",
+          "name": "Great Malboro",
+          "card_id": "card_id_059",
+          "shown": true
+        },
+        {
+          "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.Billboard_DeckThumbnail",
+          "name": "Security Officer",
+          "card_id": "card_id_000",
+          "shown": true
+        }
+      ],
+      "edit": {
+        "shown": true
+      },
+      "census": {
+        "boxes": [
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_DeckList.MainMenu_Card_DeckList_C:WidgetTree.Virtual_Scroll_Box_Deck",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_DeckList_Cell_C",
+            "item_count": 6.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_CardAll_Full_Unit.MainMenu_Card_CardAll_Full_Unit_C:WidgetTree.EndVirtualScrollBox_103",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_C",
+            "item_count": 11.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_ListHorizon.MainMenu_Card_ListHorizon_C:WidgetTree.Box_Card",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_C",
+            "item_count": 15.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Card_Full_Unit.MainMenu_Card_Card_Full_Unit_C:WidgetTree.EndVirtualScrollBox_103",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_C",
+            "item_count": 4.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_ListAll.MainMenu_Card_ListAll_C:WidgetTree.Virtual_Scroll_Box_Card_1",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_CardAll_Full_Unit_C",
+            "item_count": 5.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_EditListNew.MainMenu_Card_EditListNew_C:WidgetTree.Box_Card",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_CardAll_Full_Unit_C",
+            "item_count": 2.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Preset_Confirm.MainMenu_Card_Preset_Confirm_C:WidgetTree.Virtual_Scroll_Box_Card_00",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Preset_Confirm.MainMenu_Card_Preset_Confirm_C:WidgetTree.Virtual_Scroll_Box_Card_01",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Preset_List.MainMenu_Card_Preset_List_C:WidgetTree.Deck_ScrollList",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Preset_ListItem_C",
+            "item_count": 10.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Preset_List.MainMenu_Card_Preset_List_C:WidgetTree.Virtual_Scroll_Box_Card",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_List.MainMenu_Card_List_C:WidgetTree.Virtual_Scroll_Box_Card",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_EditList.MainMenu_Card_EditList_C:WidgetTree.Virtual_Scroll_Box_Edit",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_Preset_Top.MainMenu_Card_Preset_Top_C:WidgetTree.Deck_ScrollList",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.DeckCopy.WidgetTree.DeckList.WidgetTree.Virtual_Scroll_Box_Deck",
+            "content_count": 6.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_DeckList_Cell_C_2147462357",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "UberGraphFrame",
+              "Editing",
+              "Normal",
+              "Selected",
+              "BtnHover",
+              "Cell_Lighting",
+              "Deck_Btn",
+              "Img_Btn",
+              "Img_BtnBase",
+              "Img_Light"
+            ],
+            "sample_class": "MainMenu_Card_DeckList_Cell_C",
+            "content_class": "MainMenu_Card_DeckList_Cell_C",
+            "item_count": 6.0,
+            "children": [
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 0.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 1.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 2.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 3.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 4.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 5.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.DeckCopy.WidgetTree.OriginDeck.WidgetTree.Box_Card",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.DeckCopy.WidgetTree.EditingDeck.WidgetTree.Box_Card",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.PresetDeckList.WidgetTree.Box_Card",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.CardDeckList.WidgetTree.Box_Card",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.PresetConfirm.WidgetTree.Virtual_Scroll_Box_Card_01",
+            "content_count": 3.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462370",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "Img_Frame_01",
+              "Img_Frame_02",
+              "Img_Frame_03",
+              "Img_Frame_04",
+              "Img_Frame_05",
+              "Img_Logo_01",
+              "Img_Logo_02",
+              "Img_Logo_03",
+              "Img_Logo_04",
+              "Img_Logo_05"
+            ],
+            "sample_class": "MainMenu_Card_Card_Full_Unit_C",
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "children": [
+              {
+                "position": 0.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 1.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 2.0,
+                "cells": [],
+                "selected": -1.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.PresetConfirm.WidgetTree.Virtual_Scroll_Box_Card_00",
+            "content_count": 3.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462379",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "Img_Frame_01",
+              "Img_Frame_02",
+              "Img_Frame_03",
+              "Img_Frame_04",
+              "Img_Frame_05",
+              "Img_Logo_01",
+              "Img_Logo_02",
+              "Img_Logo_03",
+              "Img_Logo_04",
+              "Img_Logo_05"
+            ],
+            "sample_class": "MainMenu_Card_Card_Full_Unit_C",
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "children": [
+              {
+                "position": 0.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 1.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 2.0,
+                "cells": [],
+                "selected": -1.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.DeckList.WidgetTree.Virtual_Scroll_Box_Deck",
+            "content_count": 6.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_DeckList_Cell_C_2147462386",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "UberGraphFrame",
+              "Editing",
+              "Normal",
+              "Selected",
+              "BtnHover",
+              "Cell_Lighting",
+              "Deck_Btn",
+              "Img_Btn",
+              "Img_BtnBase",
+              "Img_Light"
+            ],
+            "sample_class": "MainMenu_Card_DeckList_Cell_C",
+            "content_class": "MainMenu_Card_DeckList_Cell_C",
+            "item_count": 6.0,
+            "children": [
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 0.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 1.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 2.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 3.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 4.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 5.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.PresetList.WidgetTree.Deck_ScrollList",
+            "content_count": 10.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Preset_ListItem_C_2147462396",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "UberGraphFrame",
+              "Normal",
+              "Gray_BtnHover",
+              "Gray",
+              "BtnHover",
+              "GrayOut",
+              "Icon_New",
+              "Img_BG",
+              "Img_Line_01",
+              "Img_Line_02"
+            ],
+            "sample_class": "MainMenu_Card_Preset_ListItem_C",
+            "content_class": "MainMenu_Card_Preset_ListItem_C",
+            "item_count": 10.0,
+            "children": [
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 0.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 1.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 2.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 3.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 4.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 5.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 6.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 7.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 8.0
+              },
+              {
+                "class": "MainMenu_Card_Preset_ListItem_C",
+                "position": 9.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.PresetList.WidgetTree.Virtual_Scroll_Box_Card",
+            "content_count": 3.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462406",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "Img_Frame_01",
+              "Img_Frame_02",
+              "Img_Frame_03",
+              "Img_Frame_04",
+              "Img_Frame_05",
+              "Img_Logo_01",
+              "Img_Logo_02",
+              "Img_Logo_03",
+              "Img_Logo_04",
+              "Img_Logo_05"
+            ],
+            "sample_class": "MainMenu_Card_Card_Full_Unit_C",
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "children": [
+              {
+                "position": 0.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 1.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 2.0,
+                "cells": [],
+                "selected": -1.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.PresetTop.WidgetTree.Deck_ScrollList",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": false
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.Card_ListAll.WidgetTree.Virtual_Scroll_Box_Card_1",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_CardAll_Full_Unit_C",
+            "children": [],
+            "item_count": 5.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardDeckList.WidgetTree.Box_Card",
+            "content_count": 0.0,
+            "cached_count": 0.0,
+            "shown": true,
+            "content_class": "MainMenu_Card_Card_Full_C",
+            "children": [],
+            "item_count": 9.0,
+            "selected": -1.0
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.DeckList.WidgetTree.Virtual_Scroll_Box_Deck",
+            "content_count": 6.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_DeckList_Cell_C_2147462413",
+            "selected": -1.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "UberGraphFrame",
+              "Editing",
+              "Normal",
+              "Selected",
+              "BtnHover",
+              "Cell_Lighting",
+              "Deck_Btn",
+              "Img_Btn",
+              "Img_BtnBase",
+              "Img_Light"
+            ],
+            "sample_class": "MainMenu_Card_DeckList_Cell_C",
+            "content_class": "MainMenu_Card_DeckList_Cell_C",
+            "item_count": 6.0,
+            "children": [
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 0.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 1.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 2.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 3.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 4.0
+              },
+              {
+                "class": "MainMenu_Card_DeckList_Cell_C",
+                "position": 5.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Virtual_Scroll_Box_Card",
+            "content_count": 3.0,
+            "shown": true,
+            "sample_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462422",
+            "selected": 0.0,
+            "cached_count": 0.0,
+            "sample_properties": [
+              "Img_Frame_01",
+              "Img_Frame_02",
+              "Img_Frame_03",
+              "Img_Frame_04",
+              "Img_Frame_05",
+              "Img_Logo_01",
+              "Img_Logo_02",
+              "Img_Logo_03",
+              "Img_Logo_04",
+              "Img_Logo_05"
+            ],
+            "sample_class": "MainMenu_Card_Card_Full_Unit_C",
+            "content_class": "MainMenu_Card_Card_Full_Unit_C",
+            "item_count": 3.0,
+            "children": [
+              {
+                "position": 0.0,
+                "cells": [],
+                "selected": 0.0
+              },
+              {
+                "position": 1.0,
+                "cells": [],
+                "selected": -1.0
+              },
+              {
+                "position": 2.0,
+                "cells": [],
+                "selected": -1.0
+              }
+            ]
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.Card_EditListNew.WidgetTree.Box_Card",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462364.WidgetTree.EndVirtualScrollBox_103",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462367.WidgetTree.EndVirtualScrollBox_103",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          },
+          {
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_Card_Full_Unit_C_2147462370.WidgetTree.EndVirtualScrollBox_103",
+            "selected": -1.0,
+            "item_count": 0.0,
+            "shown": true
+          }
+        ],
+        "cells": [
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_View.MainMenu_Card_View_C:WidgetTree.Card_Full"
+          },
+          {
+            "path": "/Game/Menu/Resident/MainMenu/Card/MainMenu_Card_EnemyInformation.MainMenu_Card_EnemyInformation_C:WidgetTree.Card_Full"
+          },
+          {
+            "card_id": "card_id_000",
+            "limit_shown": false,
+            "cursor": false,
+            "shown": true,
+            "image_id": "U_Com_Billboard_CardGame_Card_000",
+            "name": "Security Officer",
+            "number": 1.0,
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.Card_View.WidgetTree.Card_Full"
+          },
+          {
+            "card_id": "card_id_059",
+            "limit_shown": false,
+            "cursor": false,
+            "shown": true,
+            "image_id": "U_Com_Billboard_CardGame_Card_059",
+            "name": "Great Malboro",
+            "number": 3.0,
+            "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147462439.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.Card_Full"
+          },
+          {
+            "path": "/Game/Menu/MiniGame/CardGame/CardGame_ResultWindow.CardGame_ResultWindow_C:WidgetTree.CardFull"
+          }
+        ]
+      },
+      "editor": {
+        "cursors": {
+          "Strip": {
+            "index": 8.0,
+            "sequence": 61.0
+          },
+          "Player": {
+            "index": 0.0,
+            "sequence": 94.0,
+            "row": 0.0
+          },
+          "Edit": {
+            "index": 0.0,
+            "sequence": 89.0,
+            "row": 0.0
+          }
+        },
+        "strip_presses": [
+          {
+            "index": 9.0,
+            "sequence": 60.0
+          }
+        ],
+        "hooks": {
+          "OnListBoxFilter04PressedItem": true,
+          "EndCardUnitList:OnSetupItem": true,
+          "OnEditingDeckSelectedIndexChanged": true,
+          "OnCardListPlayerCellSelectedIndexChanged": true,
+          "OnListBoxFilter02PressedItem": true,
+          "OnCardListEditRowSetupItem": true,
+          "OnCardListAllRowSelectedIndexChanged": true,
+          "OnCardListPlayerRowSelectedIndexChanged": true,
+          "OnCardListEditCellSelectedIndexChanged": true,
+          "OnCardListPlayerCellSetupItem": true,
+          "OnCardDeckListPressedItem": true,
+          "OnCardDeckListSelectedIndexChanged": true,
+          "OnListBoxFilter01PressedItem": true,
+          "OnCardListAllRowSetupItem": true,
+          "OnListBoxFilter06PressedItem": true,
+          "OnListBoxFilter05PressedItem": true,
+          "OnCardListEditCellSetupItem": true,
+          "OnCardListAllCellSetupItem": true,
+          "OnCardListEditRowSelectedIndexChanged": true,
+          "OnCardListPlayerRowSetupItem": true,
+          "OnCardListAllCellSelectedIndexChanged": true,
+          "OnListBoxFilter07PressedItem": true,
+          "OnListBoxFilter03PressedItem": true
+        },
+        "unit_lists": 0.0,
+        "filters": [],
+        "grids": {
+          "Player": [],
+          "Edit": []
+        }
+      },
+      "events": [],
+      "collection": {
+        "shown": false
+      }
+    },
+    "turn": 0.0,
+    "active": false,
+    "schema_version": 1.0,
+    "board": {
+      "rows": 3.0,
+      "cells": [],
+      "columns": 5.0
+    },
+    "legal_moves": [],
+    "hand": [],
+    "match_screen": true,
+    "begin_match_available": true,
+    "phase": "inactive",
+    "screen": "deck_select"
+  },
+  "deck_cards": [
+    "card_id_000",
+    "card_id_000",
+    "card_id_002",
+    "card_id_002",
+    "card_id_006",
+    "card_id_006",
+    "card_id_007",
+    "card_id_007",
+    "card_id_024",
+    "card_id_116",
+    "card_id_004",
+    "card_id_008",
+    "card_id_010",
+    "card_id_010",
+    "card_id_118"
+  ],
+  "mulligan_opening": {
+    "hand": [
+      {
+        "cursor_visible": true,
+        "influence": "UpDownSkip1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_002",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 2.0,
+        "card_index": 0.0,
+        "hand_index": 0.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_002",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -2.0,
+            "column": 0.0
+          },
+          {
+            "row": 2.0,
+            "column": 0.0
+          }
+        ],
+        "card_unique_id": 5.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_KillerBee_StandardEnd2",
+        "mulligan_selected": false,
+        "power": 1.0,
+        "name": "Queen Bee",
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "FrontUp1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 2.0,
+        "card_index": 1.0,
+        "hand_index": 1.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_007",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": 0.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 8.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_GuardHound_KalmFangEnd2",
+        "mulligan_selected": false,
+        "power": 2.0,
+        "name": "Grasslands Wolf",
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "Cross1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 4.0,
+        "card_index": 2.0,
+        "hand_index": 2.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_000",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": 0.0,
+            "column": -1.0
+          },
+          {
+            "row": 0.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 0.0
+          }
+        ],
+        "card_unique_id": 1.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_SecuritySoldier_Standard",
+        "mulligan_selected": false,
+        "power": 1.0,
+        "name": "Security Officer",
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "UpDownFront1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_004",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 4.0,
+        "card_index": 3.0,
+        "hand_index": 3.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_004",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": -1.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 0.0
+          },
+          {
+            "row": 1.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 4.0,
+        "cost": 2.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_Sweeper_Standard",
+        "mulligan_selected": false,
+        "power": 2.0,
+        "name": "J-Unit Sweeper",
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "DiagonalFront1",
+        "effect_parameter_references": [],
+        "card_image_id": "U_Com_Billboard_CardGame_Card_118",
+        "effect_text": "When played, add Moogle Mage and Moogle Bard to your hand.",
+        "effect_constant": 0.0,
+        "influence_square_count": 2.0,
+        "effect_reference_count0": 0.0,
+        "effect_type_name": "add_card_to_hand",
+        "card_index": 4.0,
+        "hand_index": 4.0,
+        "effect_text_source": "CardGameSpecialParam semantic template",
+        "card_id": "card_id_118",
+        "effect_int_parameters": [
+          1.0,
+          1.0
+        ],
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 110.0,
+        "effect_type": 3.0,
+        "cost": 2.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$M_SMN_110_atk001",
+        "effect_text_label_references": [],
+        "mulligan_selected": false,
+        "power": 1.0,
+        "effect_filter_tags": [
+          2.0,
+          9.0,
+          9.0,
+          9.0
+        ],
+        "effect_target_name": "event_or_no_board_target",
+        "effect_reference_counts": [],
+        "effect_id": "addToken_MogRanger",
+        "effect_text_id": "$cardtext_card_Ability_GetCard_MogRanger",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "name": "Moogle Trio",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "effect_target": 0.0,
+        "effect_card_definitions": [
+          {
+            "influence": "UpRight2",
+            "unique_id": 235.0,
+            "effect_parameter_references": [
+              0.0,
+              5.0
+            ],
+            "effect_text": "When played, lower the power of enemy cards on affected tiles by 4.",
+            "effect_constant": 0.0,
+            "influence_square_count": 1.0,
+            "effect_influence_square_count": 1.0,
+            "effect_type_name": "immediate_effect",
+            "effect_text_source": "CardGameSpecialParam semantic template",
+            "card_id": "card_id_Token_035",
+            "effect_int_parameters": [
+              -4.0
+            ],
+            "influence_offsets": [
+              {
+                "row": -2.0,
+                "column": 2.0
+              }
+            ],
+            "catalogue_kind": "token",
+            "effect_type": 0.0,
+            "cost": 1.0,
+            "effect_text_label_references": [],
+            "power": 1.0,
+            "effect_filter_tags": [
+              1.0,
+              9.0,
+              9.0,
+              9.0
+            ],
+            "effect_target_name": "enemy_cards",
+            "effect_reference_counts": [],
+            "effect_id": "debuff_MogRangerBlack",
+            "effect_text_id": "$cardtext_card_Ability_BuffDebuff_OneShot_Down",
+            "effect_reference_count0": 0.0,
+            "name_id": "$cardtext_card_name_Token_035",
+            "name": "Moogle Mage",
+            "effect_influence_offsets": [
+              {
+                "row": -2.0,
+                "column": 2.0
+              }
+            ],
+            "copies": 1.0,
+            "effect_heading_types": [
+              1.0,
+              2.0
+            ],
+            "note_id": "$cardtext_card_noAbility",
+            "effect_target": 2.0,
+            "effect_influence": "UpRight2",
+            "effect_text_parameters": []
+          },
+          {
+            "influence": "FrontDown1",
+            "unique_id": 236.0,
+            "effect_parameter_references": [
+              0.0,
+              5.0
+            ],
+            "effect_text": "Raise the power of allied cards on affected tiles by 2 while this card is in play.",
+            "effect_constant": 0.0,
+            "influence_square_count": 2.0,
+            "effect_influence_square_count": 2.0,
+            "effect_type_name": "while_in_play_effect",
+            "effect_text_source": "CardGameSpecialParam semantic template",
+            "card_id": "card_id_Token_036",
+            "effect_int_parameters": [
+              2.0
+            ],
+            "influence_offsets": [
+              {
+                "row": 0.0,
+                "column": 1.0
+              },
+              {
+                "row": 1.0,
+                "column": 0.0
+              }
+            ],
+            "catalogue_kind": "token",
+            "effect_type": 1.0,
+            "cost": 1.0,
+            "effect_text_label_references": [],
+            "power": 1.0,
+            "effect_filter_tags": [
+              0.0,
+              9.0,
+              9.0,
+              9.0
+            ],
+            "effect_target_name": "allied_cards",
+            "effect_reference_counts": [],
+            "effect_id": "buffLoop_MogRangerBard",
+            "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+            "effect_reference_count0": 0.0,
+            "name_id": "$cardtext_card_name_Token_036",
+            "name": "Moogle Bard",
+            "effect_influence_offsets": [
+              {
+                "row": 1.0,
+                "column": 1.0
+              },
+              {
+                "row": 2.0,
+                "column": 1.0
+              }
+            ],
+            "copies": 1.0,
+            "effect_heading_types": [
+              1.0,
+              2.0
+            ],
+            "note_id": "$cardtext_card_noAbility",
+            "effect_target": 1.0,
+            "effect_influence": "FrontDown2",
+            "effect_text_parameters": []
+          }
+        ],
+        "playable": false,
+        "effect_heading_types": [],
+        "note_id": "$cardtext_card_id_118",
+        "effect_text_parameters": [
+          "card_id_Token_035",
+          "card_id_Token_036"
+        ]
+      }
+    ],
+    "active": true,
+    "match_screen": true,
+    "result": {
+      "observed": true,
+      "shown": false
+    },
+    "popups": {
+      "begin_confirm": false,
+      "mulligan_confirm": true
+    },
+    "schema_version": 1.0,
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "hand_index": 0.0,
+      "area": "hand"
+    },
+    "turn": 0.0,
+    "mulligan_selection": {
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+      "selected_indices": [],
+      "observed": true
+    },
+    "board": {
+      "columns": 5.0,
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "frame_cursor_visibility": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "active": false
+      },
+      "lanes": [
+        {
+          "row": 0.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        },
+        {
+          "row": 1.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        },
+        {
+          "row": 2.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        }
+      ],
+      "rows": 3.0,
+      "cells": [
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "legal_moves": [],
+    "phase": "dealing",
+    "screen": "mulligan",
+    "state_inference": {
+      "state": "mulligan",
+      "basis": "identified_hand_after_begin_match",
+      "raw_screen": null,
+      "sequence": 65443
+    }
+  },
+  "mulligan_final": {
+    "hand": [
+      {
+        "cursor_visible": true,
+        "influence": "FrontUp1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 2.0,
+        "card_index": 1.0,
+        "hand_index": 0.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_007",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": 0.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 8.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_GuardHound_KalmFangEnd2",
+        "mulligan_selected": false,
+        "power": 2.0,
+        "name": "Grasslands Wolf",
+        "playable": true,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "Cross1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 4.0,
+        "card_index": 2.0,
+        "hand_index": 1.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_000",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": 0.0,
+            "column": -1.0
+          },
+          {
+            "row": 0.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 0.0
+          }
+        ],
+        "card_unique_id": 1.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_SecuritySoldier_Standard",
+        "mulligan_selected": false,
+        "power": 1.0,
+        "name": "Security Officer",
+        "playable": true,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "UpDownFront1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_004",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 4.0,
+        "card_index": 3.0,
+        "hand_index": 2.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_004",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 0.0
+          },
+          {
+            "row": -1.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 0.0
+          },
+          {
+            "row": 1.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 4.0,
+        "cost": 2.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_Sweeper_Standard",
+        "mulligan_selected": false,
+        "power": 2.0,
+        "name": "J-Unit Sweeper",
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      },
+      {
+        "cursor_visible": false,
+        "influence": "DiagonalFront1",
+        "effect_parameter_references": [],
+        "card_image_id": "U_Com_Billboard_CardGame_Card_118",
+        "effect_text": "When played, add Moogle Mage and Moogle Bard to your hand.",
+        "effect_constant": 0.0,
+        "influence_square_count": 2.0,
+        "effect_reference_count0": 0.0,
+        "effect_type_name": "add_card_to_hand",
+        "card_index": 4.0,
+        "hand_index": 3.0,
+        "effect_text_source": "CardGameSpecialParam semantic template",
+        "card_id": "card_id_118",
+        "effect_int_parameters": [
+          1.0,
+          1.0
+        ],
+        "influence_offsets": [
+          {
+            "row": -1.0,
+            "column": 1.0
+          },
+          {
+            "row": 1.0,
+            "column": 1.0
+          }
+        ],
+        "card_unique_id": 110.0,
+        "effect_type": 3.0,
+        "cost": 2.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$M_SMN_110_atk001",
+        "effect_text_label_references": [],
+        "mulligan_selected": false,
+        "power": 1.0,
+        "effect_filter_tags": [
+          2.0,
+          9.0,
+          9.0,
+          9.0
+        ],
+        "effect_target_name": "event_or_no_board_target",
+        "effect_reference_counts": [],
+        "effect_id": "addToken_MogRanger",
+        "effect_text_id": "$cardtext_card_Ability_GetCard_MogRanger",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "name": "Moogle Trio",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "effect_target": 0.0,
+        "effect_card_definitions": [
+          {
+            "influence": "UpRight2",
+            "unique_id": 235.0,
+            "effect_parameter_references": [
+              0.0,
+              5.0
+            ],
+            "effect_text": "When played, lower the power of enemy cards on affected tiles by 4.",
+            "effect_constant": 0.0,
+            "influence_square_count": 1.0,
+            "effect_influence_square_count": 1.0,
+            "effect_type_name": "immediate_effect",
+            "effect_text_source": "CardGameSpecialParam semantic template",
+            "card_id": "card_id_Token_035",
+            "effect_int_parameters": [
+              -4.0
+            ],
+            "influence_offsets": [
+              {
+                "row": -2.0,
+                "column": 2.0
+              }
+            ],
+            "catalogue_kind": "token",
+            "effect_type": 0.0,
+            "cost": 1.0,
+            "effect_text_label_references": [],
+            "power": 1.0,
+            "effect_filter_tags": [
+              1.0,
+              9.0,
+              9.0,
+              9.0
+            ],
+            "effect_target_name": "enemy_cards",
+            "effect_reference_counts": [],
+            "effect_id": "debuff_MogRangerBlack",
+            "effect_text_id": "$cardtext_card_Ability_BuffDebuff_OneShot_Down",
+            "effect_reference_count0": 0.0,
+            "name_id": "$cardtext_card_name_Token_035",
+            "name": "Moogle Mage",
+            "effect_influence_offsets": [
+              {
+                "row": -2.0,
+                "column": 2.0
+              }
+            ],
+            "copies": 1.0,
+            "effect_heading_types": [
+              1.0,
+              2.0
+            ],
+            "note_id": "$cardtext_card_noAbility",
+            "effect_target": 2.0,
+            "effect_influence": "UpRight2",
+            "effect_text_parameters": []
+          },
+          {
+            "influence": "FrontDown1",
+            "unique_id": 236.0,
+            "effect_parameter_references": [
+              0.0,
+              5.0
+            ],
+            "effect_text": "Raise the power of allied cards on affected tiles by 2 while this card is in play.",
+            "effect_constant": 0.0,
+            "influence_square_count": 2.0,
+            "effect_influence_square_count": 2.0,
+            "effect_type_name": "while_in_play_effect",
+            "effect_text_source": "CardGameSpecialParam semantic template",
+            "card_id": "card_id_Token_036",
+            "effect_int_parameters": [
+              2.0
+            ],
+            "influence_offsets": [
+              {
+                "row": 0.0,
+                "column": 1.0
+              },
+              {
+                "row": 1.0,
+                "column": 0.0
+              }
+            ],
+            "catalogue_kind": "token",
+            "effect_type": 1.0,
+            "cost": 1.0,
+            "effect_text_label_references": [],
+            "power": 1.0,
+            "effect_filter_tags": [
+              0.0,
+              9.0,
+              9.0,
+              9.0
+            ],
+            "effect_target_name": "allied_cards",
+            "effect_reference_counts": [],
+            "effect_id": "buffLoop_MogRangerBard",
+            "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+            "effect_reference_count0": 0.0,
+            "name_id": "$cardtext_card_name_Token_036",
+            "name": "Moogle Bard",
+            "effect_influence_offsets": [
+              {
+                "row": 1.0,
+                "column": 1.0
+              },
+              {
+                "row": 2.0,
+                "column": 1.0
+              }
+            ],
+            "copies": 1.0,
+            "effect_heading_types": [
+              1.0,
+              2.0
+            ],
+            "note_id": "$cardtext_card_noAbility",
+            "effect_target": 1.0,
+            "effect_influence": "FrontDown2",
+            "effect_text_parameters": []
+          }
+        ],
+        "playable": false,
+        "effect_heading_types": [],
+        "note_id": "$cardtext_card_id_118",
+        "effect_text_parameters": [
+          "card_id_Token_035",
+          "card_id_Token_036"
+        ]
+      },
+      {
+        "cursor_visible": false,
+        "influence": "UpDownSkip1",
+        "card_image_id": "U_Com_Billboard_CardGame_Card_002",
+        "effect_text": "No ability.",
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "influence_square_count": 2.0,
+        "card_index": 0.0,
+        "hand_index": 4.0,
+        "effect_text_source": "Samurai Gamers ability list",
+        "card_id": "card_id_002",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "influence_offsets": [
+          {
+            "row": -2.0,
+            "column": 0.0
+          },
+          {
+            "row": 2.0,
+            "column": 0.0
+          }
+        ],
+        "card_unique_id": 5.0,
+        "cost": 1.0,
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "card_name_id": "$en_KillerBee_StandardEnd2",
+        "mulligan_selected": false,
+        "power": 1.0,
+        "name": "Queen Bee",
+        "playable": true,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "note_id": "$cardtext_card_noAbility"
+      }
+    ],
+    "active": true,
+    "match_screen": true,
+    "result": {
+      "observed": true,
+      "shown": false
+    },
+    "popups": {
+      "begin_confirm": false,
+      "mulligan_confirm": true
+    },
+    "schema_version": 1.0,
+    "screen": "match",
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "hand_index": 0.0,
+      "area": "hand"
+    },
+    "turn": 1.0,
+    "mulligan_selection": {
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+      "selected_indices": [],
+      "observed": true
+    },
+    "board": {
+      "columns": 5.0,
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "frame_cursor_visibility": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "active": false
+      },
+      "lanes": [
+        {
+          "row": 0.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        },
+        {
+          "row": 1.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        },
+        {
+          "row": 2.0,
+          "player_power": 0.0,
+          "opponent_power": 0.0
+        }
+      ],
+      "rows": 3.0,
+      "cells": [
+        {
+          "rank": 1.0,
+          "owner": "player",
+          "row": 0.0,
+          "highlight": true,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 0.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 1.0,
+          "owner": "opponent",
+          "row": 0.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        },
+        {
+          "rank": 1.0,
+          "owner": "player",
+          "row": 1.0,
+          "highlight": true,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 1.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 1.0,
+          "owner": "opponent",
+          "row": 1.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        },
+        {
+          "rank": 1.0,
+          "owner": "player",
+          "row": 2.0,
+          "highlight": true,
+          "column": 0.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 1.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 2.0,
+          "card_present": false
+        },
+        {
+          "rank": 0.0,
+          "owner": "empty",
+          "row": 2.0,
+          "highlight": false,
+          "column": 3.0,
+          "card_present": false
+        },
+        {
+          "rank": 1.0,
+          "owner": "opponent",
+          "row": 2.0,
+          "highlight": false,
+          "column": 4.0,
+          "card_present": false
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "legal_moves": [],
+    "phase": "player_turn"
+  },
+  "mulligan_trace": [
+    {
+      "hand": [
+        {
+          "cursor_visible": true,
+          "influence": "UpDownSkip1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_002",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 2.0,
+          "card_index": 0.0,
+          "hand_index": 0.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_002",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -2.0,
+              "column": 0.0
+            },
+            {
+              "row": 2.0,
+              "column": 0.0
+            }
+          ],
+          "card_unique_id": 5.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_KillerBee_StandardEnd2",
+          "mulligan_selected": true,
+          "power": 1.0,
+          "name": "Queen Bee",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "FrontUp1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 2.0,
+          "card_index": 1.0,
+          "hand_index": 1.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_007",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 8.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_GuardHound_KalmFangEnd2",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "Grasslands Wolf",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "Cross1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 2.0,
+          "hand_index": 2.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_000",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": -1.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            }
+          ],
+          "card_unique_id": 1.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_SecuritySoldier_Standard",
+          "mulligan_selected": false,
+          "power": 1.0,
+          "name": "Security Officer",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "UpDownFront1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_004",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 3.0,
+          "hand_index": 3.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_004",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 4.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_Sweeper_Standard",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "J-Unit Sweeper",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "DiagonalFront1",
+          "effect_parameter_references": [],
+          "card_image_id": "U_Com_Billboard_CardGame_Card_118",
+          "effect_text": "When played, add Moogle Mage and Moogle Bard to your hand.",
+          "effect_constant": 0.0,
+          "influence_square_count": 2.0,
+          "effect_reference_count0": 0.0,
+          "effect_type_name": "add_card_to_hand",
+          "card_index": 4.0,
+          "hand_index": 4.0,
+          "effect_text_source": "CardGameSpecialParam semantic template",
+          "card_id": "card_id_118",
+          "effect_int_parameters": [
+            1.0,
+            1.0
+          ],
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 110.0,
+          "effect_type": 3.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$M_SMN_110_atk001",
+          "effect_text_label_references": [],
+          "mulligan_selected": false,
+          "power": 1.0,
+          "effect_filter_tags": [
+            2.0,
+            9.0,
+            9.0,
+            9.0
+          ],
+          "effect_target_name": "event_or_no_board_target",
+          "effect_reference_counts": [],
+          "effect_id": "addToken_MogRanger",
+          "effect_text_id": "$cardtext_card_Ability_GetCard_MogRanger",
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "name": "Moogle Trio",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "effect_target": 0.0,
+          "effect_card_definitions": [
+            {
+              "influence": "UpRight2",
+              "unique_id": 235.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "When played, lower the power of enemy cards on affected tiles by 4.",
+              "effect_constant": 0.0,
+              "influence_square_count": 1.0,
+              "effect_influence_square_count": 1.0,
+              "effect_type_name": "immediate_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_035",
+              "effect_int_parameters": [
+                -4.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 0.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                1.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "enemy_cards",
+              "effect_reference_counts": [],
+              "effect_id": "debuff_MogRangerBlack",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_OneShot_Down",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_035",
+              "name": "Moogle Mage",
+              "effect_influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 2.0,
+              "effect_influence": "UpRight2",
+              "effect_text_parameters": []
+            },
+            {
+              "influence": "FrontDown1",
+              "unique_id": 236.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "Raise the power of allied cards on affected tiles by 2 while this card is in play.",
+              "effect_constant": 0.0,
+              "influence_square_count": 2.0,
+              "effect_influence_square_count": 2.0,
+              "effect_type_name": "while_in_play_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_036",
+              "effect_int_parameters": [
+                2.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": 0.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 1.0,
+                  "column": 0.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 1.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                0.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "allied_cards",
+              "effect_reference_counts": [],
+              "effect_id": "buffLoop_MogRangerBard",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_036",
+              "name": "Moogle Bard",
+              "effect_influence_offsets": [
+                {
+                  "row": 1.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 2.0,
+                  "column": 1.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 1.0,
+              "effect_influence": "FrontDown2",
+              "effect_text_parameters": []
+            }
+          ],
+          "playable": false,
+          "effect_heading_types": [],
+          "note_id": "$cardtext_card_id_118",
+          "effect_text_parameters": [
+            "card_id_Token_035",
+            "card_id_Token_036"
+          ]
+        }
+      ],
+      "active": true,
+      "match_screen": true,
+      "result": {
+        "observed": true,
+        "shown": false
+      },
+      "popups": {
+        "begin_confirm": false,
+        "mulligan_confirm": true
+      },
+      "schema_version": 1.0,
+      "cursor": {
+        "source": "manager.CardHandActors[].bCursorVisible",
+        "hand_index": 0.0,
+        "area": "hand"
+      },
+      "turn": 0.0,
+      "mulligan_selection": {
+        "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "selected_indices": [
+          0.0
+        ],
+        "observed": true
+      },
+      "board": {
+        "columns": 5.0,
+        "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+        "placement": {
+          "frame_cursor_visibility": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "active": false
+        },
+        "lanes": [
+          {
+            "row": 0.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 1.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 2.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          }
+        ],
+        "rows": 3.0,
+        "cells": [
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          }
+        ]
+      },
+      "begin_match_available": false,
+      "legal_moves": [],
+      "phase": "dealing"
+    },
+    {
+      "hand": [
+        {
+          "cursor_visible": false,
+          "influence": "FrontUp1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 2.0,
+          "card_index": 1.0,
+          "hand_index": 0.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_007",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 8.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_GuardHound_KalmFangEnd2",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "Grasslands Wolf",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "Cross1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 2.0,
+          "hand_index": 1.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_000",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": -1.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            }
+          ],
+          "card_unique_id": 1.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_SecuritySoldier_Standard",
+          "mulligan_selected": false,
+          "power": 1.0,
+          "name": "Security Officer",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "UpDownFront1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_004",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 3.0,
+          "hand_index": 2.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_004",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 4.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_Sweeper_Standard",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "J-Unit Sweeper",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "DiagonalFront1",
+          "effect_parameter_references": [],
+          "card_image_id": "U_Com_Billboard_CardGame_Card_118",
+          "effect_text": "When played, add Moogle Mage and Moogle Bard to your hand.",
+          "effect_constant": 0.0,
+          "influence_square_count": 2.0,
+          "effect_reference_count0": 0.0,
+          "effect_type_name": "add_card_to_hand",
+          "card_index": 4.0,
+          "hand_index": 3.0,
+          "effect_text_source": "CardGameSpecialParam semantic template",
+          "card_id": "card_id_118",
+          "effect_int_parameters": [
+            1.0,
+            1.0
+          ],
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 110.0,
+          "effect_type": 3.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$M_SMN_110_atk001",
+          "effect_text_label_references": [],
+          "mulligan_selected": false,
+          "power": 1.0,
+          "effect_filter_tags": [
+            2.0,
+            9.0,
+            9.0,
+            9.0
+          ],
+          "effect_target_name": "event_or_no_board_target",
+          "effect_reference_counts": [],
+          "effect_id": "addToken_MogRanger",
+          "effect_text_id": "$cardtext_card_Ability_GetCard_MogRanger",
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "name": "Moogle Trio",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "effect_target": 0.0,
+          "effect_card_definitions": [
+            {
+              "influence": "UpRight2",
+              "unique_id": 235.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "When played, lower the power of enemy cards on affected tiles by 4.",
+              "effect_constant": 0.0,
+              "influence_square_count": 1.0,
+              "effect_influence_square_count": 1.0,
+              "effect_type_name": "immediate_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_035",
+              "effect_int_parameters": [
+                -4.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 0.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                1.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "enemy_cards",
+              "effect_reference_counts": [],
+              "effect_id": "debuff_MogRangerBlack",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_OneShot_Down",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_035",
+              "name": "Moogle Mage",
+              "effect_influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 2.0,
+              "effect_influence": "UpRight2",
+              "effect_text_parameters": []
+            },
+            {
+              "influence": "FrontDown1",
+              "unique_id": 236.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "Raise the power of allied cards on affected tiles by 2 while this card is in play.",
+              "effect_constant": 0.0,
+              "influence_square_count": 2.0,
+              "effect_influence_square_count": 2.0,
+              "effect_type_name": "while_in_play_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_036",
+              "effect_int_parameters": [
+                2.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": 0.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 1.0,
+                  "column": 0.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 1.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                0.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "allied_cards",
+              "effect_reference_counts": [],
+              "effect_id": "buffLoop_MogRangerBard",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_036",
+              "name": "Moogle Bard",
+              "effect_influence_offsets": [
+                {
+                  "row": 1.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 2.0,
+                  "column": 1.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 1.0,
+              "effect_influence": "FrontDown2",
+              "effect_text_parameters": []
+            }
+          ],
+          "playable": false,
+          "effect_heading_types": [],
+          "note_id": "$cardtext_card_id_118",
+          "effect_text_parameters": [
+            "card_id_Token_035",
+            "card_id_Token_036"
+          ]
+        }
+      ],
+      "active": true,
+      "match_screen": true,
+      "result": {
+        "observed": true,
+        "shown": false
+      },
+      "popups": {
+        "begin_confirm": false,
+        "mulligan_confirm": true
+      },
+      "schema_version": 1.0,
+      "cursor": {
+        "source": "CardFull_0N.direct_hover_state_unresolved",
+        "area": "unknown"
+      },
+      "turn": 0.0,
+      "mulligan_selection": {
+        "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "selected_indices": [
+          0.0
+        ],
+        "observed": true
+      },
+      "board": {
+        "columns": 5.0,
+        "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+        "placement": {
+          "frame_cursor_visibility": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "active": false
+        },
+        "lanes": [
+          {
+            "row": 0.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 1.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 2.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          }
+        ],
+        "rows": 3.0,
+        "cells": [
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 0.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 0.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 1.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 1.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 2.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 2.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          }
+        ]
+      },
+      "begin_match_available": false,
+      "legal_moves": [],
+      "phase": "dealing"
+    },
+    {
+      "hand": [
+        {
+          "cursor_visible": false,
+          "influence": "FrontUp1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 2.0,
+          "card_index": 1.0,
+          "hand_index": 0.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_007",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 8.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_GuardHound_KalmFangEnd2",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "Grasslands Wolf",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "Cross1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 2.0,
+          "hand_index": 1.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_000",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": 0.0,
+              "column": -1.0
+            },
+            {
+              "row": 0.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            }
+          ],
+          "card_unique_id": 1.0,
+          "cost": 1.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_SecuritySoldier_Standard",
+          "mulligan_selected": false,
+          "power": 1.0,
+          "name": "Security Officer",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "UpDownFront1",
+          "card_image_id": "U_Com_Billboard_CardGame_Card_004",
+          "effect_text": "No ability.",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "influence_square_count": 4.0,
+          "card_index": 3.0,
+          "hand_index": 2.0,
+          "effect_text_source": "Samurai Gamers ability list",
+          "card_id": "card_id_004",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 0.0
+            },
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 0.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 4.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$en_Sweeper_Standard",
+          "mulligan_selected": false,
+          "power": 2.0,
+          "name": "J-Unit Sweeper",
+          "playable": false,
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "note_id": "$cardtext_card_noAbility"
+        },
+        {
+          "cursor_visible": false,
+          "influence": "DiagonalFront1",
+          "effect_parameter_references": [],
+          "card_image_id": "U_Com_Billboard_CardGame_Card_118",
+          "effect_text": "When played, add Moogle Mage and Moogle Bard to your hand.",
+          "effect_constant": 0.0,
+          "influence_square_count": 2.0,
+          "effect_reference_count0": 0.0,
+          "effect_type_name": "add_card_to_hand",
+          "card_index": 4.0,
+          "hand_index": 3.0,
+          "effect_text_source": "CardGameSpecialParam semantic template",
+          "card_id": "card_id_118",
+          "effect_int_parameters": [
+            1.0,
+            1.0
+          ],
+          "influence_offsets": [
+            {
+              "row": -1.0,
+              "column": 1.0
+            },
+            {
+              "row": 1.0,
+              "column": 1.0
+            }
+          ],
+          "card_unique_id": 110.0,
+          "effect_type": 3.0,
+          "cost": 2.0,
+          "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+          "card_name_id": "$M_SMN_110_atk001",
+          "effect_text_label_references": [],
+          "mulligan_selected": false,
+          "power": 1.0,
+          "effect_filter_tags": [
+            2.0,
+            9.0,
+            9.0,
+            9.0
+          ],
+          "effect_target_name": "event_or_no_board_target",
+          "effect_reference_counts": [],
+          "effect_id": "addToken_MogRanger",
+          "effect_text_id": "$cardtext_card_Ability_GetCard_MogRanger",
+          "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+          "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+          "name": "Moogle Trio",
+          "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+          "effect_target": 0.0,
+          "effect_card_definitions": [
+            {
+              "influence": "UpRight2",
+              "unique_id": 235.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "When played, lower the power of enemy cards on affected tiles by 4.",
+              "effect_constant": 0.0,
+              "influence_square_count": 1.0,
+              "effect_influence_square_count": 1.0,
+              "effect_type_name": "immediate_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_035",
+              "effect_int_parameters": [
+                -4.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 0.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                1.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "enemy_cards",
+              "effect_reference_counts": [],
+              "effect_id": "debuff_MogRangerBlack",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_OneShot_Down",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_035",
+              "name": "Moogle Mage",
+              "effect_influence_offsets": [
+                {
+                  "row": -2.0,
+                  "column": 2.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 2.0,
+              "effect_influence": "UpRight2",
+              "effect_text_parameters": []
+            },
+            {
+              "influence": "FrontDown1",
+              "unique_id": 236.0,
+              "effect_parameter_references": [
+                0.0,
+                5.0
+              ],
+              "effect_text": "Raise the power of allied cards on affected tiles by 2 while this card is in play.",
+              "effect_constant": 0.0,
+              "influence_square_count": 2.0,
+              "effect_influence_square_count": 2.0,
+              "effect_type_name": "while_in_play_effect",
+              "effect_text_source": "CardGameSpecialParam semantic template",
+              "card_id": "card_id_Token_036",
+              "effect_int_parameters": [
+                2.0
+              ],
+              "influence_offsets": [
+                {
+                  "row": 0.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 1.0,
+                  "column": 0.0
+                }
+              ],
+              "catalogue_kind": "token",
+              "effect_type": 1.0,
+              "cost": 1.0,
+              "effect_text_label_references": [],
+              "power": 1.0,
+              "effect_filter_tags": [
+                0.0,
+                9.0,
+                9.0,
+                9.0
+              ],
+              "effect_target_name": "allied_cards",
+              "effect_reference_counts": [],
+              "effect_id": "buffLoop_MogRangerBard",
+              "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+              "effect_reference_count0": 0.0,
+              "name_id": "$cardtext_card_name_Token_036",
+              "name": "Moogle Bard",
+              "effect_influence_offsets": [
+                {
+                  "row": 1.0,
+                  "column": 1.0
+                },
+                {
+                  "row": 2.0,
+                  "column": 1.0
+                }
+              ],
+              "copies": 1.0,
+              "effect_heading_types": [
+                1.0,
+                2.0
+              ],
+              "note_id": "$cardtext_card_noAbility",
+              "effect_target": 1.0,
+              "effect_influence": "FrontDown2",
+              "effect_text_parameters": []
+            }
+          ],
+          "playable": false,
+          "effect_heading_types": [],
+          "note_id": "$cardtext_card_id_118",
+          "effect_text_parameters": [
+            "card_id_Token_035",
+            "card_id_Token_036"
+          ]
+        }
+      ],
+      "active": true,
+      "match_screen": true,
+      "result": {
+        "observed": true,
+        "shown": false
+      },
+      "popups": {
+        "begin_confirm": false,
+        "mulligan_confirm": true
+      },
+      "schema_version": 1.0,
+      "cursor": {
+        "source": "CardFull_0N.direct_hover_state_unresolved",
+        "area": "unknown"
+      },
+      "turn": 0.0,
+      "mulligan_selection": {
+        "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "selected_indices": [
+          0.0
+        ],
+        "observed": true
+      },
+      "board": {
+        "columns": 5.0,
+        "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+        "placement": {
+          "frame_cursor_visibility": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "active": false
+        },
+        "lanes": [
+          {
+            "row": 0.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 1.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          },
+          {
+            "row": 2.0,
+            "player_power": 0.0,
+            "opponent_power": 0.0
+          }
+        ],
+        "rows": 3.0,
+        "cells": [
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 0.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 0.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 0.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 1.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 1.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 1.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "player",
+            "row": 2.0,
+            "highlight": false,
+            "column": 0.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 1.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 2.0,
+            "card_present": false
+          },
+          {
+            "rank": 0.0,
+            "owner": "empty",
+            "row": 2.0,
+            "highlight": false,
+            "column": 3.0,
+            "card_present": false
+          },
+          {
+            "rank": 1.0,
+            "owner": "opponent",
+            "row": 2.0,
+            "highlight": false,
+            "column": 4.0,
+            "card_present": false
+          }
+        ]
+      },
+      "begin_match_available": false,
+      "legal_moves": [],
+      "phase": "dealing"
+    }
+  ],
+  "result": {
+    "schema_version": 1,
+    "match_screen": true,
+    "phase": "result",
+    "popups": {
+      "mulligan_confirm": true,
+      "begin_confirm": false
+    },
+    "turn": 0,
+    "result": {
+      "shown": true,
+      "observed": true
+    },
+    "cursor": {
+      "source": "CardFull_0N.direct_hover_state_unresolved",
+      "area": "unknown"
+    },
+    "board": {
+      "rows": 3,
+      "columns": 5,
+      "cells": [
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 0,
+          "base_power": 2,
+          "card_id": "card_id_116",
+          "name": "Posh Chocobo",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 2,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 5,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_112",
+          "name": "Chocobo & Moogle",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "location": {
+            "z": 50000,
+            "y": 20000,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 2,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        }
+      ],
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "active": false,
+        "frame_cursor_visibility": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "lanes": [
+        {
+          "player_power": 0,
+          "row": 0,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 1,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 2,
+          "opponent_power": 0
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "hand": [
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "mulligan_visuals": {
+          "visible": false,
+          "panel_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.CardGame_Test_C_2147475855.WidgetTree.CardFull_01.WidgetTree.Pnl_Mulligan",
+          "resolution": {
+            "Img_Mulligan_Icon": "ok",
+            "property": "invalid"
+          },
+          "visibility": "1",
+          "available": true,
+          "panel_source": "CardFull.Img_Mulligan_Icon.Slot.Parent"
+        },
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(slot_only)",
+        "hand_index": 0,
+        "influence": "DiagonalBack2",
+        "card_index": 1,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "mulligan_visuals": {
+          "visible": false,
+          "panel_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.CardGame_Test_C_2147475855.WidgetTree.CardFull_02.WidgetTree.Pnl_Mulligan",
+          "resolution": {
+            "Img_Mulligan_Icon": "ok",
+            "property": "invalid"
+          },
+          "visibility": "1",
+          "available": true,
+          "panel_source": "CardFull.Img_Mulligan_Icon.Slot.Parent"
+        },
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(slot_only)",
+        "hand_index": 1,
+        "influence": "DiagonalBack2",
+        "card_index": 2,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_010",
+        "card_unique_id": 11,
+        "mulligan_visuals": {
+          "visible": false,
+          "panel_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.CardGame_Test_C_2147475855.WidgetTree.CardFull_03.WidgetTree.Pnl_Mulligan",
+          "resolution": {
+            "Img_Mulligan_Icon": "ok",
+            "property": "invalid"
+          },
+          "visibility": "1",
+          "available": true,
+          "panel_source": "CardFull.Img_Mulligan_Icon.Slot.Parent"
+        },
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_Elfadunk_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 4,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_010",
+        "influence_square_count": 3,
+        "card_index_source": "hand_actor.CardIndex(slot_only)",
+        "hand_index": 2,
+        "influence": "TLetter4",
+        "card_index": 0,
+        "name": "Elphadunk",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_000",
+        "card_unique_id": 1,
+        "mulligan_visuals": {
+          "visible": false,
+          "panel_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.CardGame_Test_C_2147475855.WidgetTree.CardFull_04.WidgetTree.Pnl_Mulligan",
+          "resolution": {
+            "Img_Mulligan_Icon": "ok",
+            "property": "invalid"
+          },
+          "visibility": "1",
+          "available": true,
+          "panel_source": "CardFull.Img_Mulligan_Icon.Slot.Parent"
+        },
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_SecuritySoldier_Standard",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 1,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(slot_only)",
+        "hand_index": 3,
+        "influence": "Cross1",
+        "card_index": 3,
+        "name": "Security Officer",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_020",
+        "card_unique_id": 21,
+        "mulligan_visuals": {
+          "visible": false,
+          "panel_path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.CardGame_Test_C_2147475855.WidgetTree.CardFull_05.WidgetTree.Pnl_Mulligan",
+          "resolution": {
+            "Img_Mulligan_Icon": "ok",
+            "property": "invalid"
+          },
+          "visibility": "1",
+          "available": true,
+          "panel_source": "CardFull.Img_Mulligan_Icon.Slot.Parent"
+        },
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -2
+          },
+          {
+            "column": 1,
+            "row": -2
+          },
+          {
+            "column": 0,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Ogre_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 5,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_020",
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(slot_only)",
+        "hand_index": 4,
+        "influence": "UpDownFront3",
+        "card_index": 4,
+        "name": "Ogre",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      }
+    ],
+    "mulligan_selection": {
+      "selected_indices": [],
+      "observed": true,
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility"
+    },
+    "active": true,
+    "legal_moves": []
+  },
+  "turn_before": {
+    "schema_version": 1,
+    "match_screen": true,
+    "phase": "player_turn",
+    "popups": {
+      "mulligan_confirm": true,
+      "begin_confirm": false
+    },
+    "turn": 1,
+    "result": {
+      "shown": false,
+      "observed": true
+    },
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "area": "hand",
+      "hand_index": 0
+    },
+    "board": {
+      "rows": 3,
+      "columns": 5,
+      "cells": [
+        {
+          "column": 0,
+          "highlight": true,
+          "card_present": false,
+          "row": 0,
+          "rank": 1,
+          "owner": "player"
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 0,
+          "highlight": true,
+          "card_present": false,
+          "row": 1,
+          "rank": 1,
+          "owner": "player"
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 0,
+          "highlight": true,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "player"
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "opponent"
+        }
+      ],
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "active": false,
+        "frame_cursor_visibility": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "lanes": [
+        {
+          "player_power": 0,
+          "row": 0,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 1,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 2,
+          "opponent_power": 0
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "mulligan_selection": {
+      "selected_indices": [],
+      "observed": true,
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility"
+    },
+    "hand": [
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": true,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 0,
+        "cursor_visible": true,
+        "influence": "DiagonalBack2",
+        "card_index": 1,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_target_name": "event_or_no_board_target",
+        "effect_int_parameters": [
+          3
+        ],
+        "effect_target": 0,
+        "effect_parameter_references": [],
+        "effect_text": "When you win the lane, receive a score bonus of 3.",
+        "effect_id": "LaneWinDmg_MiniChocobo",
+        "card_id": "card_id_116",
+        "card_unique_id": 109,
+        "note_id": "$cardtext_card_id_116",
+        "effect_type_name": "lane_win_score_bonus",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "CardGameSpecialParam semantic template",
+        "influence_offsets": [
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "row": 0
+          }
+        ],
+        "effect_filter_tags": [
+          7,
+          9,
+          9,
+          9
+        ],
+        "card_name_id": "$M_SMN_108_atk001",
+        "effect_text_id": "$cardtext_card_Ability_BonusScore",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_116",
+        "effect_text_label_references": [],
+        "playable": true,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "effect_type": 2,
+        "effect_reference_count0": 0,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 1,
+        "cursor_visible": false,
+        "effect_reference_counts": [],
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "effect_text_parameters": [],
+        "influence": "FrontBack1",
+        "effect_heading_types": [
+          1
+        ],
+        "card_index": 2,
+        "name": "Posh Chocobo",
+        "effect_constant": 0
+      },
+      {
+        "effect_target_name": "allied_cards",
+        "effect_int_parameters": [
+          3
+        ],
+        "effect_target": 1,
+        "effect_parameter_references": [
+          0,
+          5
+        ],
+        "effect_influence_offsets": [
+          {
+            "column": 1,
+            "row": 2
+          }
+        ],
+        "effect_text": "Raise the power of allied cards on affected tiles by 3 while this card is in play.",
+        "effect_id": "buffLoop_sabotendar",
+        "card_id": "card_id_013",
+        "card_unique_id": 12,
+        "note_id": "$cardtext_card_id_013",
+        "effect_type_name": "while_in_play_effect",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "CardGameSpecialParam semantic template",
+        "influence_offsets": [
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "effect_filter_tags": [
+          0,
+          9,
+          9,
+          9
+        ],
+        "card_name_id": "$M_SMN_008_atk001",
+        "effect_text_id": "$cardtext_card_Ability_BuffDebuff_Loop_Up",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 1,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_013",
+        "effect_influence": "DownSkip2",
+        "effect_text_label_references": [],
+        "playable": true,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "effect_type": 1,
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "effect_reference_count0": 0,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 2,
+        "cursor_visible": false,
+        "effect_reference_counts": [],
+        "effect_text_parameters": [],
+        "effect_influence_square_count": 1,
+        "influence": "FrontDown1",
+        "effect_heading_types": [
+          1,
+          2
+        ],
+        "card_index": 3,
+        "name": "Cactuar",
+        "effect_constant": 0
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_006",
+        "card_unique_id": 7,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_Levrikon_Standard",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_006",
+        "playable": true,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 3,
+        "cursor_visible": false,
+        "influence": "FrontDown1",
+        "card_index": 0,
+        "name": "Levrikon",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_007",
+        "card_unique_id": 8,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": 1,
+            "row": 0
+          }
+        ],
+        "card_name_id": "$en_GuardHound_KalmFangEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+        "playable": true,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 4,
+        "cursor_visible": false,
+        "influence": "FrontUp1",
+        "card_index": 4,
+        "name": "Grasslands Wolf",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      }
+    ],
+    "screen": "match",
+    "active": true,
+    "legal_moves": []
+  },
+  "turn_after": {
+    "schema_version": 1,
+    "match_screen": true,
+    "phase": "player_turn",
+    "popups": {
+      "mulligan_confirm": true,
+      "begin_confirm": false
+    },
+    "turn": 1,
+    "result": {
+      "shown": false,
+      "observed": true
+    },
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "area": "hand",
+      "hand_index": 0
+    },
+    "board": {
+      "rows": 3,
+      "columns": 5,
+      "cells": [
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 0,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 1,
+          "owner": "player"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 0,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 2,
+          "owner": "player"
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 1,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 0,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "player"
+        },
+        {
+          "column": 1,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 3,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 0,
+          "owner": "empty"
+        },
+        {
+          "column": 4,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "opponent"
+        }
+      ],
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "active": false,
+        "frame_cursor_visibility": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "lanes": [
+        {
+          "player_power": 0,
+          "row": 0,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 1,
+          "opponent_power": 0
+        },
+        {
+          "player_power": 0,
+          "row": 2,
+          "opponent_power": 0
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "mulligan_selection": {
+      "selected_indices": [],
+      "observed": true,
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility"
+    },
+    "hand": [
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 0,
+        "cursor_visible": true,
+        "influence": "DiagonalBack2",
+        "card_index": 1,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_target_name": "event_or_no_board_target",
+        "effect_int_parameters": [
+          3
+        ],
+        "effect_target": 0,
+        "effect_parameter_references": [],
+        "effect_text": "When you win the lane, receive a score bonus of 3.",
+        "effect_id": "LaneWinDmg_MiniChocobo",
+        "card_id": "card_id_116",
+        "card_unique_id": 109,
+        "note_id": "$cardtext_card_id_116",
+        "effect_type_name": "lane_win_score_bonus",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "CardGameSpecialParam semantic template",
+        "influence_offsets": [
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "row": 0
+          }
+        ],
+        "effect_filter_tags": [
+          7,
+          9,
+          9,
+          9
+        ],
+        "card_name_id": "$M_SMN_108_atk001",
+        "effect_text_id": "$cardtext_card_Ability_BonusScore",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_116",
+        "effect_text_label_references": [],
+        "playable": false,
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "effect_type": 2,
+        "effect_reference_count0": 0,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 1,
+        "cursor_visible": false,
+        "effect_reference_counts": [],
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName",
+        "effect_text_parameters": [],
+        "influence": "FrontBack1",
+        "effect_heading_types": [
+          1
+        ],
+        "card_index": 2,
+        "name": "Posh Chocobo",
+        "effect_constant": 0
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_006",
+        "card_unique_id": 7,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_Levrikon_Standard",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_006",
+        "playable": false,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 2,
+        "cursor_visible": false,
+        "influence": "FrontDown1",
+        "card_index": 0,
+        "name": "Levrikon",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_007",
+        "card_unique_id": 8,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": 1,
+            "row": 0
+          }
+        ],
+        "card_name_id": "$en_GuardHound_KalmFangEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 2,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_007",
+        "playable": false,
+        "influence_square_count": 2,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 3,
+        "cursor_visible": false,
+        "influence": "FrontUp1",
+        "card_index": 4,
+        "name": "Grasslands Wolf",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      }
+    ],
+    "screen": "match",
+    "active": true,
+    "legal_moves": []
+  },
+  "end_before": {
+    "schema_version": 1,
+    "match_screen": true,
+    "phase": "player_turn",
+    "popups": {
+      "mulligan_confirm": true,
+      "begin_confirm": false
+    },
+    "turn": 1,
+    "result": {
+      "shown": false,
+      "observed": true
+    },
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "area": "hand",
+      "hand_index": 0
+    },
+    "board": {
+      "rows": 3,
+      "columns": 5,
+      "cells": [
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 0,
+          "base_power": 2,
+          "card_id": "card_id_116",
+          "name": "Posh Chocobo",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 2,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 5,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_112",
+          "name": "Chocobo & Moogle",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "location": {
+            "z": 50000,
+            "y": 20000,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 2,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        }
+      ],
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "active": false,
+        "frame_cursor_visibility": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "lanes": [
+        {
+          "player_power": 5,
+          "row": 0,
+          "opponent_power": 6
+        },
+        {
+          "player_power": 6,
+          "row": 1,
+          "opponent_power": 7
+        },
+        {
+          "player_power": 6,
+          "row": 2,
+          "opponent_power": 2
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "mulligan_selection": {
+      "selected_indices": [],
+      "observed": true,
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility"
+    },
+    "hand": [
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 0,
+        "cursor_visible": true,
+        "influence": "DiagonalBack2",
+        "card_index": 1,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_010",
+        "card_unique_id": 11,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_Elfadunk_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 4,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_010",
+        "playable": false,
+        "influence_square_count": 3,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 1,
+        "cursor_visible": false,
+        "influence": "TLetter4",
+        "card_index": 2,
+        "name": "Elphadunk",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 2,
+        "cursor_visible": false,
+        "influence": "DiagonalBack2",
+        "card_index": 0,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_000",
+        "card_unique_id": 1,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_SecuritySoldier_Standard",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 1,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 3,
+        "cursor_visible": false,
+        "influence": "Cross1",
+        "card_index": 3,
+        "name": "Security Officer",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_020",
+        "card_unique_id": 21,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -2
+          },
+          {
+            "column": 1,
+            "row": -2
+          },
+          {
+            "column": 0,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Ogre_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 5,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_020",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 4,
+        "cursor_visible": false,
+        "influence": "UpDownFront3",
+        "card_index": 4,
+        "name": "Ogre",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      }
+    ],
+    "screen": "match",
+    "active": true,
+    "legal_moves": []
+  },
+  "end_after": {
+    "schema_version": 1,
+    "match_screen": true,
+    "phase": "opponent_turn",
+    "popups": {
+      "mulligan_confirm": true,
+      "begin_confirm": false
+    },
+    "turn": 1,
+    "result": {
+      "shown": false,
+      "observed": true
+    },
+    "cursor": {
+      "source": "manager.CardHandActors[].bCursorVisible",
+      "area": "hand",
+      "hand_index": 0
+    },
+    "board": {
+      "rows": 3,
+      "columns": 5,
+      "cells": [
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20192
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 0,
+          "base_power": 2,
+          "card_id": "card_id_116",
+          "name": "Posh Chocobo",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 0,
+          "rank": 2,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20192
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 3,
+          "highlight": false,
+          "row": 0,
+          "base_power": 3,
+          "card_id": "card_id_040",
+          "name": "Cockatrice",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 20000
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 5,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_112",
+          "name": "Chocobo & Moogle",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "location": {
+            "z": 50000,
+            "y": 20000,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 1,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 20000
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 1,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 0,
+          "location": {
+            "z": 50000,
+            "y": 19712,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 2,
+          "highlight": false,
+          "row": 2,
+          "base_power": 2,
+          "card_id": "card_id_007",
+          "name": "Grasslands Wolf",
+          "rank": 0
+        },
+        {
+          "column": 1,
+          "location": {
+            "z": 50000,
+            "y": 19856,
+            "x": 19808
+          },
+          "owner": "player",
+          "card_present": true,
+          "power": 4,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        },
+        {
+          "column": 2,
+          "highlight": false,
+          "card_present": false,
+          "row": 2,
+          "rank": 1,
+          "owner": "opponent"
+        },
+        {
+          "column": 3,
+          "location": {
+            "z": 50000,
+            "y": 20144,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_013",
+          "name": "Cactuar",
+          "rank": 0
+        },
+        {
+          "column": 4,
+          "location": {
+            "z": 50000,
+            "y": 20288,
+            "x": 19808
+          },
+          "owner": "opponent",
+          "card_present": true,
+          "power": 1,
+          "highlight": false,
+          "row": 2,
+          "base_power": 1,
+          "card_id": "card_id_014",
+          "name": "Crystalline Crab",
+          "rank": 0
+        }
+      ],
+      "source": "EndCardGame3DManager.FieldInfos+CardBoardActors",
+      "placement": {
+        "active": false,
+        "frame_cursor_visibility": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "lanes": [
+        {
+          "player_power": 5,
+          "row": 0,
+          "opponent_power": 6
+        },
+        {
+          "player_power": 6,
+          "row": 1,
+          "opponent_power": 7
+        },
+        {
+          "player_power": 6,
+          "row": 2,
+          "opponent_power": 2
+        }
+      ]
+    },
+    "begin_match_available": false,
+    "mulligan_selection": {
+      "selected_indices": [],
+      "observed": true,
+      "source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility"
+    },
+    "hand": [
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 0,
+        "cursor_visible": true,
+        "influence": "DiagonalBack2",
+        "card_index": 1,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_010",
+        "card_unique_id": 11,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_Elfadunk_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 4,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_010",
+        "playable": false,
+        "influence_square_count": 3,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 1,
+        "cursor_visible": false,
+        "influence": "TLetter4",
+        "card_index": 2,
+        "name": "Elphadunk",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_024",
+        "card_unique_id": 23,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": -2,
+            "row": -2
+          },
+          {
+            "column": -1,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 1
+          },
+          {
+            "column": -2,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Formula_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 3,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_024",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 2,
+        "cursor_visible": false,
+        "influence": "DiagonalBack2",
+        "card_index": 0,
+        "name": "Fleetwing",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_000",
+        "card_unique_id": 1,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 1,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -1
+          },
+          {
+            "column": -1,
+            "row": 0
+          },
+          {
+            "column": 1,
+            "row": 0
+          },
+          {
+            "column": 0,
+            "row": 1
+          }
+        ],
+        "card_name_id": "$en_SecuritySoldier_Standard",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 1,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_000",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 3,
+        "cursor_visible": false,
+        "influence": "Cross1",
+        "card_index": 3,
+        "name": "Security Officer",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      },
+      {
+        "effect_text": "No ability.",
+        "name_source": "CardGameCardInfo.NameID->Text/US/Resident_TxtRes",
+        "card_id": "card_id_020",
+        "card_unique_id": 21,
+        "note_id": "$cardtext_card_noAbility",
+        "cost": 2,
+        "mulligan_selected": false,
+        "effect_text_source": "Samurai Gamers ability list",
+        "influence_offsets": [
+          {
+            "column": 0,
+            "row": -2
+          },
+          {
+            "column": 1,
+            "row": -2
+          },
+          {
+            "column": 0,
+            "row": 2
+          },
+          {
+            "column": 1,
+            "row": 2
+          }
+        ],
+        "card_name_id": "$en_Ogre_StandardEnd2",
+        "mulligan_selection_source": "CardFull.Img_Mulligan_Icon.Slot.Parent.Visibility",
+        "power": 5,
+        "card_image_id": "U_Com_Billboard_CardGame_Card_020",
+        "playable": false,
+        "influence_square_count": 4,
+        "card_index_source": "hand_actor.CardIndex(CardFull_pool_index)",
+        "hand_index": 4,
+        "cursor_visible": false,
+        "influence": "UpDownFront3",
+        "card_index": 4,
+        "name": "Ogre",
+        "card_identity_source": "CardFull_0N.Billboard_Thumbnail.ImagePath.AssetPathName"
+      }
+    ],
+    "screen": "match",
+    "active": true,
+    "legal_moves": []
+  },
+  "distribution_note": "Sanitized regression projection; local paths removed. Original evidence is not distributed."
+}

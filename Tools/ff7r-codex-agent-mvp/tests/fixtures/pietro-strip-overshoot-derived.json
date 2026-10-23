@@ -1,0 +1,310 @@
+{
+  "provenance": "Derived preserved recorder consumer frames56885/56887, 2026-10-08 Pietro; extraneous fields omitted. Diagnostic test evidence, not runtime authority.",
+  "frames": [
+    {
+      "timestamp_utc": "2026-10-08T07:05:58.871046Z",
+      "sequence": 56885,
+      "queen_blood": {
+        "deck_screen": {
+          "windows": {
+            "Card_ListAll": false,
+            "PresetTop": false,
+            "EnemyInformation": true,
+            "DeckCopy": true,
+            "SortWindow": false,
+            "CardList_Player": true,
+            "DeckList": true,
+            "Card_EditListNew": true,
+            "CardDeckList": true
+          },
+          "editor": {
+            "unit_lists": 0.0,
+            "cursors": {
+              "Strip": {
+                "index": 9.0,
+                "sequence": 19.0
+              },
+              "Player": {
+                "row": 0.0,
+                "index": 0.0,
+                "sequence": 1.0
+              },
+              "Edit": {
+                "row": 0.0,
+                "index": 0.0,
+                "sequence": 8.0
+              }
+            },
+            "grids": {
+              "Player": [],
+              "Edit": []
+            },
+            "hooks": {
+              "OnCardListAllCellSetupItem": true,
+              "OnCardListEditRowSelectedIndexChanged": true,
+              "OnListBoxFilter03PressedItem": true,
+              "OnCardListEditCellSelectedIndexChanged": true,
+              "OnListBoxFilter07PressedItem": true,
+              "OnListBoxFilter01PressedItem": true,
+              "OnEditingDeckSelectedIndexChanged": true,
+              "OnCardDeckListSelectedIndexChanged": true,
+              "OnListBoxFilter06PressedItem": true,
+              "OnCardDeckListPressedItem": true,
+              "OnCardListAllRowSelectedIndexChanged": true,
+              "OnCardListPlayerCellSelectedIndexChanged": true,
+              "OnCardListPlayerCellSetupItem": true,
+              "EndCardUnitList:OnSetupItem": true,
+              "OnListBoxFilter04PressedItem": true,
+              "OnCardListEditCellSetupItem": true,
+              "OnListBoxFilter02PressedItem": true,
+              "OnListBoxFilter05PressedItem": true,
+              "OnCardListPlayerRowSelectedIndexChanged": true,
+              "OnCardListAllRowSetupItem": true,
+              "OnCardListAllCellSelectedIndexChanged": true,
+              "OnCardListPlayerRowSetupItem": true,
+              "OnCardListEditRowSetupItem": true
+            },
+            "filters": []
+          },
+          "detail": {
+            "totals": [
+              {
+                "text": "0/3",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.BouterRank.WidgetTree.Txt_EnemyNum",
+                "shown": true
+              },
+              {
+                "text": "15/15",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardDeckList.WidgetTree.Txt_TotalNumber",
+                "shown": true
+              },
+              {
+                "text": "15/15",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Txt_TotalNumber",
+                "shown": true
+              }
+            ],
+            "resolved": [
+              {
+                "unique_id": 47.0,
+                "popup_shown": true,
+                "name": "Joker",
+                "card_id": "card_id_050",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.CardInfo.WidgetTree",
+                "popup": "CardInfo",
+                "name_id": "$en_Joker_StandardEnd2"
+              },
+              {
+                "unique_id": 1.0,
+                "name": "Security Officer",
+                "card_id": "card_id_000",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_CardInformation_C_2147456739.WidgetTree",
+                "popup": "MainMenu_Card_CardInformation_C_2147456739",
+                "name_id": "$en_SecuritySoldier_Standard"
+              },
+              {
+                "unique_id": 111.0,
+                "popup_shown": true,
+                "name": "Magic Pot",
+                "card_id": "card_id_117",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_CardInformation_C_2147456737.WidgetTree",
+                "popup": "MainMenu_Card_CardInformation_C_2147456737",
+                "name_id": "$M_SMN_109_atk001"
+              },
+              {
+                "unique_id": 1.0,
+                "popup_shown": true,
+                "name": "Security Officer",
+                "card_id": "card_id_000",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Information.WidgetTree",
+                "popup": "Information",
+                "name_id": "$en_SecuritySoldier_Standard"
+              }
+            ]
+          },
+          "deck": {
+            "list": {
+              "item_count": 3.0,
+              "rows": [
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 0.0
+                },
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 1.0
+                },
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 2.0
+                }
+              ],
+              "selected": -1.0
+            },
+            "shown": true,
+            "total": "15/15"
+          }
+        }
+      }
+    },
+    {
+      "timestamp_utc": "2026-10-08T07:05:59.305019Z",
+      "sequence": 56887,
+      "queen_blood": {
+        "deck_screen": {
+          "windows": {
+            "Card_ListAll": false,
+            "PresetTop": false,
+            "EnemyInformation": true,
+            "DeckCopy": true,
+            "SortWindow": false,
+            "CardList_Player": true,
+            "DeckList": true,
+            "Card_EditListNew": true,
+            "CardDeckList": true
+          },
+          "editor": {
+            "unit_lists": 0.0,
+            "cursors": {
+              "Strip": {
+                "index": 0.0,
+                "sequence": 20.0
+              },
+              "Player": {
+                "row": 0.0,
+                "index": 0.0,
+                "sequence": 1.0
+              },
+              "Edit": {
+                "row": 0.0,
+                "index": 0.0,
+                "sequence": 8.0
+              }
+            },
+            "grids": {
+              "Player": [],
+              "Edit": []
+            },
+            "hooks": {
+              "OnCardListAllCellSetupItem": true,
+              "OnCardListEditRowSelectedIndexChanged": true,
+              "OnListBoxFilter03PressedItem": true,
+              "OnCardListEditCellSelectedIndexChanged": true,
+              "OnListBoxFilter07PressedItem": true,
+              "OnListBoxFilter01PressedItem": true,
+              "OnEditingDeckSelectedIndexChanged": true,
+              "OnCardDeckListSelectedIndexChanged": true,
+              "OnListBoxFilter06PressedItem": true,
+              "OnCardDeckListPressedItem": true,
+              "OnCardListAllRowSelectedIndexChanged": true,
+              "OnCardListPlayerCellSelectedIndexChanged": true,
+              "OnCardListPlayerCellSetupItem": true,
+              "EndCardUnitList:OnSetupItem": true,
+              "OnListBoxFilter04PressedItem": true,
+              "OnCardListEditCellSetupItem": true,
+              "OnListBoxFilter02PressedItem": true,
+              "OnListBoxFilter05PressedItem": true,
+              "OnCardListPlayerRowSelectedIndexChanged": true,
+              "OnCardListAllRowSetupItem": true,
+              "OnCardListAllCellSelectedIndexChanged": true,
+              "OnCardListPlayerRowSetupItem": true,
+              "OnCardListEditRowSetupItem": true
+            },
+            "filters": []
+          },
+          "detail": {
+            "totals": [
+              {
+                "text": "0/3",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.BouterRank.WidgetTree.Txt_EnemyNum",
+                "shown": true
+              },
+              {
+                "text": "15/15",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardDeckList.WidgetTree.Txt_TotalNumber",
+                "shown": true
+              },
+              {
+                "text": "15/15",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Txt_TotalNumber",
+                "shown": true
+              }
+            ],
+            "resolved": [
+              {
+                "unique_id": 47.0,
+                "popup_shown": true,
+                "name": "Joker",
+                "card_id": "card_id_050",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.EnemyInformation.WidgetTree.CardInfo.WidgetTree",
+                "popup": "CardInfo",
+                "name_id": "$en_Joker_StandardEnd2"
+              },
+              {
+                "unique_id": 1.0,
+                "name": "Security Officer",
+                "card_id": "card_id_000",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_CardInformation_C_2147456739.WidgetTree",
+                "popup": "MainMenu_Card_CardInformation_C_2147456739",
+                "name_id": "$en_SecuritySoldier_Standard"
+              },
+              {
+                "unique_id": 1.0,
+                "popup_shown": true,
+                "name": "Security Officer",
+                "card_id": "card_id_000",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_CardInformation_C_2147456737.WidgetTree",
+                "popup": "MainMenu_Card_CardInformation_C_2147456737",
+                "name_id": "$en_SecuritySoldier_Standard"
+              },
+              {
+                "unique_id": 1.0,
+                "popup_shown": true,
+                "name": "Security Officer",
+                "card_id": "card_id_000",
+                "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Card_TopNPC_C_2147456858.WidgetTree.MainMenu_Card_Top.WidgetTree.CardList_Player.WidgetTree.Information.WidgetTree",
+                "popup": "Information",
+                "name_id": "$en_SecuritySoldier_Standard"
+              }
+            ]
+          },
+          "deck": {
+            "list": {
+              "item_count": 3.0,
+              "rows": [
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 0.0
+                },
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 1.0
+                },
+                {
+                  "item_count": 5.0,
+                  "selected": -1.0,
+                  "rows": [],
+                  "position": 2.0
+                }
+              ],
+              "selected": -1.0
+            },
+            "shown": true,
+            "total": "15/15"
+          }
+        }
+      }
+    }
+  ],
+  "distribution_note": "Sanitized regression projection; local paths removed. Original evidence is not distributed."
+}
