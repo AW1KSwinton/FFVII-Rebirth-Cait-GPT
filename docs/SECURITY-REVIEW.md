@@ -1,8 +1,9 @@
 # Source security review — 23 October 2026
 
 The review began from a fresh clone of the actual uploaded repository, not an
-untracked staging folder. The repository remains private. This report contains
-no user paths, account identifiers, credentials or private audit logs.
+untracked staging folder. Source, history and dependencies were checked again
+after publication. This report contains no user paths, private account
+identifiers, credentials or private audit logs.
 
 ## Changes made
 
