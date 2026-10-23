@@ -91,6 +91,8 @@ def test_distribution_can_check_commit_instead_of_clean_index(distribution):
 
 @pytest.mark.parametrize('name,data,reason', [
     ('.env.production', b'SAMPLE=example', 'forbidden'),
+    ('server.token', b'synthetic-fixture-only', 'forbidden'),
+    ('model-runs.json', b'{}', 'forbidden'),
     ('sample.txt', b'\x00binary', 'binary'),
     ('contact.txt', ('fixture' + '@private-mail' + '.invalid').encode(), 'email'),
 ])

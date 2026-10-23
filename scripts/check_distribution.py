@@ -25,6 +25,8 @@ EXAMPLE_EMAILS = {"cait-gpt@users.noreply.github.com"}
 FORBIDDEN_SUFFIXES = {'.exe', '.dll', '.lib', '.sav', '.dmp', '.mdmp', '.mp4', '.mkv',
                       '.mp3', '.wav', '.onnx', '.zip', '.7z', '.pem', '.key', '.jsonl',
                       '.pak', '.ucas', '.utoc', '.uasset', '.umap'}
+FORBIDDEN_SUFFIXES.update({'.token', '.pfx', '.p12', '.db', '.sqlite', '.sqlite3'})
+FORBIDDEN_NAMES = {'model-runs.json', 'campaigns.json', 'server.identity.json'}
 FORBIDDEN_DIRS = {'.git', '.venv', '.codex', '.claude', '.gemini', 'node_modules',
                   'state', 'logs', 'telemetry', 'recordings', 'screenshots', 'saves'}
 MAX_BLOB_BYTES = 8 * 1024 * 1024
@@ -77,6 +79,7 @@ def scan(root, ref=None):
                 or filename == '.env' or filename.endswith('.env')
                 or (filename.startswith('.env.') and filename != '.env.example')
                 or filename == '.mcp.json'
+                or filename in FORBIDDEN_NAMES
                 or filename.startswith(('client_secret', 'credentials'))):
             failures.append(f'{display}: forbidden runtime/configuration artifact')
             continue

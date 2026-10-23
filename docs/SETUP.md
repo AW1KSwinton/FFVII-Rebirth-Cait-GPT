@@ -8,6 +8,10 @@ the caller explicitly chooses a real backend. Local state defaults to
 `%LOCALAPPDATA%\ff7r-cait-gpt`; it is never committed. The MCP server listens
 only on loopback and uses port 8766, configurable with `-Port`.
 
+Keep the source checkout and use the documented editable install. A standalone
+Python wheel does not bundle the sibling gameplay catalogues, native adapter
+sources or validation tools and is not the complete supported distribution.
+
 ## Real input
 
 Install Windows input support with

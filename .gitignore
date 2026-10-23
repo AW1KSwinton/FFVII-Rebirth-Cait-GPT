@@ -54,6 +54,14 @@ saves/
 *.log
 *.pem
 *.key
+*.token
+*.pfx
+*.p12
+*.db
+*.sqlite*
+model-runs.json
+campaigns.json
+server.identity.json
 credentials*.json
 client_secret*.json
 token*.json
