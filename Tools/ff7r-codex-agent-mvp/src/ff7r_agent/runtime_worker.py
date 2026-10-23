@@ -61,7 +61,7 @@ def _result_artifact_root() -> Path:
         return Path(configured)
     local_app_data = os.getenv("LOCALAPPDATA")
     if local_app_data:
-        return Path(local_app_data) / "ff7r-agent" / "runtime-results"
+        return Path(local_app_data) / "ff7r-cait-gpt" / "runtime-results"
     return Path(tempfile.gettempdir()) / "ff7r-runtime-results"
 
 

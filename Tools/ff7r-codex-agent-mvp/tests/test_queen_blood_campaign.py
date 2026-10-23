@@ -17,8 +17,8 @@ ASSIGNMENT = {
     "driver": "ChatGPT",
     "model_id": "gpt-6.1-sol",
     "slot": 15,
-    "steam_id": "76561198000000000",
-    "profile_id": "ChatGPT-gpt-6.1-sol-76561198000000000-slot015",
+    "steam_id": "00000000000000000",
+    "profile_id": "ChatGPT-gpt-6.1-sol-00000000000000000-slot015",
 }
 
 
@@ -182,7 +182,7 @@ def test_campaigns_are_isolated_by_model_run_profile(tmp_path: Path) -> None:
         **ASSIGNMENT,
         "model_id": "gpt-6.2-sol",
         "slot": 16,
-        "profile_id": "ChatGPT-gpt-6.2-sol-76561198000000000-slot016",
+        "profile_id": "ChatGPT-gpt-6.2-sol-00000000000000000-slot016",
     }
     assert director.record_locked(ASSIGNMENT, "Ned", {"error": "npc target is unavailable"})
 

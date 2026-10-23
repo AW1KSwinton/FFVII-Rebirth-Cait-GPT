@@ -209,7 +209,7 @@ class SaveMenuLayout:
 
 
 def default_layout_path() -> Path:
-    return Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "save-menu-layout.json"
+    return Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "save-menu-layout.json"
 
 
 def load_layout(path: str | os.PathLike[str] | None = None) -> SaveMenuLayout:
@@ -1176,7 +1176,7 @@ def load_title_save_slot(service: Any, slot: Any, execute: bool = False, steam_i
 def aliases_path_for(service: Any) -> Path:
     root = getattr(service, "_queen_blood_profile_root", None)
     if root is None:
-        root = Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "queen-blood"
+        root = Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "queen-blood"
     return Path(root) / "slot-aliases.json"
 
 

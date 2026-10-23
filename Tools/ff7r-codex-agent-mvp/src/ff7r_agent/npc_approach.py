@@ -807,7 +807,7 @@ class TalkSpots:
 
 
 def default_talk_spots() -> TalkSpots:
-    return TalkSpots(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "talk-spots.json")
+    return TalkSpots(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "talk-spots.json")
 
 
 # Back presses and the wait after each: the menu has ignored quick presses
@@ -1109,7 +1109,7 @@ CAPTURE_RETRY_AFTER_SECONDS = 24 * 3600
 
 
 def _capture_memory_path() -> Path:
-    return Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "approach-captures.json"
+    return Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "approach-captures.json"
 
 
 def _capture_key(target: dict[str, float]) -> str:
@@ -2369,7 +2369,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--gold-saucer-zone moves Cloud and requires --execute")
     check = (feature_identity_check(args.repository_root, args.feature_ref, args.expected_commit)
              if args.feature_ref else canonical_identity_check(args.manifest))
-    output = args.output or Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "npc-approach" / datetime.now(timezone.utc).strftime("approach-%Y%m%dT%H%M%S.%fZ")
+    output = args.output or Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "npc-approach" / datetime.now(timezone.utc).strftime("approach-%Y%m%dT%H%M%S.%fZ")
     result = asyncio.run(run_http(args.name, output, check, execute=args.execute,
                                   model_id=args.model_id, reasoning_effort=args.reasoning_effort, client_id=args.client_id,
                                   stop_distance_m=args.stop_distance, camera_follow=not args.no_camera_follow,

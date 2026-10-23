@@ -33,10 +33,13 @@ class ArmError(RuntimeError):
 
 
 def default_runtime_dir() -> Path:
+    configured = os.getenv("FF7R_AUTONOMY_RUNTIME_DIR")
+    if configured:
+        return Path(configured)
     base = os.getenv("LOCALAPPDATA")
     if not base:
         raise ArmError("LOCALAPPDATA is unavailable")
-    return Path(base) / "ff7r-agent"
+    return Path(base) / "ff7r-cait-gpt"
 
 
 def _atomic_json(path: Path, value: dict[str, object]) -> None:

@@ -3,6 +3,27 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+export function obsConfiguration(env = process.env) {
+  const obsUrl = env.FF7R_OBS_URL || 'ws://127.0.0.1:4455';
+  const url = new URL(obsUrl);
+  if (url.protocol !== 'ws:' || !['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname)
+      || url.username || url.password || url.search || url.hash || url.pathname !== '/') {
+    throw new Error('OBS must use a loopback WebSocket URL without credentials, query or fragment');
+  }
+  return { obsUrl, obsPassword: env.FF7R_OBS_PASSWORD || '' };
+}
+
+export function safeCaptureError(error, env = process.env) {
+  let message = String(error?.message || 'OBS game-source capture failed');
+  const secret = env.FF7R_OBS_PASSWORD;
+  if (secret) {
+    for (const value of new Set([secret, encodeURIComponent(secret)])) {
+      message = message.replaceAll(value, '[redacted]');
+    }
+  }
+  return message.replace(/(password|token)\s*[=:]\s*\S+/gi, '$1=[redacted]');
+}
+
 export function verifiedGameSource(input, settings, gameProcess) {
   const kind = input.inputKind;
   if (!['game_capture', 'window_capture'].includes(kind)) return null;
@@ -40,9 +61,7 @@ export async function readGameFrame(obs, gameProcess, describeOnly = false) {
 async function main() {
   // Optional OBS capture uses explicit environment configuration only.
   const { default: OBSWebSocket } = await import('obs-websocket-js');
-  const config = { obsUrl: process.env.FF7R_OBS_URL || 'ws://127.0.0.1:4455', obsPassword: process.env.FF7R_OBS_PASSWORD || '' };
-  const obsUrl = new URL(config.obsUrl);
-  if (obsUrl.protocol !== 'ws:' || !['127.0.0.1', 'localhost', '[::1]'].includes(obsUrl.hostname)) throw new Error('OBS must be a loopback websocket');
+  const config = obsConfiguration();
   const obs = new OBSWebSocket();
   try {
     await obs.connect(config.obsUrl, config.obsPassword);
@@ -59,5 +78,5 @@ async function main() {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  main().catch(error => { process.stderr.write(String(error.message).replace(/(password|token)\s*[=:]\s*\S+/gi, '$1=[redacted]') + '\n'); process.exitCode = 1; });
+  main().catch(error => { process.stderr.write(safeCaptureError(error) + '\n'); process.exitCode = 1; });
 }

@@ -18,6 +18,12 @@ and controller mapping before using it. No installer here silently deploys a
 driver. The harness rejects missing process, wrong focus, stale telemetry,
 closed control, pause/menu conflicts and latched stops as appropriate.
 
+Before installing the optional gamepad provider, set
+`$env:VGAMEPAD_SKIP_VIGEMBUS_INSTALL = 'true'`. Its upstream installer can
+otherwise offer a device-driver install. Choose and verify a compatible driver
+separately; do not grant an automatic installer administrator privileges merely
+to run simulation or install the Python package.
+
 Provide `-GameExecutable` and `-TelemetryFile` to `Start-CaitGPT.ps1` when
 selecting a real backend. The launcher starts MCP only; it does not choose or
 load a save. Open control through MCP with your actual model/effort, inspect

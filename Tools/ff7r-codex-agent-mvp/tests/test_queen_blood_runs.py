@@ -14,7 +14,7 @@ PROCESS = {"pid": "42", "token": "creation-1"}
 
 
 def save(tmp_path, slot=13):
-    path = tmp_path / "76561198000000000" / f"ff7rebirth{slot:03}.sav"
+    path = tmp_path / "00000000000000000" / f"ff7rebirth{slot:03}.sav"
     path.parent.mkdir(exist_ok=True)
     path.write_bytes(b"saved world")
     return {"slot": slot, "steam_id": path.parent.name, "path": str(path)}

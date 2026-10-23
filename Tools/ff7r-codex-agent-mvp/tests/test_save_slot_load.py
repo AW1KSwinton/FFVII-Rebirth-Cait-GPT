@@ -18,7 +18,7 @@ from ff7r_agent.save_slot_load import (
     resolve_save_slot,
 )
 
-STEAM = "76561198000000000"
+STEAM = "00000000000000000"
 # Slot -> save time; the list shows them newest first (live 2026-09-28:
 # 11, autosave, 08, 07, 04, 10, ...).
 SAVE_TIMES = {

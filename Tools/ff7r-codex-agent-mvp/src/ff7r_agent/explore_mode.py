@@ -157,7 +157,7 @@ def _view_directory(override: str | os.PathLike[str] | None = None) -> Path:
     if configured:
         return Path(configured)
     local = os.environ.get("LOCALAPPDATA")
-    return (Path(local) / "ff7r-agent" / "explore-views") if local else Path(tempfile.gettempdir()) / "ff7r-explore-views"
+    return (Path(local) / "ff7r-cait-gpt" / "explore-views") if local else Path(tempfile.gettempdir()) / "ff7r-explore-views"
 
 
 # ------------------------------------------------------------ graph loading

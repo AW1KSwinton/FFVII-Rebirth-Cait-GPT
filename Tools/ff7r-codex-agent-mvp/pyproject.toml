@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=78.1.1", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,12 +8,12 @@ version = "0.1.0"
 description = "Safe local MCP bridge MVP for controlling FFVII Rebirth"
 requires-python = ">=3.11"
 dependencies = [
-  "mcp>=1.2,<2",
+  "mcp>=1.30.0,<2",
 ]
 
 [project.optional-dependencies]
 windows = ["pydirectinput>=1.0.4"]
-gamepad = ["vgamepad"]
+gamepad = ["vgamepad>=0.1.0"]
 dev = ["pytest>=8", "lupa>=2.8"]
 
 [project.scripts]

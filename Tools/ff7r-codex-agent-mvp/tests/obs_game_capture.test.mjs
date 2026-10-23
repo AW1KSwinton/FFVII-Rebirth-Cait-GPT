@@ -1,6 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readGameFrame } from '../src/ff7r_agent/obs_game_capture.mjs';
+import { readGameFrame, obsConfiguration, safeCaptureError } from '../src/ff7r_agent/obs_game_capture.mjs';
+
+test('OBS configuration rejects remote endpoints and URL-carried credentials', () => {
+  for (const url of ['ws://remote.invalid:4455', 'ws://fixture:example@127.0.0.1:4455',
+      'ws://127.0.0.1:4455/?credential=example', 'ws://localhost:4455/#example',
+      'ws://localhost:4455/private']) {
+    assert.throws(() => obsConfiguration({FF7R_OBS_URL: url}));
+  }
+  assert.equal(obsConfiguration({}).obsUrl, 'ws://127.0.0.1:4455');
+  assert.equal(obsConfiguration({FF7R_OBS_URL: 'ws://[::1]:4455'}).obsUrl, 'ws://[::1]:4455');
+});
+
+test('OBS failures redact the configured secret even without a password label', () => {
+  const secret = 'synthetic fixture/value';
+  const result = safeCaptureError(new Error(`Rejected ${secret} / ${encodeURIComponent(secret)} token=example`),
+    {FF7R_OBS_PASSWORD: secret});
+  assert.ok(!result.includes(secret));
+  assert.ok(!result.includes(encodeURIComponent(secret)));
+  assert.ok(result.includes('token=[redacted]'));
+});
 
 const window = 'FINAL FANTASY VII REBIRTH:UnrealWindow:ff7rebirth_.exe';
 function fixture({mode = 'window', target = window, ambiguous = false, changed = false, active = true} = {}) {

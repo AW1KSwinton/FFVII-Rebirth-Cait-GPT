@@ -11,6 +11,7 @@ Requires Python 3.11 or newer and Git. Run from this repository:
 
 ```powershell
 python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -e "Tools/ff7r-codex-agent-mvp[dev]"
 .\.venv\Scripts\ff7r-agent.exe observe
 .\.venv\Scripts\ff7r-agent.exe demo
@@ -86,3 +87,6 @@ Original harness code is available under the [MIT license](LICENSE).
 Game-derived identifiers and catalogue/fixture data retain their respective
 owners' rights; see [third-party notices](THIRD_PARTY_NOTICES.md).
 This project is unofficial and is not affiliated with Square Enix or OpenAI.
+
+Read the [security policy](SECURITY.md) and [source security review](docs/SECURITY-REVIEW.md)
+before enabling real input or preparing a public release.

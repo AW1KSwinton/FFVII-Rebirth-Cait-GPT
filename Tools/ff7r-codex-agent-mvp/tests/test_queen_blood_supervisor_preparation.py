@@ -115,7 +115,7 @@ def test_snapshot_change_between_reads_refuses_candidate(context, monkeypatch, c
                 revised = {**result, "revision": result["revision"] + 1}
                 self.inventory_path.write_text(json.dumps(revised))
             elif change == "reload":
-                loaded(store, {"path": store.loaded(PROCESS)["path"], "slot": 13, "steam_id": "76561198000000000"})
+                loaded(store, {"path": store.loaded(PROCESS)["path"], "slot": 13, "steam_id": "00000000000000000"})
             else:
                 monkeypatch.setattr(stream, "match_record_target", lambda _: (DRIVER, "rehearsal", "qb-match-history-rehearsal"))
         return result

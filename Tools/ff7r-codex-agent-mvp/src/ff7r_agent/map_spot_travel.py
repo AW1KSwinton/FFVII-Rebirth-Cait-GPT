@@ -202,7 +202,7 @@ class SpotOrder:
 
 
 def default_spot_order() -> SpotOrder:
-    return SpotOrder(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "map-spot-order.json")
+    return SpotOrder(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "map-spot-order.json")
 
 
 class SpotArrivals:
@@ -239,7 +239,7 @@ class SpotArrivals:
 
 
 def default_spot_arrivals() -> SpotArrivals:
-    return SpotArrivals(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "map-spot-arrivals.json")
+    return SpotArrivals(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "map-spot-arrivals.json")
 
 
 class MapSpotTravel:

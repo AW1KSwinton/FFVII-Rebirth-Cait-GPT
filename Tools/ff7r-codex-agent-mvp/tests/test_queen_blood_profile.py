@@ -23,7 +23,7 @@ def fixture_profile(monkeypatch):
 
 def test_profile_is_the_most_recently_written_save_slot(tmp_path, monkeypatch) -> None:
     monkeypatch.delenv("FF7R_QUEEN_BLOOD_PROFILE", raising=False)
-    steam = tmp_path / "76561198000000000"
+    steam = tmp_path / "00000000000000000"
     steam.mkdir()
     old = steam / "ff7rebirth001.sav"
     new = steam / "ff7rebirth002.sav"
@@ -31,9 +31,9 @@ def test_profile_is_the_most_recently_written_save_slot(tmp_path, monkeypatch) -
     new.write_bytes(b"b")
     (steam / "ff7rebirthcommon.sav").write_bytes(b"c")  # not a playthrough slot
     os.utime(old, (1, 1))
-    assert detect_profile_id(tmp_path) == "76561198000000000-slot002"
+    assert detect_profile_id(tmp_path) == "00000000000000000-slot002"
     aliases = tmp_path / "slot-aliases.json"
-    aliases.write_text('{"76561198000000000-slot002": "main playthrough"}', encoding="utf-8")
+    aliases.write_text('{"00000000000000000-slot002": "main playthrough"}', encoding="utf-8")
     assert detect_profile_id(tmp_path, aliases) == "main_playthrough"
     monkeypatch.setenv("FF7R_QUEEN_BLOOD_PROFILE", "new game+ run")
     assert detect_profile_id(tmp_path) == "new_game_run"
@@ -41,15 +41,15 @@ def test_profile_is_the_most_recently_written_save_slot(tmp_path, monkeypatch) -
 
 def test_the_autosave_only_counts_without_a_manual_slot(tmp_path, monkeypatch) -> None:
     monkeypatch.delenv("FF7R_QUEEN_BLOOD_PROFILE", raising=False)
-    steam = tmp_path / "76561198000000000"
+    steam = tmp_path / "00000000000000000"
     steam.mkdir()
     autosave = steam / "ff7rebirth000.sav"
     autosave.write_bytes(b"a")
-    assert detect_profile_id(tmp_path) == "76561198000000000-slot000"
+    assert detect_profile_id(tmp_path) == "00000000000000000-slot000"
     manual = steam / "ff7rebirth011.sav"
     manual.write_bytes(b"b")
     os.utime(manual, (1, 1))  # the autosave is newer, as after a fast travel
-    assert detect_profile_id(tmp_path) == "76561198000000000-slot011"
+    assert detect_profile_id(tmp_path) == "00000000000000000-slot011"
 
 
 def test_inventory_stores_ids_and_catalogue_copies_only(tmp_path) -> None:

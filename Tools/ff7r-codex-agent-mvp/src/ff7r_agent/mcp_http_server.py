@@ -17,6 +17,8 @@ import time
 from pathlib import Path
 from typing import Callable
 
+from mcp.server.transport_security import TransportSecuritySettings
+
 from .mcp_runtime_server import _close_runtime, _runtime, mcp
 from .runtime_identity import default_runtime_directory
 from .runtime_profile import profile_identity_fields, verify_current_process_binding
@@ -167,6 +169,14 @@ def configure_http_server() -> dict[str, object]:
     mcp.settings.port = port
     mcp.settings.streamable_http_path = path
     mcp.settings.stateless_http = False
+    # Set these explicitly: loopback binding alone does not stop a malicious
+    # browser origin from trying to reach a local MCP server through DNS rebinding.
+    authorities = [f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"]
+    mcp.settings.transport_security = TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=authorities,
+        allowed_origins=[f"http://{authority}" for authority in authorities],
+    )
     return {
         "host": host,
         "port": port,

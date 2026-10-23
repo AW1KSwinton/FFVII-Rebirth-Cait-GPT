@@ -702,7 +702,7 @@ class AgentService:
         self.input = input_backend
         self._wall_clock = wall_clock or (lambda: datetime.now(timezone.utc))
         self._qb_recorder = QueenBloodRecorder(
-            queen_blood_recording_root or Path.home() / "AppData" / "Local" / "ff7r-agent" / "qb-recordings",
+            queen_blood_recording_root or Path.home() / "AppData" / "Local" / "ff7r-cait-gpt" / "qb-recordings",
             monotonic=monotonic,
             wall_clock=self._wall_clock,
         )
@@ -756,12 +756,12 @@ class AgentService:
         self._use_recorded_routes = bool(use_recorded_routes)
         self._screenshot_dir = screenshot_dir
         self._chadley_benchmark = ChadleyBenchmarkStore(
-            benchmark_root or Path.home() / "AppData" / "Local" / "ff7r-agent" / "benchmarks",
+            benchmark_root or Path.home() / "AppData" / "Local" / "ff7r-cait-gpt" / "benchmarks",
             action_log=action_log,
             screenshot_dir=screenshot_dir,
         )
         self._human_recording = HumanTraversalRecorder(
-            human_recording_root or Path.home() / "AppData" / "Local" / "ff7r-agent" / "human-recordings",
+            human_recording_root or Path.home() / "AppData" / "Local" / "ff7r-cait-gpt" / "human-recordings",
             action_log=action_log,
         )
         self._last_action_finished = float("-inf")

@@ -31,8 +31,11 @@ DEFAULT_IDENTITY_MODULES = (
 
 
 def default_runtime_directory() -> Path | None:
+    configured = os.environ.get("FF7R_AUTONOMY_RUNTIME_DIR")
+    if configured:
+        return Path(configured)
     value = os.environ.get("LOCALAPPDATA")
-    return Path(value) / "ff7r-agent" if value else None
+    return Path(value) / "ff7r-cait-gpt" if value else None
 
 
 def _normalise_path(value: str | os.PathLike[str] | None) -> str | None:

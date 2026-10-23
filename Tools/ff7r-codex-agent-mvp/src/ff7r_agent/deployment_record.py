@@ -16,13 +16,13 @@ from .runtime_profile import CANONICAL_PROFILE, FEATURE_VALIDATION_PROFILE, norm
 
 def default_deployment_record_path() -> Path | None:
     local_app_data = os.environ.get("LOCALAPPDATA")
-    return Path(local_app_data) / "ff7r-agent" / "deployment-record.json" if local_app_data else None
+    return Path(local_app_data) / "ff7r-cait-gpt" / "deployment-record.json" if local_app_data else None
 
 
 def default_feature_validation_deployment_record_path() -> Path | None:
     local_app_data = os.environ.get("LOCALAPPDATA")
     return (
-        Path(local_app_data) / "ff7r-agent" / "feature-validation-deployment-record.json"
+        Path(local_app_data) / "ff7r-cait-gpt" / "feature-validation-deployment-record.json"
         if local_app_data
         else None
     )

@@ -278,4 +278,4 @@ class DoorLinks:
 
 
 def default_door_links() -> DoorLinks:
-    return DoorLinks(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "door-links.json")
+    return DoorLinks(Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "door-links.json")

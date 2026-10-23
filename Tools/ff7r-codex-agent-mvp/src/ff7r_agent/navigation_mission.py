@@ -814,7 +814,7 @@ def main(argv: list[str] | None = None) -> int:
         mission_class, config_type = EntityInteractionMission, EntityMissionConfig
         entity_options = {"target_id": args.target_id, "target_kind": args.target_kind}
     check = feature_identity_check(args.repository_root, args.feature_ref, args.expected_commit) if args.feature_ref else None
-    output = args.output or Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-agent" / "navigation-missions" / datetime.now(timezone.utc).strftime("mission-%Y%m%dT%H%M%S.%fZ")
+    output = args.output or Path(os.environ.get("LOCALAPPDATA", ".")) / "ff7r-cait-gpt" / "navigation-missions" / datetime.now(timezone.utc).strftime("mission-%Y%m%dT%H%M%S.%fZ")
     result = asyncio.run(run_http_mission(config_type(**entity_options, model_id=args.model_id, reasoning_effort=args.reasoning_effort, goal_id=args.goal_id, execute=args.execute, timeout_seconds=args.timeout_seconds, max_cycles=args.max_cycles, sprint=args.sprint, camera_follow_enabled=args.camera_follow, camera_follow_smooth=args.camera_follow and args.smooth_camera, controller_mode=args.controller_mode, normal_stick_magnitude=args.normal_stick_magnitude, fast_follow=args.fast_follow, pursuit=args.pursuit, target_position=tuple(args.target_position) if args.target_position else None, target_map_id=args.target_map_id, topology_cache_manifest=str(args.topology_cache_manifest.resolve()) if args.topology_cache_manifest else None), output, args.manifest, identity_check=check, mission_class=mission_class))
     if args.production_test_context is not None:
         result["output_directory"] = str(output.resolve())

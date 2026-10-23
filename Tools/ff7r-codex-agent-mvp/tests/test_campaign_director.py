@@ -17,7 +17,7 @@ from ff7r_agent.runtime_commands import invoke_runtime
 from ff7r_agent.service import AgentService
 
 
-PROFILE = "ChatGPT-gpt-6.1-sol-76561198000000000-slot013"
+PROFILE = "ChatGPT-gpt-6.1-sol-00000000000000000-slot013"
 DRIVER = {"driver": "ChatGPT", "model_id": "gpt-6.1-sol", "effort": "high",
           "run_id": "00000000-0000-0000-0000-000000000001"}
 NED, NENE, ZAHIRA = [f"oba1110_Actor_CardGamer0{n}" for n in (1, 2, 3)]
@@ -332,7 +332,7 @@ def service_fixture(tmp_path, monkeypatch):
     root = tmp_path / "queen-blood"
     service = AgentService(NoGame(), NoGame(), environment=NoGame(), queen_blood_profile_root=root,
                            public_stream_event_dir=tmp_path / "events")
-    file = tmp_path / "76561198000000000" / "ff7rebirth013.sav"
+    file = tmp_path / "00000000000000000" / "ff7rebirth013.sav"
     file.parent.mkdir()
     file.write_bytes(b"offline fixture")
     save = {"path": str(file), "slot": 13, "steam_id": file.parent.name}
