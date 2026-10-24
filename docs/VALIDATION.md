@@ -37,7 +37,24 @@ native deployment, save load, OBS startup or video processing was performed.
 - Python static analysis: **zero high-severity findings**. Three medium sites
   were reviewed and explained in [the security review](SECURITY-REVIEW.md).
 
+## Checks after publication
+
+- Both `master` and the contribution branch passed the hosted offline and
+  security workflows. The hosted Linux agent suite reported **4,519 passed,
+  54 skipped**, plus 31 passing subtests; simulator, independent validator and
+  Node checks also passed. Platform-dependent skips differ from the Windows run.
+- Fresh Python and Node advisory checks found no known vulnerabilities.
+- The history review included branches and GitHub's temporary PR merge ref:
+  five commits and 546 unique text blobs at the time of the audit, with no
+  unexpected personal identifiers. GitHub-generated merge metadata used the
+  public account handle and no-reply addresses.
+- Public PR text, comments, workflow logs and check annotations were reviewed
+  separately from the source. Authenticated private-repository cross-references
+  were confirmed absent from the anonymous public PR timeline.
+- Owner-only PR merging, required offline/security checks, blocked master
+  deletion and force pushes, secret scanning and push protection were verified.
+
 These are point-in-time findings, not a guarantee of zero defects or unknown
 vulnerabilities. Native probes were not compiled or exercised against a running
-game in this source-only audit. The repository must remain private until its
-owner chooses to publish it; no visibility change is part of this work.
+game in this source-only audit. The trusted-local-desktop boundary in
+[SECURITY.md](../SECURITY.md) remains required.

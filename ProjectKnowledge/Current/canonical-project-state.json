@@ -1,6 +1,6 @@
 {
   "schema_version": 4,
-  "canonical_branch": "main",
+  "canonical_branch": "master",
   "canonical_commit_policy": {
     "source": "git_head",
     "runtime_gate": "runtime_git_head_equals_checkout_git_head",
