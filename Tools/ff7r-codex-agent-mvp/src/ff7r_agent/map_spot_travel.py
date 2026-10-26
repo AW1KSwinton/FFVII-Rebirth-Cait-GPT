@@ -22,12 +22,15 @@ from __future__ import annotations
 import json
 import os
 import re
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
 from .conversation_state import field_blocker, has_player_position
+from .field_main_menu import context_blocker, field_identity, identify_main_menu
 from .map_query import request_snapshot
 from .navigation_values import MissionError
+from .save_slot_load import menu_snapshot
 
 CATALOGUE_ENV = "FF7R_MAP_SPOT_CATALOGUE"
 DEFAULT_CATALOGUE = (
@@ -53,6 +56,8 @@ ALREADY_THERE_CM = 500.0
 # main menu open; the same key closed it later.  Quick presses first, then
 # longer waits, about 20 s in all.
 MENU_CLOSE_SETTLES_SECONDS = (0.8, 0.8, 0.8, 2.0, 3.0, 4.0, 5.0)
+MENU_CLOSE_HOLD_MS = 400
+MENU_EVIDENCE_MAX_SECONDS = 3.0
 
 TITLE_PATH = "Map_Btn_00.WidgetTree.Txt_Title"
 PROMPT_PATH = "Map_Btn_00.WidgetTree.Txt_Btn"
@@ -254,6 +259,7 @@ class MapSpotTravel:
         self.sleep = service._sleeper
         self.clock = service._monotonic
         self.presses: list[dict[str, Any]] = []
+        self.menu_recovery: list[dict[str, Any]] = []
 
     def screen(self) -> MapScreen:
         response, _ = request_snapshot(self.service, heights=False, flags=SNAPSHOT_FLAGS)
@@ -282,6 +288,10 @@ class MapSpotTravel:
         def ready(s: MapScreen) -> bool:
             return s.open and (s.region is not None or s.world_selection is not None)
 
+        # A cached map widget must not override a freshly observed Main Menu
+        # owner, even for the select-only dry run.
+        if self.service.observe().get("in_menu") is True:
+            self.close_main_menu()
         screen = self.screen()
         if not screen.open:
             self.close_main_menu()
@@ -384,19 +394,85 @@ class MapSpotTravel:
                     pairs.insert(0, (initial, first))
                 self.order.learn(region, pairs)
 
-    def close_main_menu(self) -> None:
-        """Back out of a main menu open over the field; it swallows the map key.
+    def _main_menu_evidence(self, start: dict[str, Any]) -> dict[str, Any]:
+        started = self.clock()
+        roots, root_base = request_snapshot(self.service, heights=False,
+                                            flags=("uiroots", "uirootdetails", "uiownerattachments"), require_map=False)
+        menu, menu_base = menu_snapshot(self.service)
+        latest = self.service.observe()
+        cinema = self.service.cutscene_state()
+        evidence = identify_main_menu(menu, roots.get("ui_roots"), latest, cinema)
+        evidence["reads"] = [{key: response.get(key) for key in
+                              ("request_id", "source_sequence", "timestamp_utc")}
+                             for response in (roots, menu)]
+        for response, base in ((roots, root_base), (menu, menu_base)):
+            try:
+                stamp = datetime.fromisoformat(str(response["timestamp_utc"]).replace("Z", "+00:00"))
+                age = (self.service._wall_clock() - stamp).total_seconds()
+            except (KeyError, TypeError, ValueError):
+                age = float("inf")
+            if (response.get("source") != "ue4ss_map_query" or not response.get("request_id")
+                    or type(response.get("source_sequence")) is not int
+                    or response.get("source_sequence", -1) < start.get("sequence", 0)
+                    or not -0.5 <= age <= 1.0 + MENU_EVIDENCE_MAX_SECONDS
+                    or self.clock() - started > MENU_EVIDENCE_MAX_SECONDS):
+                evidence.update(identified=False, reason="menu_evidence_stale_or_invalid")
+            if (context_blocker(base) or field_identity(base) != field_identity(start)
+                    or response.get("map_id") != start.get("map_id")
+                    or field_identity(latest) != field_identity(start)):
+                evidence.update(identified=False, reason="menu_context_changed")
+        return evidence
 
-        Live, a virtual-gamepad reconnect opened the main menu and travel
-        failed with map_did_not_open. After a harness restart the menu
-        ignored three quick presses (#354), so later presses wait longer.
+    def close_main_menu(self) -> None:
+        """Close only a freshly identified field Main Menu, inside this job.
+
+        A reconnect can precede the cached ``in_menu`` flag. A pause alone
+        starts identification, never a blind Back press on another owner.
         """
         for settle in MENU_CLOSE_SETTLES_SECONDS:
-            if not self.service.observe().get("in_menu"):
+            start = self.service.observe()
+            if not start.get("in_menu") and not start.get("paused"):
                 return
-            self.press("queen_blood_cancel", "close_main_menu")
+            # Rearming may reconnect the pad. Do it before the UI proof, then
+            # use the normal guarded Cancel path as npc_approach does.
+            if getattr(getattr(self.service, "input", None), "is_real", False):
+                self.service._ensure_game_foreground(force=True)
+                self.service._assert_real_menu_input_allowed("cancel", MENU_CLOSE_HOLD_MS)
+            try:
+                evidence = self._main_menu_evidence(start)
+            except MissionError as exc:
+                # An old/missing exporter diagnostic cannot authorize Back.
+                evidence = {"identified": False, "reason": str(exc)}
+            self.menu_recovery.append(evidence)
+            latest = self.service.observe()
+            if not latest.get("in_menu") and not latest.get("paused"):
+                return
+            if context_blocker(latest) or field_identity(latest) != field_identity(start):
+                evidence.update(identified=False, reason="menu_context_changed")
+            if not evidence["identified"]:
+                reason = ("main_menu_open" if start.get("in_menu") is True
+                          or evidence.get("main_menu_text_seen") else "menu_or_pause_unidentified")
+                raise MissionError(reason, response={"menu_recovery": self.menu_recovery,
+                    "recovery": "Inspect capture_game_window, read_ui_roots(details=true) and read_save_menu. Close only the confirmed Main Menu with guarded tap_button cancel, then retry travel_to_map_spot_async; leave other owners intact."})
+            press = {"button": "cancel", "why": "close_main_menu", "evidence": evidence,
+                     "outcome": "unverified"}
+            try:
+                response = self.service.tap("cancel", MENU_CLOSE_HOLD_MS)
+            except Exception as exc:
+                press["error"] = str(exc)
+                self.presses.append(press)
+                raise
+            finally:
+                self.service.input.release_all()
+            press["response"] = response
+            self.presses.append(press)
+            if not isinstance(response, dict) or response.get("ok") is not True:
+                raise MissionError("main_menu_cancel_unverified")
+            press["outcome"] = "accepted"
+            self.sleep(PRESS_SETTLE_SECONDS)
             self.sleep(settle)
-        if self.service.observe().get("in_menu"):
+        latest = self.service.observe()
+        if latest.get("in_menu") or latest.get("paused"):
             raise MissionError("main_menu_did_not_close")
 
     def close_map(self) -> None:
@@ -407,12 +483,29 @@ class MapSpotTravel:
             self.sleep(0.5)
 
     def run(self, spot: str, execute: bool) -> dict[str, Any]:
+        # Async bridge exclusivity covers other RPCs; this lock also covers
+        # service-local watchers (including PR #368) for the whole travel.
+        lock = getattr(self.service, "_action_lock", None)
+        if lock is not None and not lock.acquire(blocking=False):
+            raise MissionError("another input action is executing")
+        try:
+            return self._run(spot, execute)
+        except MissionError as exc:
+            exc.response = {**(exc.response or {}), "presses": self.presses,
+                            "menu_recovery": self.menu_recovery}
+            raise
+        finally:
+            if lock is not None:
+                lock.release()
+
+    def _run(self, spot: str, execute: bool) -> dict[str, Any]:
         entry = resolve_spot(self.catalogue, spot)
         regions = [key for key in entry.get("regions") or [] if key in self.catalogue["regions"]]
         if not regions:
             raise MissionError("map_spot_region_unknown")
         report: dict[str, Any] = {"spot": entry["key"], "name": entry["name"], "regions": regions,
-                                  "execute": execute, "presses": self.presses}
+                                  "execute": execute, "presses": self.presses,
+                                  "menu_recovery": self.menu_recovery}
         start = self.service.observe()
         blocker = field_blocker(start)
         if blocker:
@@ -454,7 +547,7 @@ class MapSpotTravel:
             deadline = self.clock() + FOCUS_TELEMETRY_WAIT_SECONDS
             while not (self.service.observe().get("telemetry") or {}).get("live") and self.clock() < deadline:
                 self.sleep(0.25)
-        if execute and not self.screen().open:
+        if execute and (self.service.observe().get("in_menu") is True or not self.screen().open):
             # Keep the existing bounded main-menu recovery: a field proof
             # cannot settle while that menu is open. No map key is sent yet.
             self.close_main_menu()

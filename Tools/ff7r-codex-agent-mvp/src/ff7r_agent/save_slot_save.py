@@ -365,13 +365,17 @@ class SaveSlotWriter(SaveSlotLoader):
                 {**no, "keyboard_focus": selected == "no"})
 
     def run(self, slot: Any = None, execute: bool = False, *, calibrate_prompt: dict | None = None,
-            test_save: bool = False, probe_prompt: bool = False, story_save: bool = False) -> dict[str, Any]:
+            test_save: bool = False, probe_prompt: bool = False, story_save: bool = False,
+            inspect_empty_row: bool = False) -> dict[str, Any]:
         report = {"ok": False, "execute": execute, "saved": False, "presses": self.presses, "screens": self.screens}
         lease = None
         try:
             if (type(execute) is not bool or type(test_save) is not bool or type(probe_prompt) is not bool
-                    or type(story_save) is not bool):
+                    or type(story_save) is not bool or type(inspect_empty_row) is not bool):
                 raise SaveSlotLoadError("save_execute_must_be_boolean")
+            if inspect_empty_row and (execute or type(slot) is not int or calibrate_prompt is not None
+                                      or test_save or probe_prompt or story_save):
+                raise SaveSlotLoadError("save_empty_row_inspection_arguments_invalid")
             if test_save and story_save:
                 raise SaveSlotLoadError("save_test_and_story_are_exclusive")
             # An operator-designated test slot (owner, 2026-10-08: slot 10)
@@ -447,6 +451,12 @@ class SaveSlotWriter(SaveSlotLoader):
                 self.target_path = directory / f"ff7rebirth{self.target:03}.sav"
                 self.before = file_proof(self.target_path)
                 self.protected = self._protected_files()
+                if probe_prompt and self.before is None:
+                    # An empty-row Confirm may write immediately, without a prompt.
+                    raise SaveSlotLoadError("save_prompt_probe_requires_occupied_slot")
+                if inspect_empty_row and (self.before is not None
+                                          or self.runs.owner(self.account, self.target) is not None):
+                    raise SaveSlotLoadError("save_empty_row_inspection_requires_unowned_empty_slot")
                 if calibrate_prompt is not None and (self.target != 15 or not assigned
                         or assigned.get("slot") != 15 or loaded.get("slot") != 15
                         or self.before is None
@@ -459,6 +469,37 @@ class SaveSlotWriter(SaveSlotLoader):
                 screen = self._highlight_save(self._open_save_list_from_main(self._open_main_menu()))
                 self._guard()
                 row_screen = self.read("save_list")
+                if inspect_empty_row:
+                    if not row_screen.save_list_open or row_screen.save_prompt_shown:
+                        raise SaveSlotLoadError("save_list_not_verified")
+                    first = self._row(row_screen)
+                    if first["slot"] != self.target:
+                        raise SaveSlotLoadError("save_selected_row_changed")
+                    report["empty_row_evidence"] = {"before_capture": row_screen.response}
+                    capture = self.service.capture_game_window()
+                    report["empty_row_evidence"]["capture"] = capture
+                    if not isinstance(capture, dict) or capture.get("ok") is not True:
+                        raise SaveSlotLoadError("save_empty_row_inspection_capture_failed")
+                    self._guard()
+                    after = self.read("empty_row_after_capture")
+                    if not after.save_list_open or after.save_prompt_shown:
+                        raise SaveSlotLoadError("save_list_not_verified")
+                    second = self._row(after)
+                    def selection_identity(row):
+                        selection = row.get("selection")
+                        return None if selection is None else tuple(selection.get(k) for k in
+                            ("id", "selected_child_id", "selected_index"))
+                    if second["slot"] != self.target or selection_identity(first) != selection_identity(second):
+                        raise SaveSlotLoadError("save_selected_row_changed")
+                    report["empty_row_evidence"]["after_capture"] = after.response
+                    self._guard()
+                    closed = self.close_save_ui("empty_row_inspection_close")
+                    self._guard()
+                    report.update(ok=closed, state="empty_row_inspected" if closed else "save_refused",
+                                  closed=closed, requires_review=True)
+                    if not closed:
+                        report["decision"] = "save_empty_row_inspection_close_unverified"
+                    return report
                 self._verify_target_row(row_screen)
                 if calibrate_prompt is not None:
                     report["row_contract_evidence"] = row_screen.response

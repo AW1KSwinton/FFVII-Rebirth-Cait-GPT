@@ -73,6 +73,14 @@ def test_a_non_interact_key_is_refused():
     assert pressed == []
 
 
+def test_the_valve_grab_is_an_interact_prompt(monkeypatch):
+    # Live 2026-10-22, Mt. Nibel reactor: "Grab" a valve is a system prompt pressed with interact.
+    service, pressed = field_service([field()])
+    prompts(monkeypatch, ["$level_sys_valve_catch"], ["$level_sys_valve_catch"])
+    result = AgentService.use_field_action(service, command="valve_catch", observe_seconds=0.4)
+    assert result["command"] == "$level_sys_valve_catch" and len(pressed) == 1
+
+
 def test_a_conversation_after_the_press_is_reported(monkeypatch):
     service, pressed = field_service([field(), field(interaction={"state": "dialogue"})])
     prompts(monkeypatch, [CHECK])

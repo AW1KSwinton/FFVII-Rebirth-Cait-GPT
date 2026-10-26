@@ -17,6 +17,7 @@ from .factory import (
 from .runtime_identity import collect_identity
 from .runtime_commands import invoke_runtime
 from .service import SafetyError
+from .navigation_values import MissionError
 
 
 def _error_reply(exc: Exception, request: Any, operation: Any) -> dict[str, Any]:
@@ -30,6 +31,8 @@ def _error_reply(exc: Exception, request: Any, operation: Any) -> dict[str, Any]
     }
     if isinstance(exc, SafetyError) and isinstance(exc.details, dict):
         reply["details"] = exc.details
+    if isinstance(exc, MissionError) and isinstance(exc.response, dict):
+        reply["details"] = exc.response
     return reply
 
 

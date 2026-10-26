@@ -12,3 +12,7 @@ Module and command names retain the original `ff7r_agent` namespace for compatib
 The virtual gamepad backend is optional; install its provider and device driver
 separately and explicitly. Real input remains gated by process, foreground,
 telemetry freshness, control-session and emergency-stop checks.
+
+See [map-menu recovery](docs/map-menu-recovery.md) and [equipment and party
+controls](docs/loadout-management.md) for the newer menu tools and their
+verification limits.

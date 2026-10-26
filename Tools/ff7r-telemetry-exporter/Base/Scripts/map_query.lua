@@ -153,7 +153,7 @@ local ROOT_NAMES = {
     MainMenu_Card_TopNPC_C = true, CardGame_Top_C = true, CardGame_Test_C = true,
     Cinema_Skip_Btn_C = true,
 }
-local function ui_roots(with_details, configured_only)
+local function ui_roots(with_details, configured_only, attachment_only)
     local objects = safe(function() return FindAllOf('UserWidget') end, nil)
     if type(objects) ~= 'table' then return {observed = false, reason = 'root_scan_unavailable', widgets = array()} end
     local result = {observed = true, widgets = array(), scanned = 0, truncated = false,
@@ -183,12 +183,21 @@ local function ui_roots(with_details, configured_only)
                 if ROOT_NAMES[class] or not configured_only then
                     visible, viewport = boolean('IsVisible'), boolean('IsInViewport')
                 end
-                if ROOT_NAMES[class] or visible == true or viewport == true then
+                local details
+                if with_details and (ROOT_NAMES[class] or attachment_only and (visible == true or viewport == true)) then
+                    details = root_details(object, configured_only or attachment_only, attachment_only)
+                end
+                -- A generic widget's own visibility can outlive its screen.
+                -- Recovery omits it only with a fresh negative game-viewport
+                -- receipt too; unknown and attached owners remain blockers.
+                local detached = attachment_only and not ROOT_NAMES[class]
+                    and viewport == false and details and details.in_viewport_ex == false
+                if not detached and (ROOT_NAMES[class] or visible == true or viewport == true) then
                     local destination = ROOT_NAMES[class] and configured or other
                     if #destination < 128 then
                         local entry = {path = name, class = class,
                             is_visible = visible, in_viewport = viewport, configured_root = ROOT_NAMES[class] == true}
-                        if with_details and ROOT_NAMES[class] then entry.details = root_details(object, configured_only) end
+                        if details then entry.details = details end
                         destination[#destination + 1] = entry
                     else
                         result.truncated = true
@@ -384,7 +393,7 @@ end
 -- Focused, read-only evidence for finding the NPC dialogue gate. Retained
 -- roots and subtitle text are not authorization to send input. Native reads
 -- use inherited Widget functions; scalar properties must exist in reflection.
-root_details = function(widget, fast)
+root_details = function(widget, fast, attachment_only)
     local result = {nodes = array()}
     local class = text(safe(function() return widget:GetClass():GetFName():ToString() end, ''))
     -- Only EndUserWidget implements the game's extended viewport function.
@@ -400,6 +409,10 @@ root_details = function(widget, fast)
     end
     if extended then
         result.in_viewport_ex = safe(function() return widget:IsInViewportEx() end, nil)
+    end
+    if attachment_only then
+        result.truncated = false
+        return result
     end
     -- The action reader needs attachment flags for protection roots, and
     -- contents only for the subtitle currently on screen. Avoid reflecting
@@ -683,6 +696,99 @@ local function field_prompt(now)
     return {commands = commands, source = 'scan'}
 end
 
+-- The battle HUD alone, for the `battlehud` flag: the command menu's texts,
+-- the status panel and the enemy's telegraph, with the command list's
+-- selection. The menu read it replaces (menutexts + savecells) scanned every
+-- text block and every list in the game, 0.75 s on the game thread at each
+-- read (live 2026-10-22), and the combat autopilot reads after every menu
+-- press, so the fight stuttered at every command. One scan keeps the HUD's
+-- blocks, with the paths read once, and the command list; later reads only
+-- check those. The scan is repeated when a kept block is gone, after
+-- BATTLE_HUD_RESCAN_SECONDS, or on `battlehudscan` (the reader saw fewer
+-- cells than the list holds: the game made new ones).
+local BATTLE_HUD_RESCAN_SECONDS = 60
+local BATTLE_HUD_PATHS = {'.Command', '.Status.WidgetTree.Status_', '.SkillName_Enemy.'}
+local BATTLE_LIST_PATH = '.Command_Switching.WidgetTree.List_00.WidgetTree.List_00'
+local battle_hud = nil
+
+local function is_battle_hud_path(path)
+    for _, part in ipairs(BATTLE_HUD_PATHS) do
+        if path:find(part, 1, true) then return true end
+    end
+    return false
+end
+
+local function scan_battle_hud(now)
+    local hud = {blocks = {}, lists = {}, scanned_at = now}
+    local found = safe(function() return FindAllOf('EndTextBlock') end, nil)
+    for _, block in ipairs(type(found) == 'table' and found or {}) do
+        if valid(block) then
+            local full = text(safe(function() return block:GetFullName() end, '')) or ''
+            local path = full:match(' (.*)$') or full
+            if is_battle_hud_path(path) and not path:find('Default__', 1, true)
+                and not path:find(':WidgetTree', 1, true) then
+                hud.blocks[#hud.blocks + 1] = {block = block, path = path:gsub('_C_%d+', ''):sub(-160),
+                    class = full:match('^(%S+)'), owner = path:match('([%w_]+_C_%d+)%.WidgetTree%.[%w_]+$')}
+            end
+        end
+    end
+    for _, class in ipairs({'EndListBox', 'EndVirtualScrollBox'}) do
+        local lists = safe(function() return FindAllOf(class) end, nil)
+        for _, list in ipairs(type(lists) == 'table' and lists or {}) do
+            local full = text(safe(function() return list:GetFullName() end, '')) or ''
+            if valid(list) and full:sub(-#BATTLE_LIST_PATH) == BATTLE_LIST_PATH
+                and not full:find('Default__', 1, true) then
+                -- Only a member reflection lists: naming one the class lacks
+                -- leaks the Lua C stack, even inside pcall.
+                local counted = reflected_property_types(list).ItemCount ~= nil
+                hud.lists[#hud.lists + 1] = {list = list, id = full, counted = counted}
+            end
+        end
+    end
+    return hud
+end
+
+local function battle_hud_alive(hud)
+    for _, kept in ipairs(hud.blocks) do
+        if not valid(kept.block) then return false end
+    end
+    for _, kept in ipairs(hud.lists) do
+        if not valid(kept.list) then return false end
+    end
+    return true
+end
+
+local function read_battle_hud(now, rescan)
+    local source = 'kept_blocks'
+    if battle_hud == nil or rescan or now - battle_hud.scanned_at >= BATTLE_HUD_RESCAN_SECONDS
+        or not battle_hud_alive(battle_hud) then
+        battle_hud, source = scan_battle_hud(now), 'scan'
+    end
+    local texts, lists = array(), array()
+    for _, kept in ipairs(battle_hud.blocks) do
+        if visible(kept.block) then
+            local value = text(safe(function() return kept.block:GetText() end, nil))
+            if value ~= nil and value ~= '' then
+                texts[#texts + 1] = {text = value, path = kept.path, class = kept.class, owner = kept.owner}
+            end
+        end
+    end
+    for _, kept in ipairs(battle_hud.lists) do
+        local list = kept.list
+        local index = safe(function() return list:GetSelectedIndex(0) end, nil)
+        local child = type(index) == 'number' and index >= 0 and index == math.floor(index)
+            and safe(function() return list:GetChildAt(index) end, nil) or nil
+        local selected = valid(child) and text(safe(function() return child:GetFullName() end, '')) or nil
+        local record = {id = kept.id, visible = visible(list), selected_index = index,
+                        selected_child_id = selected ~= '' and selected or nil, properties = {}}
+        if kept.counted then
+            record.properties.ItemCount = text(safe(function() return list.ItemCount end, nil))
+        end
+        lists[#lists + 1] = record
+    end
+    return {texts = texts, lists = lists, source = source, blocks = #battle_hud.blocks}
+end
+
 -- The Save / Load list's rows, for the `savecells` flag (#153): the game
 -- marks the selected row only by how it is drawn (live 2026-10-05: a blue
 -- fill and a cursor arrow), not by any text. Each visible SaveData_Cell
@@ -936,6 +1042,220 @@ local function save_dialogs()
     return dialogs
 end
 
+-- One explicit loadout request, owned by the actually attached equipment menu
+-- (or, for `battlesettingmenu`, the Combat Settings screen: shortcuts and
+-- party). No references, timer or follow-up reads survive the request or menu exit.
+local LOADOUT_OWNER_CLASSES = {equipment = 'Equip_C', battle_setting = 'BattleSetting_C', member_change = 'MemberChange_C'}
+-- Combat Settings' Change Party Members window lives in the menu rendering
+-- world, not the viewport: it is attached when it and its parents render.
+local LOADOUT_RENDER_WORLD_OWNERS = {MemberChange_C = true}
+local function loadout_rendered(widget)
+    local parent = widget
+    for _ = 1, 24 do
+        if not valid(parent) then return true end
+        local shown = safe(function() return parent:IsVisible() end, nil)
+        local opacity = safe(function() return parent:GetRenderOpacity() end, nil)
+        if type(shown) ~= 'boolean' or not number(opacity) then return nil end
+        if not shown or opacity <= 0.05 then return false end
+        local next_parent = safe(function() return parent:GetParent() end, nil)
+        if not valid(next_parent) then
+            local outer = safe(function() return parent:GetOuter() end, nil)
+            local outer_class = valid(outer) and text(safe(function() return outer:GetClass():GetFName():ToString() end, '')) or ''
+            if outer_class == 'WidgetTree' then
+                next_parent = safe(function() return outer:GetOuter() end, nil)
+            end
+        end
+        parent = next_parent
+    end
+    return nil
+end
+
+local function loadout_menu(inspect_properties, include_choices, owner_class)
+    owner_class = owner_class or LOADOUT_OWNER_CLASSES.equipment
+    local scope = {observed = false, active = false, roots = array(), input_authorized = false,
+        scanned = 0, scan_limit = 4096, owner_class = owner_class}
+    local discovery = {source_supported = false, scanned = 0, scan_limit = 2048, record_limit = 24,
+        scan_truncated = false, records_truncated = false, selected_count = 0, selected_limit = 2}
+    local result = {status = 'map_not_open', texts_scope = 'menu', texts = array(),
+        save_lists = array(), save_list_discovery = discovery, loadout_scope = scope}
+    -- The first combined row-inspection query did not return natively. Use
+    -- the UserWidget census verified by ui_roots, rejecting every other
+    -- class before visibility/property reads; avoid Blueprint-class lookup.
+    trace('loadout root census')
+    local candidates = safe(function() return FindAllOf('UserWidget') end, nil)
+    if type(candidates) ~= 'table' then scope.reason = 'loadout_root_unavailable'; return result end
+    scope.observed = true
+    local owner, owner_path
+    local function attached(widget)
+        if not valid(widget) or not visible(widget) then return false end
+        if LOADOUT_RENDER_WORLD_OWNERS[owner_class] then return loadout_rendered(widget) == true end
+        local direct = safe(function() return widget:IsInViewport() end, nil)
+        local extended = root_details(widget, true, true).in_viewport_ex
+        return direct == true or extended == true
+    end
+    for index, widget in ipairs(candidates) do
+        if index > scope.scan_limit then scope.reason = 'loadout_root_budget'; return result end
+        scope.scanned = index
+        local class = valid(widget) and text(safe(function() return widget:GetClass():GetFName():ToString() end, '')) or ''
+        if class == owner_class then
+            local full = text(safe(function() return widget:GetFullName() end, '')) or ''
+            if full ~= '' and not full:find('Default__', 1, true) then
+                if #scope.roots >= 8 then scope.reason = 'loadout_root_budget'; return result end
+                local active = attached(widget)
+                scope.roots[#scope.roots + 1] = {id = full, attached = active}
+                if active then
+                    if owner then scope.reason = 'loadout_owners_ambiguous'; return result end
+                    owner, owner_path = widget, full:match('^%S+ (.+)$')
+                end
+            end
+        end
+    end
+    if not owner or not owner_path then scope.reason = 'loadout_menu_inactive'; return result end
+    trace('loadout attached owner')
+    local function owns(path) return path:sub(1, #owner_path + 1) == owner_path .. '.' end
+    scope.owner_id = text(safe(function() return owner:GetFullName() end, ''))
+    scope.owner_address = safe(function() return string.format('0x%x', owner:GetAddress()) end, nil)
+    if inspect_properties then
+        trace('loadout owner property types')
+        scope.property_types = reflected_property_types(owner)
+        trace('loadout owner scalar properties')
+        scope.properties = safe_properties(owner)
+    end
+    -- Index one native text census, then read only the exact owner/selected
+    -- row prefixes. No selected-row tree, focus or scalar-property calls.
+    local text_index = array()
+    local text_objects = safe(function() return FindAllOf('EndTextBlock') end, nil)
+    scope.text_scan_truncated = false
+    if type(text_objects) == 'table' then
+        for index, block in ipairs(text_objects) do
+            if index > 8192 then scope.text_scan_truncated = true; break end
+            if valid(block) then
+                local full = text(safe(function() return block:GetFullName() end, '')) or ''
+                text_index[#text_index + 1] = {object = block, path = full:match('^%S+ (.+)$') or ''}
+            end
+        end
+    end
+    local function scope_texts(prefix)
+        local blocks = array()
+        for _, item in ipairs(text_index) do
+            if item.path:sub(1, #prefix + 1) == prefix .. '.' then blocks[#blocks + 1] = item.object end
+        end
+        return map_texts(true, {'EndTextBlock'}, function(path) return path:sub(1, #prefix + 1) == prefix .. '.' end,
+            function() return blocks end)
+    end
+    -- Fixed SDK widget references only, gated by reflected property kinds.
+    -- Keep icon observations separate from interpreted member/type/link IDs.
+    local function choice_icons(row)
+        local full = text(safe(function() return row:GetFullName() end, '')) or ''
+        local prefix = full:match('^%S+ (.+)$')
+        local function object_field(object, name)
+            if not valid(object) or not prefix or reflected_property_types(object)[name] ~= 'ObjectProperty' then return nil end
+            local child = safe(function() return object[name] end, nil)
+            local id = valid(child) and text(safe(function() return child:GetFullName() end, '')) or ''
+            local path = id:match('^%S+ (.+)$') or ''
+            if path:sub(1, #prefix + 1) ~= prefix .. '.' then return nil end
+            return child
+        end
+        local function describe(object)
+            if not valid(object) then return nil end
+            local value = {id = text(safe(function() return object:GetFullName() end, '')),
+                rendered = loadout_rendered(object)}
+            if reflected_property_types(object).SelectedIndex == 'IntProperty' then
+                value.selected_index = safe(function() return object.SelectedIndex end, nil)
+            end
+            return value
+        end
+        local item = object_field(row, 'Icon_Item')
+        local member = object_field(row, 'Icon_Member')
+        local face = object_field(member, 'Icon_Face')
+        return {
+            materia = describe(object_field(item, 'Icon_MateriaIcon')),
+            member = describe(object_field(face, 'Icon_Face')),
+            member_container = describe(member),
+            lock = describe(object_field(row, 'Icon_Lock')),
+            link_line = describe(object_field(row, 'Line')),
+        }
+    end
+    result.texts = scope_texts(owner_path)
+    trace('loadout texts ' .. tostring(#result.texts))
+    local seen = {}
+    for _, class in ipairs({'EndListBox', 'EndVirtualScrollBox'}) do
+        local lists = safe(function() return FindAllOf(class) end, nil)
+        if type(lists) == 'table' then
+            discovery.source_supported = true
+            for _, list in ipairs(lists) do
+                if discovery.scanned >= discovery.scan_limit then discovery.scan_truncated = true; break end
+                discovery.scanned = discovery.scanned + 1
+                if valid(list) then
+                    local full = text(safe(function() return list:GetFullName() end, '')) or ''
+                    local object_path = full:match('^%S+ (.+)$') or ''
+                    if not seen[full] and owns(object_path) and loadout_rendered(list) == true then
+                        seen[full] = true
+                        local index = safe(function() return list:GetSelectedIndex(0) end, nil)
+                        local child = type(index) == 'number' and index >= 0 and index == math.floor(index)
+                            and safe(function() return list:GetChildAt(index) end, nil) or nil
+                        local record = {id = full, class = class_name(list), visible = true, rendered = true,
+                            user_index = 0, selected_index = index, properties = safe_properties(list), owners = array()}
+                        local outer = list
+                        for _ = 1, 8 do
+                            outer = safe(function() return outer:GetOuter() end, nil)
+                            if not valid(outer) then break end
+                            record.owners[#record.owners + 1] = text(safe(function() return outer:GetFullName() end, ''))
+                            if outer == owner then break end
+                        end
+                        if valid(child) then
+                            discovery.selected_count = discovery.selected_count + 1
+                            record.selected_child_id = text(safe(function() return child:GetFullName() end, ''))
+                            if discovery.selected_count <= discovery.selected_limit then
+                                trace('loadout selected row')
+                                local child_path = record.selected_child_id and record.selected_child_id:match('^%S+ (.+)$')
+                                record.selected_texts = child_path and scope_texts(child_path) or array()
+                                trace('loadout selected texts ' .. tostring(#record.selected_texts))
+                                if inspect_properties then
+                                    trace('loadout selected property types')
+                                    record.selected_property_types = reflected_property_types(child)
+                                    trace('loadout selected scalar properties')
+                                    record.selected_properties = safe_properties(child)
+                                    trace('loadout selected properties complete')
+                                end
+                                if include_choices then
+                                    local count = reflected_property_types(list).ItemCount == 'IntProperty'
+                                        and safe(function() return list.ItemCount end, nil) or nil
+                                    local choices = {complete = false, limit = 64, rows = array(), item_count = count}
+                                    record.choices = choices
+                                    if type(count) == 'number' and count >= 0 and count <= choices.limit
+                                        and count == math.floor(count) then
+                                        local ids, complete = {}, true
+                                        trace('loadout choice rows ' .. tostring(count))
+                                        for choice_index = 0, count - 1 do
+                                            local choice = safe(function() return list:GetChildAt(choice_index) end, nil)
+                                            local id = valid(choice) and text(safe(function() return choice:GetFullName() end, '')) or ''
+                                            local path = id:match('^%S+ (.+)$')
+                                            if id == '' or not path or ids[id] then complete = false; break end
+                                            ids[id] = true
+                                            choices.rows[#choices.rows + 1] = {index = choice_index, id = id,
+                                                texts = scope_texts(path), icons = choice_icons(choice)}
+                                        end
+                                        choices.complete = complete and #choices.rows == count
+                                    end
+                                    trace('loadout choice rows complete')
+                                end
+                            else discovery.records_truncated = true end
+                            table.insert(result.save_lists, 1, record)
+                        else result.save_lists[#result.save_lists + 1] = record end
+                        if #result.save_lists > discovery.record_limit then table.remove(result.save_lists); discovery.records_truncated = true end
+                    end
+                end
+            end
+        end
+    end
+    scope.owner_still_attached = attached(owner)
+    scope.active = scope.owner_still_attached
+    if not scope.active then scope.reason = 'loadout_menu_closed_during_read' end
+    trace('loadout complete')
+    return result
+end
+
 local ACTORS_NEAR_RADIUS_CM = 6000
 local ACTORS_NEAR_MAX = 300
 local ACTORS_NEAR_SCAN_MAX = 60000
@@ -1079,11 +1399,24 @@ end
 
 local function snapshot(request, player, map_id)
     local player_position = valid(player) and vec3(safe(function() return player:K2_GetActorLocation() end, nil)) or nil
+    if request.flags.loadoutmenu or request.flags.battlesettingmenu or request.flags.memberchangemenu then
+        local screen = request.flags.memberchangemenu and 'member_change'
+            or request.flags.battlesettingmenu and 'battle_setting' or 'equipment'
+        return loadout_menu(request.flags.loadoutinspect == true, request.flags.loadoutchoices == true,
+            LOADOUT_OWNER_CLASSES[screen])
+    end
     if request.flags.npcdialogue then
         return {status = 'npc_dialogue', player_position = player_position, texts = array(), ui_roots = ui_roots(true, true)}
     end
     if request.flags.uiroots then
-        return {status = 'ui_roots', player_position = player_position, texts = array(), ui_roots = ui_roots(request.flags.uirootdetails)}
+        return {status = 'ui_roots', player_position = player_position, texts = array(),
+            ui_roots = ui_roots(request.flags.uirootdetails, false, request.flags.uiownerattachments)}
+    end
+    if request.flags.battlehud then
+        local hud = read_battle_hud(os.time(), request.flags.battlehudscan)
+        return {status = 'map_not_open', player_position = player_position, texts_scope = 'battle',
+                texts = hud.texts, save_lists = hud.lists,
+                battle_hud = {source = hud.source, blocks = hud.blocks}}
     end
     local only_field_prompt = request.flags.fieldprompt
     local only_menu = request.flags.menutexts or request.flags.savecells or request.flags.startmenu
@@ -1113,7 +1446,7 @@ local function snapshot(request, player, map_id)
         local result = {status = 'map_not_open', player_position = player_position, texts = array()}
         if request.flags.menutexts then
             result.texts_scope = 'menu'
-            result.texts = map_texts(true, {'EndTextBlock'})
+            result.texts = map_texts(true, {'EndTextBlock'}, function() return true end)
         end
         if request.flags.savecells or request.flags.startmenu then
             result.save_cells = save_cells(result, request.flags.startmenu)

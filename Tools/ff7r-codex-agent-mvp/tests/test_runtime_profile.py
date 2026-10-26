@@ -301,3 +301,40 @@ def test_a_timed_out_ref_lookup_is_not_read_as_a_missing_ref(monkeypatch, tmp_pa
         runtime_profile._ref_commits(tmp_path, "feature/x")
     with pytest.raises(runtime_profile.GitTimeoutError):
         runtime_profile._git_optional(tmp_path, "rev-parse", "HEAD")
+
+
+def test_a_restarted_worker_keeps_the_chosen_watcher_modes(monkeypatch: pytest.MonkeyPatch) -> None:
+    import io
+    import json
+
+    monkeypatch.delenv("FF7R_CUTSCENE_AUTOSKIP", raising=False)
+    supervisor = RuntimeSupervisor()
+    sent: list[dict] = []
+
+    class Worker:
+        def __init__(self, ok: bool) -> None:
+            self.ok = ok
+            self.stdin = self
+            self.stdout = io.StringIO()
+
+        def write(self, line: str) -> None:
+            request = json.loads(line)
+            sent.append(request)
+            self.stdout = io.StringIO(json.dumps({"id": request["id"], "ok": self.ok}) + "\n")
+            worker.stdout = self.stdout
+
+        def flush(self) -> None:
+            pass
+
+    monkeypatch.setattr(supervisor, "_ensure_live_runtime_ready_locked", lambda operation: None)
+    monkeypatch.setattr(supervisor, "_ensure_worker_locked", lambda: None)
+    monkeypatch.setattr(supervisor, "_async_route_request_locked", lambda: None)
+    worker = Worker(ok=False)
+    supervisor._worker = worker
+    supervisor._request_locked("set_cutscene_autoskip", {"mode": "always"})
+    assert "FF7R_CUTSCENE_AUTOSKIP" not in supervisor._worker_environment()  # a refused mode is not kept
+    worker.ok = True
+    supervisor._request_locked("set_cutscene_autoskip", {"mode": "always"})
+    supervisor._request_locked("set_tips_autoclose", {"mode": "off"})
+    environment = supervisor._worker_environment()
+    assert environment["FF7R_CUTSCENE_AUTOSKIP"] == "always" and environment["FF7R_TIPS_AUTOCLOSE"] == "off"

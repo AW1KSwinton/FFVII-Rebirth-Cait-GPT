@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -19,6 +19,40 @@ from ff7r_agent.save_slot_load import (
 )
 
 STEAM = "00000000000000000"
+
+
+def test_old_save_matches_current_game_clock_after_dst_change(monkeypatch):
+    class SummerSave(save_slot_load.SaveFile):
+        @property
+        def saved_at(self):
+            return datetime.fromtimestamp(self.mtime, timezone(timedelta(hours=1))).replace(tzinfo=None)
+
+    monkeypatch.setattr(save_slot_load, "_current_utc_offset", lambda: timedelta(0))
+    old = SummerSave(15, "slot015.sav", datetime(2026, 10, 13, 13, 6, 24, tzinfo=timezone.utc).timestamp(), STEAM)
+    assert old.saved_at.hour == 14
+    assert match_save_time("10/13/2026 01:06:24 p.m.", [old], 5) == ([15], "date_time")
+    assert match_save_time("01:06:24 p.m.", [old], 5) == ([15], "clock")
+    other = SummerSave(13, "slot013.sav", old.mtime - 3600, STEAM)
+    assert set(match_save_time("10/13/2026 01:06:24 p.m.", [old, other], 5)[0]) == {13, 15}
+    assert match_save_time("10/13/2026 01:07:24 p.m.", [old], 5)[0] == []
+
+
+def test_current_game_clock_handles_a_date_boundary(monkeypatch):
+    monkeypatch.setattr(save_slot_load, "_current_utc_offset", lambda: timedelta(hours=2))
+    old = save_slot_load.SaveFile(15, "slot015.sav", datetime(2026, 10, 24, 23, 30, tzinfo=timezone.utc).timestamp(), STEAM)
+    assert match_save_time("10/25/2026 01:30:00 a.m.", [old], 5) == ([15], "date_time")
+
+
+def test_menu_read_errors_retain_the_query_cause_without_sending_input(monkeypatch):
+    loader = SaveSlotLoader(object(), layout=SaveMenuLayout())
+    def unavailable(*args, **kwargs):
+        raise save_slot_load.MissionError("map_query_telemetry_stale")
+    monkeypatch.setattr(save_slot_load, "menu_snapshot", unavailable)
+    with pytest.raises(SaveSlotLoadError, match="save_menu_unreadable"):
+        loader.read("main_menu")
+    assert loader.read_errors == [{"stage": "main_menu", "cause": "map_query_telemetry_stale"}]
+    assert loader.presses == []
+
 # Slot -> save time; the list shows them newest first (live 2026-09-28:
 # 11, autosave, 08, 07, 04, 10, ...).
 SAVE_TIMES = {

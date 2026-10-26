@@ -14,14 +14,24 @@ export function obsConfiguration(env = process.env) {
 }
 
 export function safeCaptureError(error, env = process.env) {
-  let message = String(error?.message || 'OBS game-source capture failed');
-  const secret = env.FF7R_OBS_PASSWORD;
-  if (secret) {
-    for (const value of new Set([secret, encodeURIComponent(secret)])) {
-      message = message.replaceAll(value, '[redacted]');
+  try {
+    let message = typeof error?.message === 'string' ? error.message : 'OBS game-source capture failed';
+    const secret = env.FF7R_OBS_PASSWORD;
+    if (typeof secret === 'string' && secret) {
+      message = message.split(secret).join('[redacted]');
+      const encoded = encodeURIComponent(secret);
+      if (encoded !== secret) {
+        let index;
+        while ((index = message.toLowerCase().indexOf(encoded.toLowerCase())) !== -1) {
+          message = message.slice(0, index) + '[redacted]' + message.slice(index + encoded.length);
+        }
+      }
     }
+    message = message.replace(/\b(?:wss?|https?):\/\/[^\r\n]*/gi, '[redacted URL]');
+    return message.replace(/\b(password|token)\s*[:=]\s*[^\r\n]*/gi, '$1=[redacted]');
+  } catch {
+    return 'OBS game-source capture failed';
   }
-  return message.replace(/(password|token)\s*[=:]\s*\S+/gi, '$1=[redacted]');
 }
 
 export function verifiedGameSource(input, settings, gameProcess) {

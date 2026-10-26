@@ -40,7 +40,7 @@ from .evidence_fusion import (
     normalise_degrees, world_bearing_degrees,
 )
 from .input import (
-    CARD_GAME_GAMEPAD_BUTTONS, InputBackend, InputError, normalise_axes, validate_duration, validate_look_delta,
+    CARD_GAME_GAMEPAD_BUTTONS, MAX_HOLD_BINDINGS_MS, InputBackend, InputError, normalise_axes, validate_duration, validate_look_delta,
 )
 from .local_navigation import LocalNavigationExecutor, LocalNavigationLimits
 from .navigation import (
@@ -492,7 +492,7 @@ QUEEN_BLOOD_MATCH_BUTTONS = frozenset({
     "queen_blood_left", "queen_blood_right", "up", "down",
     "confirm", "queen_blood_cancel", "queen_blood_play",
 })
-MENU_INPUT_BUTTONS = frozenset({"confirm", "cancel", "up", "down", "left", "right", "sub_left", "sub_right", "menu", "map", "map_selection_prev", "map_selection_next", "map_drop_pin", "map_tab_prev", "map_tab_next", "map_layer_toggle", "map_era_toggle", "map_view_corresponding", "map_fast_travel", "save_shortcut", "dialogue_left", "dialogue_right", "battle_command_menu"})
+MENU_INPUT_BUTTONS = frozenset({"confirm", "cancel", "up", "down", "left", "right", "sub_left", "sub_right", "menu", "map", "map_selection_prev", "map_selection_next", "map_drop_pin", "map_tab_prev", "map_tab_next", "map_layer_toggle", "map_era_toggle", "map_view_corresponding", "map_fast_travel", "save_shortcut", "dialogue_left", "dialogue_right", "battle_command_menu", "menu_square", "menu_triangle"})
 # Battle command menu presses, allowed only in a fight (battle_menu_tap).
 # A held-Grab pull: this many segments of up to MAX_ACTION_MS each.
 GRAB_MAX_SEGMENTS = 8
@@ -503,7 +503,10 @@ CLIMB_STILL_MAX_CM = 5.0
 CLIMB_SETTLE_SECONDS = 0.4
 # The character state while hanging on a climbing wall (live, Mt. Nibel).
 CLIMB_CONTROLLER_STATE = 11
-BATTLE_MENU_BUTTONS = frozenset({"battle_command_menu", "up", "down", "confirm", "cancel"})
+# left/right are Q/E: in Tactical Mode they switch the commanded party member.
+BATTLE_MENU_BUTTONS = frozenset({"battle_command_menu", "up", "down", "left", "right", "confirm", "cancel"})
+# A forced battle HUD rescan (every text block in the game) at most this often.
+BATTLE_HUD_RESCAN_SECONDS = 5.0
 MAP_INPUT_BUTTONS = frozenset({"map_selection_prev", "map_selection_next", "map_drop_pin", "map_tab_prev", "map_tab_next", "map_layer_toggle", "map_era_toggle", "map_view_corresponding", "map_fast_travel"})
 MAP_BUTTON_MINIMUM_MS = 500
 STARTUP_VISUAL_LABELS = frozenset({"title_prompt", "main_menu"})
@@ -524,6 +527,21 @@ DOOR_STILL_SECONDS = 0.6
 FIELD_ACTION_INTERACTION_MILLISECONDS = 300
 # Interact prompts other than Talk and Open, e.g. "$level_action_check".
 FIELD_ACTION_KEY_PREFIX = "$level_action_"
+# System prompts that are plain interact presses (live 2026-10-22, Mt. Nibel reactor: "Grab" a valve).
+FIELD_ACTION_SYS_KEYS = frozenset({"$level_sys_valve_catch"})
+# Turning a grabbed valve: the prompt shows "Hold Ctrl" and "Hold Shift" (the
+# Grab and Sprint keys) on its two handles (live 2026-10-22, Mt. Nibel reactor).
+VALVE_TURN_BINDINGS = ("grab", "sprint")
+# Holding both together only strained at the wheel and it sprang back (live
+# 2026-10-22), so the hand pattern is selectable.
+VALVE_HANDLES = ("both", "grab", "sprint", "alternate")
+VALVE_MAX_CYCLES = 10
+# All holds must end well inside the runtime request timeout (25 s): a worker
+# killed mid-hold never sends the key-ups, leaving Ctrl and Shift down for the
+# whole PC (live 2026-10-22, five 8 s holds).
+VALVE_MAX_TOTAL_MS = 18000
+# Each handle's on-screen "Hold" marker: a FieldTarget widget's Txt_Hold.
+VALVE_HOLD_TEXT = "$menu_field_0011_0000"
 # Consecutive blank field reads (map and Cloud gone) taken as a scene.
 FIELD_ACTION_BLANK_SAMPLES = 3
 
@@ -1765,12 +1783,23 @@ class AgentService:
         # Keep the four-complete-sample change budget; allow up to four extra
         # reads for incomplete exports, without sending input (#366).
         with reads(mode):
+            # A stopped setup releases the match lease even when deck select
+            # still owns the game. Recover only from the live, visible deck
+            # guide; an arbitrary read in the field must never start discovery.
+            initial = self.telemetry.observe()
+            payload = initial.queen_blood or {}
+            if (not payload or payload.get("probe_idle") is True):
+                request = getattr(self.telemetry, "request_queen_blood_probe", None)
+                if callable(request) and self._deck_screen_mode() in {"select", "editor"}:
+                    if not request():
+                        raise SafetyError("cannot resume the visible Queen's Blood deck probe")
+                    initial = self.telemetry.observe()
             previous = None
             previous_sample = None
             complete_samples = 0
             incomplete_samples = []
-            for _ in range(8 if stable else 1):
-                state = self.telemetry.observe()
+            for index in range(8 if stable else 1):
+                state = initial if index == 0 else self.telemetry.observe()
                 if not stable:
                     return state
                 payload = state.queen_blood or {}
@@ -2313,6 +2342,27 @@ class AgentService:
         """
         for attempt in range(1, max_selection_attempts + 1):
             cursor_state = self.telemetry.observe()
+            # Native hand actors can publish identities before their cursor.
+            # Read only until hover is known; never guess or send navigation.
+            if self._queen_blood_cursor_or_none(cursor_state) is None:
+                before_cursor = self._queen_blood_state_or_none(cursor_state)
+                trace.append({"sequence": cursor_state.sequence,
+                              "queen_blood": deepcopy(cursor_state.queen_blood),
+                              "stage": "cursor_not_ready"})
+                cursor_state = self._wait_for_queen_blood_sample(
+                    cursor_state.sequence, min(action_deadline, self._monotonic() + 5.0),
+                    lambda sample: self._queen_blood_cursor_or_none(sample) is not None,
+                    trace, return_latest_on_timeout=True,
+                ) or cursor_state
+                after_cursor = self._queen_blood_state_or_none(cursor_state)
+                def hand_key(item):
+                    return None if item is None else (item.active, item.phase, item.turn,
+                        tuple((c.hand_index, c.card_id, c.mulligan_selected) for c in item.hand))
+                if hand_key(after_cursor) != hand_key(before_cursor):
+                    raise SafetyError("Queen's Blood hand changed while waiting for cursor telemetry",
+                        details={"action": "select_queens_blood_card_slot", "stage": "admission",
+                                 "inputs": deepcopy(inputs), "trace": deepcopy(trace),
+                                 "requires_fresh_observation": True})
             if not cursor_state.running:
                 raise SafetyError("game telemetry reports that the game is stopped")
             payload = self._queen_blood_payload(cursor_state)
@@ -2322,7 +2372,10 @@ class AgentService:
                 cursor_queen_blood = QueenBloodState.from_dict(payload)
                 cursor_index = self._queen_blood_mulligan_cursor(cursor_queen_blood)
             except (QueenBloodError, SafetyError) as exc:
-                raise SafetyError(str(exc)) from exc
+                raise SafetyError(str(exc), details={
+                    "action": "select_queens_blood_card_slot", "inputs": deepcopy(inputs),
+                    "requires_fresh_observation": True, "trace": deepcopy(trace),
+                }) from exc
             attempt_record: dict[str, Any] = {
                 "target_index": target_index,
                 "attempt": attempt,
@@ -3202,7 +3255,15 @@ class AgentService:
                 trace=trace,
                 rejection_reason=str(exc),
             )
-            raise SafetyError(str(exc)) from exc
+            details = deepcopy(exc.details) if isinstance(exc, SafetyError) and exc.details else {}
+            # Only the nested admission check can prove a no-input failure.
+            # Preserve that proof without losing attempts from the outer action.
+            if "inputs" in details and inputs:
+                details["nested_inputs"] = deepcopy(details["inputs"])
+                details["inputs"] = deepcopy(inputs)
+            details["mulligan_inputs"] = deepcopy(inputs)
+            details["mulligan_trace"] = deepcopy(trace)
+            raise SafetyError(str(exc), details=details) from exc
         finally:
             try:
                 self.input.release_all()
@@ -3321,6 +3382,9 @@ class AgentService:
         if not self._action_lock.acquire(blocking=False):
             raise SafetyError("another input action is executing")
         trace: list[dict[str, Any]] = []
+        inputs: list[dict[str, Any]] = []
+        stage = "admission"
+        state = payload = None
         try:
             self._claim_campaign_speech_before_input()
             state = self.telemetry.observe()
@@ -3335,8 +3399,11 @@ class AgentService:
             # Guarded like the board presses (re-arms the open control
             # session and refocuses the game). Live, 1.5 s holds left the
             # first pass of three matches unregistered; 2.2 s is sent.
+            stage = "dispatch"
+            inputs.append({"button": "queen_blood_play", "milliseconds": hold_milliseconds})
             self._tap_queen_blood_confirm_or_button("queen_blood_play", hold_milliseconds)
             self.input.release_all()
+            stage = "verification"
             post = self._wait_for_queen_blood_sample(
                 state.sequence,
                 self._monotonic() + timeout_seconds,
@@ -3363,8 +3430,14 @@ class AgentService:
                 result["reason"] = "pass_not_observed"
             self._record_action(**result)
             return result
-        except QueenBloodError as exc:
-            raise SafetyError(str(exc)) from exc
+        except (QueenBloodError, SafetyError) as exc:
+            details = deepcopy(exc.details) if isinstance(exc, SafetyError) and exc.details else {}
+            details.update(action="pass_queens_blood_turn", stage=stage,
+                           inputs=deepcopy(inputs), inputs_are_attempts=True,
+                           pre_sequence=state.sequence if state is not None else None,
+                           admission_snapshot=deepcopy(payload), trace=deepcopy(trace),
+                           requires_fresh_observation=True)
+            raise SafetyError(str(exc), details=details) from exc
         finally:
             try:
                 self.input.release_all()
@@ -3443,6 +3516,7 @@ class AgentService:
                     "sequence": item["sequence"],
                     "stage": item.get("stage"),
                     "phase": current.phase if current else None,
+                    "active": current.active if current else None,
                     "turn": current.turn if current else None,
                     "manager_found": payload.get("manager_found") if isinstance(payload, dict) else None,
                     "placement_active": current.placement.active if current else None,
@@ -3459,6 +3533,8 @@ class AgentService:
                 "confirm_attempted": confirm_attempted,
                 "requires_fresh_observation": True,
                 "inputs": inputs, "inputs_are_attempts": True,
+                "admission_snapshot": {"sequence": state.sequence,
+                    "queen_blood": deepcopy(state.queen_blood)} if state is not None else None,
                 "placement_steps": steps, "hand_trace": hand_trace,
                 "timings": timings, "observations": observations,
                 "observation_count": len(trace), "observations_truncated": len(trace) > len(retained),
@@ -4100,15 +4176,17 @@ class AgentService:
 
     def save_game_progress(self, slot: Any = None, execute: bool = False, calibrate_prompt: dict | None = None,
                            resolve_calibration: dict | None = None, test_save: bool = False,
-                           probe_prompt: bool = False, story_save: bool = False) -> dict[str, Any]:
+                           probe_prompt: bool = False, story_save: bool = False,
+                           inspect_empty_row: bool = False) -> dict[str, Any]:
         """Save to the run's slot (live streams only) or, for development, to
         the operator's FF7R_TEST_SAVE_SLOT (``test_save``). ``story_save``
         writes the operator's FF7R_STORY_SAVE_SLOT, a story run outside the
         campaign, in any stream mode. ``probe_prompt`` opens the Save prompt,
-        selects Yes for a screenshot and cancels."""
+        selects Yes for a screenshot and cancels. ``inspect_empty_row``
+        captures an unowned, empty row without confirming it."""
         from .save_slot_save import SaveSlotWriter, SaveCalibrationResolver
         if resolve_calibration is not None:
-            if slot is not None or calibrate_prompt is not None or test_save or probe_prompt or story_save:
+            if slot is not None or calibrate_prompt is not None or test_save or probe_prompt or story_save or inspect_empty_row:
                 raise SafetyError("save resolution cannot be combined with saving")
             return SaveCalibrationResolver(self).run(execute=execute, **resolve_calibration)
         mode = self._queen_blood_record_mode()
@@ -4124,7 +4202,8 @@ class AgentService:
             return {"ok": False, "execute": execute, "saved": False, "state": "save_refused",
                     "decision": refusal, "input_sent": False, "presses": []}
         result = SaveSlotWriter(self).run(slot=slot, execute=execute, calibrate_prompt=calibrate_prompt,
-                                          test_save=test_save, probe_prompt=probe_prompt, story_save=story_save)
+                                          test_save=test_save, probe_prompt=probe_prompt, story_save=story_save,
+                                          inspect_empty_row=inspect_empty_row)
         if (result.get("saved") and calibrate_prompt is None and not result.get("test_save")
                 and not result.get("story_save")):
             from .working_save_recovery import arm, receipt_path
@@ -6907,11 +6986,12 @@ class AgentService:
         if not key:
             raise SafetyError("command is required, e.g. check")
         if not key.startswith("$"):
-            key = FIELD_ACTION_KEY_PREFIX + key.casefold()
+            short = key.casefold()
+            key = "$level_sys_" + short if "$level_sys_" + short in FIELD_ACTION_SYS_KEYS else FIELD_ACTION_KEY_PREFIX + short
         dedicated = {TALK_KEY: "talk_to_npc", DOOR_KEY: "open_door", TERRAIN_ACTION_KEY: "terrain_action"}
         if key in dedicated:
             raise SafetyError(f"{key} has its own operation: {dedicated[key]}")
-        if not key.startswith(FIELD_ACTION_KEY_PREFIX):
+        if not key.startswith(FIELD_ACTION_KEY_PREFIX) and key not in FIELD_ACTION_SYS_KEYS:
             raise SafetyError(f"only interact prompts ({FIELD_ACTION_KEY_PREFIX}*) can be used: {key}")
         observe_seconds = float(observe_seconds)
         if not 0.0 <= observe_seconds <= 15.0:
@@ -7441,12 +7521,13 @@ class AgentService:
         closes with the tip keys dismissed."""
         return self._tips.status()
 
-    def read_ui_roots(self, details: bool = False) -> dict[str, Any]:
+    def read_ui_roots(self, details: bool = False, attachments_only: bool = False) -> dict[str, Any]:
         """Fresh root visibility diagnostics; never permission to dismiss UI."""
         from .map_query import request_snapshot
-        if not isinstance(details, bool):
-            raise SafetyError("details must be a boolean")
-        flags = ("uiroots", "uirootdetails") if details else ("uiroots",)
+        if not isinstance(details, bool) or not isinstance(attachments_only, bool):
+            raise SafetyError("details and attachments_only must be booleans")
+        flags = (("uiroots", "uirootdetails", "uiownerattachments") if attachments_only
+                 else ("uiroots", "uirootdetails") if details else ("uiroots",))
         response, _ = request_snapshot(self, heights=False, flags=flags, require_map=False)
         roots = response.get("ui_roots")
         if not isinstance(roots, dict):
@@ -9574,7 +9655,7 @@ class AgentService:
             and not (allow_swimming and self._swimming(state))
         ):
             state = self._ensure_settled_gameplay(state)
-        if state.paused and not allow_paused:
+        if state.paused and not (allow_paused or allow_queen_blood_prematch):
             raise SafetyError("game is paused")
         return state
 
@@ -10257,6 +10338,64 @@ class AgentService:
                 self._last_action_finished = self._monotonic()
                 self._action_lock.release()
 
+    def turn_valve(self, milliseconds: int = 3000, handles: str = "both", cycles: int = 1) -> dict[str, Any]:
+        """Turn a valve Cloud has grabbed (use_field_action valve_catch) with
+        its two handles' keys, Grab (Ctrl) and Sprint (Shift). ``handles``:
+        ``both`` holds them together, ``grab`` or ``sprint`` holds one, and
+        ``alternate`` holds Grab then Sprint; each hold lasts ``milliseconds``
+        (500-10000) and the pattern repeats ``cycles`` times (1-10), at most
+        VALVE_MAX_TOTAL_MS in all. Reports
+        how many handles' "Hold" markers remain. Refused unless those markers
+        show and no field prompt does (a prompt means Cloud let go)."""
+        from .field_prompt import read_field_prompt
+        from .shop import read_screen_texts
+        if type(milliseconds) is not int or not 500 <= milliseconds <= MAX_HOLD_BINDINGS_MS:
+            raise SafetyError(f"milliseconds must be a whole number, 500-{MAX_HOLD_BINDINGS_MS}")
+        if handles not in VALVE_HANDLES:
+            raise SafetyError(f"handles must be one of {', '.join(VALVE_HANDLES)}")
+        if type(cycles) is not int or not 1 <= cycles <= VALVE_MAX_CYCLES:
+            raise SafetyError(f"cycles must be a whole number, 1-{VALVE_MAX_CYCLES}")
+        pattern = {"both": [list(VALVE_TURN_BINDINGS)], "alternate": [[binding] for binding in VALVE_TURN_BINDINGS]}
+        holds = pattern.get(handles, [[handles]]) * cycles
+        if milliseconds * len(holds) > VALVE_MAX_TOTAL_MS:
+            raise SafetyError(f"the holds add up to {milliseconds * len(holds)} ms; at most {VALVE_MAX_TOTAL_MS} ms per call")
+        if not getattr(self.input, "is_real", False):
+            for bindings in holds:
+                self.input.hold_bindings(bindings, milliseconds)
+            return {"ok": True, "simulated": True, "milliseconds": milliseconds, "holds": holds}
+        if not self._action_lock.acquire(blocking=False):
+            raise SafetyError("another input action is executing")
+        try:
+            # Gripping the valve reads as off the ground (live 2026-10-22), which the
+            # settling gate refuses; the swimming exception admits it and the
+            # Hold markers below narrow it.
+            state = self._assert_real_movement_allowed(allow_swimming=True)
+            if state.in_combat:
+                raise SafetyError("turn_valve is refused in a fight")
+            before = read_field_prompt(self)
+            if before.get("commands"):
+                raise SafetyError(f"a field prompt is shown, so the valve is not held: {before.get('commands')}")
+            markers = read_screen_texts(self, VALVE_HOLD_TEXT)["count"]
+            if not markers:
+                raise SafetyError("no valve Hold markers show: grab it first with use_field_action(command=\"valve_catch\")")
+            self._ensure_game_foreground()  # Grab and Sprint are keyboard keys
+            for bindings in holds:
+                self.input.hold_bindings(bindings, milliseconds)
+            after = read_field_prompt(self)
+            remaining = read_screen_texts(self, VALVE_HOLD_TEXT)["count"]
+            result = {"ok": True, "action": "turn_valve", "milliseconds": milliseconds, "handles": handles,
+                      "holds": holds, "hold_markers_before": markers, "hold_markers_after": remaining, "from": before.get("player_position"),
+                      "to": after.get("player_position"), "commands_after": after.get("commands")}
+            self._record_action(**{k: v for k, v in result.items() if k not in ("from", "to")})
+            return result
+        finally:
+            try:
+                self.input.release_all()
+            finally:
+                self._last_action_finished = self._monotonic()
+                self._action_lock.release()
+
+
     def climb_move(self, x: float, y: float, milliseconds: int = 800) -> dict[str, Any]:
         """Move along a climbing wall: one camera-relative stick push while
         Cloud hangs on it (live 2026-10-20, the Mt. Nibel cave wall: walking
@@ -10330,8 +10469,9 @@ class AgentService:
 
     def battle_menu_tap(self, button: str, milliseconds: int = 120) -> dict[str, Any]:
         """One bounded press of the battle command menu: open it
-        (``battle_command_menu``), move (up/down), choose (confirm) or back
-        out (cancel). Only in a fight; field menus keep their own gate."""
+        (``battle_command_menu``), move (up/down), switch the commanded member
+        (left/right: Q/E), choose (confirm) or back out (cancel). Only in a
+        fight; field menus keep their own gate."""
         if button not in BATTLE_MENU_BUTTONS:
             raise SafetyError("only the battle command menu buttons are enabled")
         if not getattr(self.input, "is_real", False):
@@ -10353,6 +10493,47 @@ class AgentService:
         if type(raw) is not bool:
             raise SafetyError("raw must be a boolean")
         return read_field_menu(self, raw=raw)
+
+    def read_loadout_menu(self, raw: bool = False, stage: str | None = None,
+                          wait_seconds: float = 0, inspect_properties: bool = False,
+                          include_choices: bool = False, screen: str = "equipment") -> dict[str, Any]:
+        """Capture field-menu identities for equipment/Materia binding work,
+        or (``screen="battle_setting"``) for Combat Settings.
+
+        No input. This does not yet identify equipped items or owned copies;
+        normalized_loadout stays unavailable until live bindings are proven.
+        """
+        from .loadout_menu import read_loadout_menu
+        return read_loadout_menu(self, raw=raw, stage=stage, wait_seconds=wait_seconds,
+                                  inspect_properties=inspect_properties, include_choices=include_choices,
+                                  screen=screen)
+
+    def read_materia_inventory(self) -> dict[str, Any]:
+        """Read every entry of the already open Materia list without cursor input."""
+        from .materia_memory import read_materia_inventory
+        if not self._action_lock.acquire(blocking=False):
+            raise SafetyError("another input action is executing")
+        try:
+            return read_materia_inventory(self)
+        finally:
+            self._action_lock.release()
+
+    def switch_combat_character(self, member: str, execute: bool = False) -> dict[str, Any]:
+        """Switch actual combat control, with a fresh controlled-actor receipt.
+
+        Refuses Tactical Mode. Separate from changing the commanded member.
+        """
+        from .party_control import switch_combat_character
+        return switch_combat_character(self, member=member, execute=execute)
+
+    def preview_loadout_change(self, snapshot: dict[str, Any], change: dict[str, Any],
+                               expected_snapshot_sha256: str) -> dict[str, Any]:
+        """Offline desired-configuration preview from provided normalized data.
+
+        No game reads, input, controller steps, execution or native receipt.
+        """
+        from .loadout import preview_loadout_change
+        return preview_loadout_change(snapshot, change, expected_snapshot_sha256)
 
     def cast_field_spell(self, spell: str, caster: str = "cloud", target: str = "cloud",
                          until_hp: int | None = None, max_casts: int = 10) -> dict[str, Any]:
@@ -10403,12 +10584,47 @@ class AgentService:
     def run_field_menu(self, action: str, **arguments: Any) -> dict[str, Any]:
         """The work of field_menu_async: ``action`` cast_spell (spell,
         caster, target, until_hp, max_casts) or use_item (item, target,
-        until_hp | until_mp | count)."""
+        until_hp | until_mp | count), or scan_loadout_choices (stage,
+        execute, max_choices, timeout_seconds) in an already open loadout list."""
         if action == "cast_spell":
             return self.cast_field_spell(**arguments)
         if action == "use_item":
             return self.use_field_item(**arguments)
-        raise SafetyError("action must be cast_spell or use_item")
+        if action == "scan_loadout_choices":
+            from .loadout_scan import scan_loadout_choices
+            if set(arguments) - {"stage", "execute", "max_choices", "timeout_seconds"}:
+                raise SafetyError("unsupported loadout scan arguments")
+            return scan_loadout_choices(self, **arguments)
+        if action == "change_loadout":
+            return self.change_loadout(**arguments)
+        raise SafetyError("action must be cast_spell, use_item, scan_loadout_choices or change_loadout")
+
+    def change_loadout(self, change: str, member: str = "cloud", execute: bool = False,
+                       close_menu: bool = False, **arguments: Any) -> dict[str, Any]:
+        """Change gear, a Materia copy or a weapon skill through Materia &
+        Equipment, or a shortcut or the battle party through Combat Settings,
+        checked on screen before the one Confirm and verified by the screen
+        and a save-data diff after it (loadout_actions). Without ``execute``
+        it returns the member's loadout and the party from the save data."""
+        from .loadout_actions import change_loadout
+        if type(execute) is not bool or type(close_menu) is not bool:
+            raise SafetyError("execute and close_menu must be booleans")
+        if execute:
+            if not getattr(self.input, "is_real", False):
+                raise SafetyError("loadout changes require the Windows backend")
+            if self.telemetry.observe().in_combat:
+                raise SafetyError("loadout changes are made outside fights")
+        if not self._action_lock.acquire(blocking=False):
+            raise SafetyError("another input action is executing")
+        try:
+            result = change_loadout(self, change, member=member, execute=execute, close_menu=close_menu,
+                                    **arguments)
+        finally:
+            self._action_lock.release()
+        if execute:
+            self._record_action(action="change_loadout", ok=result.get("ok") is True,
+                                rejection_reason=None if result.get("ok") else result.get("outcome"))
+        return result
 
     def _assert_field_menu_allowed(self) -> None:
         if not getattr(self.input, "is_real", False):
@@ -10421,12 +10637,32 @@ class AgentService:
 
     def read_battle_command_menu(self) -> dict[str, Any]:
         """The battle command menu now: open, list title, entries, the
-        highlighted index and entry, and its help text. No input."""
-        from .battle_command import parse_command_menu
+        highlighted index and entry, its help text, the member it commands and
+        the status panel's HP/MP per member. No input."""
+        from .battle_command import parse_command_menu, parse_party_status
         from .map_query import request_snapshot
-        response, _ = request_snapshot(self, heights=False, flags=("menutexts", "savecells"), require_map=False)
-        texts = [item for item in response.get("texts") or [] if isinstance(item, dict)]
-        return parse_command_menu(texts, [item for item in response.get("save_lists") or [] if isinstance(item, dict)])
+
+        def read(flags: tuple[str, ...]) -> tuple[dict[str, Any], dict[str, Any]]:
+            response, _ = request_snapshot(self, heights=False, flags=flags, require_map=False)
+            texts = [item for item in response.get("texts") or [] if isinstance(item, dict)]
+            menu = parse_command_menu(texts, [item for item in response.get("save_lists") or [] if isinstance(item, dict)])
+            menu["party_status"] = parse_party_status(texts)
+            return response, menu
+
+        # The battle HUD's kept widgets: the full menu read scans every text
+        # and list in the game (0.75 s on the game thread, live 2026-10-22).
+        response, menu = read(("battlehud",))
+        if response.get("texts_scope") != "battle":  # an exporter without the battle HUD read
+            return read(("menutexts", "savecells"))[1]
+        incomplete = menu["open"] and (menu["selected"] is None or menu["item_count"] is not None
+                                       and len(menu["all_entries"]) < menu["item_count"])
+        now = time.monotonic()
+        if incomplete and now - getattr(self, "_battle_hud_rescanned_at", -BATTLE_HUD_RESCAN_SECONDS) >= BATTLE_HUD_RESCAN_SECONDS:
+            # A list with cells the kept set lacks: the game made new ones.
+            # At most one forced scan per interval, should the gap be lasting.
+            self._battle_hud_rescanned_at = now
+            response, menu = read(("battlehud", "battlehudscan"))
+        return menu
 
     def _battle_vitals(self) -> dict[str, Any] | None:
         """Party and enemy HP/MP from one combat snapshot, keyed by actor."""
@@ -10443,14 +10679,24 @@ class AgentService:
 
     def use_battle_command(self, path: Any = None, execute: bool = False,
                            effect_seconds: float = 3.0, target: str | None = None,
-                           hold_on_enemy_skill: bool = False) -> dict[str, Any]:
+                           hold_on_enemy_skill: bool = False, member: str | None = None,
+                           take_highlighted: bool = False, measure_effect: bool = True,
+                           enemies: Any = None, prefer_child_target: bool = False) -> dict[str, Any]:
         """Issue an ATB command by name in a fight: ``path`` is the menu
         entries in order, e.g. ["Items", "Mega-Potion"] or ["Abilities",
-        "Braver"]. Opens the Commands Menu, moves to each entry, verifies the
-        highlight natively before each Confirm and reports how it ended
-        (``command_not_accepted`` when an entry is unavailable, e.g. not
-        enough ATB; the menu is then closed). Without ``execute`` it reads
-        the menu only."""
+        "Braver"]. Opens the Commands Menu, switches Tactical Mode to
+        ``member`` when given (Q/E, verified by the name shown), moves to each
+        entry, verifies the highlight natively before each Confirm and reports
+        how it ended (``command_not_accepted`` when an entry is unavailable,
+        e.g. not enough ATB; the menu is then closed). ``take_highlighted``
+        takes the highlighted entry of a further list after the path (the
+        Limit Breaks after ["Limit"]). ``measure_effect=false`` skips the
+        combat snapshots before and after (a caller that observes the fight
+        anyway measures from its own reads; each snapshot costs frames).
+        ``enemies`` (names) mark a list showing them as the target list.
+        ``prefer_child_target`` chooses a shown child target (such as Titan's
+        Earthen Aegis) when no explicit ``target`` was supplied.
+        Without ``execute`` it reads the menu only."""
         from .battle_command import MAX_PATH, use_command
         if (not isinstance(path, list) or not 1 <= len(path) <= MAX_PATH
                 or any(not isinstance(name, str) or not name.strip() for name in path)):
@@ -10461,6 +10707,17 @@ class AgentService:
             raise SafetyError("target must be an entry name")
         if type(hold_on_enemy_skill) is not bool:
             raise SafetyError("hold_on_enemy_skill must be a boolean")
+        if member is not None and (not isinstance(member, str) or not member.strip()):
+            raise SafetyError("member must be a party member's name")
+        if type(take_highlighted) is not bool:
+            raise SafetyError("take_highlighted must be a boolean")
+        if type(measure_effect) is not bool:
+            raise SafetyError("measure_effect must be a boolean")
+        if type(prefer_child_target) is not bool:
+            raise SafetyError("prefer_child_target must be a boolean")
+        if enemies is not None and (not isinstance(enemies, list)
+                                    or any(not isinstance(name, str) or not name.strip() for name in enemies)):
+            raise SafetyError("enemies must be a list of enemy names")
         if execute and not self.telemetry.observe().in_combat:
             raise SafetyError("battle commands need a fight in progress")
         if not 0 <= float(effect_seconds) <= 10:
@@ -10469,12 +10726,13 @@ class AgentService:
         # (live: a Fire cast interrupted by a Velociwing left it untouched,
         # and the ATB is spent all the same), so the vitals before and after
         # are reported, never assumed.
-        before = self._battle_vitals() if execute else None
+        before = self._battle_vitals() if execute and measure_effect else None
         if not self._action_lock.acquire(blocking=False):
             raise SafetyError("another input action is executing")
         try:
             result = use_command(self.read_battle_command_menu, lambda button: self.battle_menu_tap(button, 120),
-                                 self._sleeper, path, execute, target, hold_on_enemy_skill)
+                                 self._sleeper, path, execute, target, hold_on_enemy_skill, member,
+                                 take_highlighted, tuple(enemies or ()), prefer_child_target)
         finally:
             try:
                 self.input.release_all()

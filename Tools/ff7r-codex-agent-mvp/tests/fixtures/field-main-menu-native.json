@@ -1,0 +1,132 @@
+{
+  "provenance": {
+    "capturedAt": "2026-10-23T23:10:29Z",
+    "basis": "Native Main Menu owner/text projection; raw receipts retained outside Git; replay clock and base state are synthetic."
+  },
+  "roots": {
+    "configured_complete": true,
+    "input_authorized": false,
+    "observed": true,
+    "scanned": 1579,
+    "truncated": false,
+    "widgets": [
+      {
+        "class": "MainMenu_Card_Top_C",
+        "configured_root": true,
+        "details": {
+          "in_viewport_ex": false,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": false,
+        "path": "MainMenu_Card_Top_C /Game/Menu/Resident/MainMenu/Card/MainMenu_Card_TopNPC.MainMenu_Card_TopNPC_C:WidgetTree.MainMenu_Card_Top"
+      },
+      {
+        "class": "BattleTutorial_C",
+        "configured_root": true,
+        "details": {
+          "in_viewport_ex": false,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "BattleTutorial_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.BattleTutorial_C_2147481372"
+      },
+      {
+        "class": "MainMenu_Base_C",
+        "configured_root": true,
+        "details": {
+          "in_viewport_ex": true,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "MainMenu_Base_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Base_C_2147471573"
+      },
+      {
+        "class": "Command_C",
+        "configured_root": false,
+        "details": {
+          "in_viewport_ex": true,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "Command_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.Command_C_2147481452"
+      },
+      {
+        "class": "MainMenu_Top_Window_C",
+        "configured_root": false,
+        "details": {
+          "in_viewport_ex": true,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "MainMenu_Top_Window_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Top_Window_C_2147471464"
+      },
+      {
+        "class": "Foot_C",
+        "configured_root": false,
+        "details": {
+          "in_viewport_ex": true,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "Foot_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.Foot_C_2147471572"
+      },
+      {
+        "class": "NaviMap_End2_C",
+        "configured_root": false,
+        "details": {
+          "in_viewport_ex": true,
+          "nodes": [],
+          "truncated": false
+        },
+        "in_viewport": false,
+        "is_visible": true,
+        "path": "NaviMap_End2_C /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.NaviMap_End2_C_2147478359"
+      }
+    ]
+  },
+  "texts": [
+    {
+      "class": "EndTextBlock",
+      "full_id": "EndTextBlock /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.SaveIcon_C_2147482057.WidgetTree.Txt_Info",
+      "owner": "SaveIcon_C_2147482057",
+      "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance.SaveIcon.WidgetTree.Txt_Info",
+      "rendered": false,
+      "text": "$menu_save_load_0005_0001"
+    },
+    {
+      "class": "EndTextBlock",
+      "full_id": "EndTextBlock /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.BattleTutorial_C_2147481372.WidgetTree.Txt_Title",
+      "owner": "BattleTutorial_C_2147481372",
+      "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance.BattleTutorial.WidgetTree.Txt_Title",
+      "rendered": false,
+      "text": "$menu_tutorial_ui_0000_0001"
+    },
+    {
+      "class": "EndTextBlock",
+      "full_id": "EndTextBlock /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.MainMenu_Top_Window_C_2147471464.WidgetTree.TopContent2.WidgetTree.Txt_MainTitle",
+      "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance.MainMenu_Top_Window.WidgetTree.TopContent2.WidgetTree.Txt_MainTitle",
+      "rendered": true,
+      "text": "$menu_mainmenu_0000_0000"
+    },
+    {
+      "class": "EndTextBlock",
+      "full_id": "EndTextBlock /Engine/Transient.GameEngine_2147482600:BP_EndGameInstance_C_2147482461.Foot_C_2147471572.WidgetTree.Txt_Help",
+      "owner": "Foot_C_2147471572",
+      "path": "/Engine/Transient.GameEngine_2147482600:BP_EndGameInstance.Foot.WidgetTree.Txt_Help",
+      "rendered": true,
+      "text": "$help_message_0000_0011"
+    }
+  ]
+}

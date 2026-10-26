@@ -2408,6 +2408,32 @@ def test_a_field_menu_job_runs_and_reports():
     assert status["response"]["result"]["uses"] == 4
 
 
+def test_combat_autopilot_job_excludes_other_inputs_and_cannot_bypass_the_bridge():
+    supervisor = RuntimeSupervisor(request_timeout_seconds=0.5)
+    worker = FakeAsyncWorker()
+    supervisor._worker = worker
+    assert supervisor.call("run_combat_autopilot", {})["error"] == "combat_autopilot_requires_async"
+    assert worker.stdin.writes == []
+
+    stdout = BlockingStdout('{"ok":true,"id":1,"result":{"ok":true,"outcome":"battle_ended"}}\n')
+    worker = FakeAsyncWorker(stdout)
+    supervisor._worker = worker
+    started = supervisor.call("combat_autopilot_async", {"execute": True, "seconds": 10})
+    assert started["ok"] is True
+    assert json.loads(worker.stdin.writes[0])["operation"] == "run_combat_autopilot"
+    assert supervisor.call("observe_game", {})["error"] == "async_combat_in_progress"
+    stdout.release.set()
+    deadline = time.monotonic() + 1.0
+    while time.monotonic() < deadline:
+        status = supervisor.call("get_combat_autopilot_status", {"job_id": started["job_id"]})
+        if status["state"] == "completed":
+            break
+        time.sleep(0.01)
+    else:
+        pytest.fail("combat autopilot job did not complete")
+    assert status["response"]["result"]["outcome"] == "battle_ended"
+
+
 @pytest.mark.parametrize("operation", ["play_queens_blood_match", "play_queens_blood"])
 def test_sync_queens_blood_match_is_refused_before_worker_write(operation):
     supervisor = RuntimeSupervisor(request_timeout_seconds=0.5)

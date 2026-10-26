@@ -7,7 +7,52 @@ import pytest
 
 from ff7r_agent.runtime_commands import invoke_runtime
 from ff7r_agent.telemetry import JsonFileTelemetry, TelemetryError
+from ff7r_agent.service import AgentService, SafetyError
 from test_queen_blood_probe_marker_sim import ProbeSim, DECK_SCREEN
+
+
+@pytest.mark.parametrize("guide", ["select", "editor", "other", "tips"])
+def test_released_probe_resumes_only_for_a_live_deck_guide(guide):
+    from contextlib import nullcontext
+
+    calls = []
+    payload = {"probe_idle": True}
+    sequence = 0
+
+    def observe():
+        nonlocal sequence
+        sequence += 1
+        return SimpleNamespace(sequence=sequence, queen_blood=dict(payload))
+
+    def request():
+        calls.append("request")
+        payload.clear()
+        payload.update(screen="deck_select", begin_match_available=True)
+        return True
+
+    service = object.__new__(AgentService)
+    service.telemetry = SimpleNamespace(
+        observe=observe, queen_blood_reads=lambda _: nullcontext(),
+        request_queen_blood_probe=request)
+    service._deck_screen_mode = lambda: guide
+    service._sleeper = lambda _: None
+
+    result = service._queen_blood_observe(stable=True)
+    assert calls == (["request"] if guide in {"select", "editor"} else [])
+    assert result.queen_blood == payload
+    assert sequence >= 2  # Independent snapshots still required after recovery.
+
+
+def test_visible_deck_does_not_hide_failed_probe_recovery():
+    from contextlib import nullcontext
+
+    service = object.__new__(AgentService)
+    service.telemetry = SimpleNamespace(
+        observe=lambda: SimpleNamespace(sequence=1, queen_blood=None),
+        queen_blood_reads=lambda _: nullcontext(), request_queen_blood_probe=lambda: False)
+    service._deck_screen_mode = lambda: "select"
+    with pytest.raises(SafetyError, match="cannot resume"):
+        service._queen_blood_observe(stable=True)
 
 
 def test_completed_ticket_performs_no_more_object_reads_or_writes():

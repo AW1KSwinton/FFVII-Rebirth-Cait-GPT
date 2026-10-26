@@ -270,6 +270,23 @@ class SaveFile:
                 "saved_at": self.saved_at.isoformat(timespec="seconds"), "steam_id": self.steam_id}
 
 
+def _current_utc_offset():
+    return datetime.now().astimezone().utcoffset()
+
+
+def _save_display_times(item: SaveFile) -> tuple[datetime, ...]:
+    """Keep historical local time and the game's current-offset rendering.
+
+    Rebirth renders older file timestamps with today's UTC offset. Across a
+    clock change that differs from Python's historical local conversion. Keep
+    both exact interpretations and let the existing unique-slot checks reject
+    collisions; never widen the time tolerance or infer a slot from row order.
+    """
+    from datetime import timezone
+    current = datetime.fromtimestamp(item.mtime, timezone.utc).replace(tzinfo=None) + _current_utc_offset()
+    return tuple(dict.fromkeys((item.saved_at, current)))
+
+
 def default_save_root() -> Path:
     return documents_folder() / SAVE_SUBPATH
 
@@ -402,18 +419,20 @@ def match_save_time(text: str, saves: list[SaveFile], tolerance: float) -> tuple
     candidates = _date_candidates(text)
     if candidates:
         slots = [item.slot for item in saves
-                 if any(abs((item.saved_at - value).total_seconds()) <= tolerance for value in candidates)]
+                 if any(abs((stamp - value).total_seconds()) <= tolerance
+                        for stamp in _save_display_times(item) for value in candidates)]
         return slots, "date_time"
     clock = _clock_seconds(text)
     if clock is None:
         return [], None
     slots = []
     for item in saves:
-        stamp = item.saved_at
-        seconds = stamp.hour * 3600 + stamp.minute * 60 + stamp.second
-        difference = abs(seconds - clock) % 86400
-        if min(difference, 86400 - difference) <= tolerance:
-            slots.append(item.slot)
+        for stamp in _save_display_times(item):
+            seconds = stamp.hour * 3600 + stamp.minute * 60 + stamp.second
+            difference = abs(seconds - clock) % 86400
+            if min(difference, 86400 - difference) <= tolerance:
+                slots.append(item.slot)
+                break
     return slots, "clock"
 
 
@@ -430,8 +449,10 @@ class SaveMenuScreen:
         self.saves = saves
         self.layout = layout or SaveMenuLayout()
         self.texts = [(str(item.get("path", "")), str(item.get("text", "")))
-                      for item in response.get("texts") or [] if isinstance(item, dict)]
-        self.signals = {meaning for _, text in self.texts
+                      for item in response.get("texts") or [] if isinstance(item, dict)
+                      and item.get("rendered") is not False]
+        self.signals = {meaning for path, text in self.texts
+                        if ".SaveIcon." not in path
                         if (meaning := _meaning(SIGNALS, text)) is not None}
         self.main_menu_help = sorted({meaning for _, text in self.texts
                                       if (meaning := _meaning(MAIN_MENU_HELP, text)) is not None})
@@ -672,6 +693,7 @@ class SaveSlotLoader:
         self.presses: list[dict[str, Any]] = []
         self.screens: list[dict[str, Any]] = []
         self.last_texts: list[dict[str, str]] = []
+        self.read_errors: list[dict[str, str]] = []
         self.menu_touched = False
         self.load_started = False
         # Set when a load may be in progress: then nothing more is pressed.
@@ -686,6 +708,8 @@ class SaveSlotLoader:
             # highlight there and refused as load_list_highlight_moved).
             response, _ = menu_snapshot(self.service, rows=stage not in ("main_menu", "save_load"), title=self.from_title)
         except MissionError as exc:
+            if len(self.read_errors) < MAX_SCREEN_RECORDS:
+                self.read_errors.append({"stage": stage, "cause": str(exc)})
             raise SaveSlotLoadError("save_menu_unreadable", stage=stage, cause=str(exc)) from exc
         screen = SaveMenuScreen(response, self.saves, self.layout)
         self.last_texts = [{"path": path, "text": text} for path, text in screen.texts]
@@ -1142,7 +1166,8 @@ class SaveSlotLoader:
             else:
                 report.update(decision="load_save_slot_error", details={
                     "error_type": type(exc).__name__, "error": str(exc)})
-            report.update(ok=False, state="failed", phase="load_failed", last_texts=self.last_texts)
+            report.update(ok=False, state="failed", phase="load_failed", last_texts=self.last_texts,
+                          read_errors=self.read_errors)
             if self.menu_touched and not self.load_started and not self.uncertain and not (self.from_title and self.load_confirmation_sent):
                 try:
                     report["closed"] = (self.close_title_ui("close_after_failure") if self.from_title

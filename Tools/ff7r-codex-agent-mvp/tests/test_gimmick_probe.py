@@ -100,6 +100,36 @@ def test_the_probe_stops_neutral_when_nothing_moves(tmp_path):
     assert gl.load_evidence(path)[0].observed_landings == {}
 
 
+class Ladder(Character):
+    """Starts on the ladder (inside the passage, not grounded) and climbs down 100 cm/s for 17 m,
+    longer than the stall window, before stepping off towards the far island."""
+
+    def __init__(self):
+        super().__init__()
+        self.position = Vec3(60.0, 0.0, 0.0)
+
+    def sleep(self, seconds):
+        self.now += seconds
+        if self.heading is None:
+            return
+        if self.position.z > -1700.0:
+            self.position = Vec3(self.position.x, self.position.y, max(-1700.0, self.position.z - 100.0 * seconds))
+        else:
+            self.position = Vec3(self.position.x + 150.0 * seconds, self.position.y, self.position.z)
+
+    def observe(self):
+        state = super().observe()
+        state["player"]["position"]["z"] = self.position.z
+        return state
+
+
+def test_a_long_ladder_climb_is_progress_not_a_stall(tmp_path):
+    # Live 2026-10-22: the horizontal-only check stopped a 17 m ladder 5 m down.
+    report, _ = run(Ladder(), tmp_path)
+    assert report["outcome"] == "landed", report
+    assert report["landing"]["x"] > 1100
+
+
 def test_the_nearer_end_is_the_departure():
     assert gp.nearer_direction(CRAWL, Vec3(-100.0, 0.0, 0.0)) == gl.DIRECTION_FORWARD
     assert gp.nearer_direction(CRAWL, Vec3(500.0, 0.0, 0.0)) == gl.DIRECTION_REVERSE

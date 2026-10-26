@@ -312,5 +312,188 @@ subtitle.WidgetTree.RootWidget.GetParent = function() return object('PanelWidget
 files[root .. 'map-query.request'] = 'eighteen|200|snapshot|npcdialogue'
 run(65, 67)
 assert(files[root .. 'map-query.json']:find('"rendered":false', 1, true), 'hidden parent was ignored')
+-- The battle HUD: one scan keeps its blocks and the command list; later
+-- reads check only those, until a kept block goes or a rescan is asked for.
+local hud_scans, braver_shown = 0, true
+local battle_blocks = {
+    text_block(game .. 'Command_Cell_00_C_41.WidgetTree.Txt_Command', 'Braver', function() return braver_shown end),
+    text_block(game .. 'Command.WidgetTree.Status.WidgetTree.Status_00.WidgetTree.Txt_HP_Num', '2867', function() return true end),
+}
+for _, block in ipairs(battle_blocks) do text_blocks[#text_blocks + 1] = block end
+local command_list = object('EndListBox ' .. game .. 'Command.WidgetTree.Command_Switching.WidgetTree.List_00.WidgetTree.List_00', {
+    IsVisible = function() return true end, ItemCount = 3,
+    GetSelectedIndex = function() return 0 end,
+    GetChildAt = function() return object('Command_Cell_00_C ' .. game .. 'Command_Cell_00_C_41') end})
+local find_all = env.FindAllOf
+env.FindAllOf = function(name)
+    if name == 'EndTextBlock' then hud_scans = hud_scans + 1 end
+    if name == 'EndListBox' then return {command_list} end
+    return find_all(name)
+end
+local function hud_request(id, from, flags)
+    files[root .. 'map-query.request'] = id .. '|200|snapshot|' .. flags
+    run(from, from + 2)
+    local answer = assert(files[root .. 'map-query.json'])
+    assert(answer:find('"request_id":"' .. id .. '"', 1, true), id .. ' not answered')
+    return answer
+end
+local hud = hud_request('nineteen', 68, 'battlehud')
+assert(hud:find('"texts_scope":"battle"', 1, true) and hud:find('"source":"scan"', 1, true), hud)
+assert(hud:find('"text":"Braver"', 1, true) and hud:find('"owner":"Command_Cell_00_C_41"', 1, true), hud)
+assert(hud:find('"text":"2867"', 1, true), hud)
+assert(not hud:find('$level_action_talk', 1, true), 'a field text was kept as battle HUD')
+assert(hud:find('"selected_index":0', 1, true) and hud:find('"ItemCount":"3"', 1, true), hud)
+assert(hud:find('Command_Cell_00_C_41', 1, true), hud)
+assert(not hud:find('fast_travel_prompt', 1, true), 'battle HUD probed the map menus')
+assert(hud_scans == 1)
+braver_shown = false
+hud = hud_request('twenty', 71, 'battlehud')
+assert(hud:find('"source":"kept_blocks"', 1, true) and not hud:find('"text":"Braver"', 1, true), hud)
+assert(hud_scans == 1, 'a kept read scanned every text block')
+hud = hud_request('twentyone', 74, 'battlehud,battlehudscan')
+assert(hud:find('"source":"scan"', 1, true) and hud_scans == 2, hud)
+battle_blocks[2].IsValid = function() return false end
+hud = hud_request('twentytwo', 77, 'battlehud')
+assert(hud:find('"source":"scan"', 1, true) and hud_scans == 3, 'a gone block did not trigger a rescan')
+-- Recovery reads attachment flags, never dormant widget contents. A crowded
+-- retained HUD cannot displace owners, and an attached unknown modal remains.
+local attachment_reads = 0
+local function recovery_widget(name, attached)
+    local value = object(name, {IsVisible = function() return true end,
+        IsInViewport = function() return false end,
+        IsInViewportEx = function() attachment_reads = attachment_reads + 1; return attached end})
+    value.GetClass = function() return {
+        IsValid = function() return true end,
+        GetFName = function() return {ToString = function() return name:match('^(%S+)') end} end,
+        GetSuperStruct = function() return {
+            IsValid = function() return true end,
+            GetFName = function() return {ToString = function() return 'EndUserWidget' end} end} end,
+        ForEachProperty = function() error('recovery reflected dormant widget properties') end,
+    } end
+    return value
+end
+root_widgets = {}
+for i = 1, 140 do
+    root_widgets[#root_widgets + 1] = recovery_widget('RetainedHUD_C /Temp/HUD' .. i, false)
+end
+root_widgets[#root_widgets + 1] = recovery_widget('MainMenu_Base_C /Temp/MainMenu', true)
+files[root .. 'map-query.request'] = 'recoveryowners|200|snapshot|uiroots,uirootdetails,uiownerattachments'
+run(108, 110)
+local attachment_response = assert(files[root .. 'map-query.json'])
+assert(not attachment_response:find('RetainedHUD_C', 1, true), 'detached HUD exhausted recovery evidence')
+assert(attachment_response:find('"truncated":false', 1, true), attachment_response)
+assert(attachment_response:find('MainMenu_Base_C', 1, true), 'Main Menu owner was lost')
+local reads_before_idle = attachment_reads
+run(111, 118)
+assert(attachment_reads == reads_before_idle, 'recovery kept polling after its request')
+root_widgets[#root_widgets + 1] = recovery_widget('UnknownModal_C /Temp/UnknownModal', true)
+files[root .. 'map-query.request'] = 'recoveryunknown|200|snapshot|uiroots,uirootdetails,uiownerattachments'
+run(119, 121)
+assert(files[root .. 'map-query.json']:find('UnknownModal_C', 1, true), 'unknown attached owner was hidden')
+-- A request-owned equipment census excludes hundreds of unrelated retained
+-- lists before reading selection or properties, and keeps the selected row.
+local loadout_attached, loadout_scans, foreign_reads = true, 0, 0
+local equipment_path = '/Engine/Transient.Equip_C_42'
+local equipment = recovery_widget('Equip_C ' .. equipment_path, true)
+equipment.IsInViewportEx = function() return loadout_attached end
+equipment.GetRenderOpacity = function() return 1 end
+equipment.GetAddress = function() return 0x123450 end
+local owned_label = text_block('/Temp/Untitled_1.MenuRenderingWorld:OwnedRow.WidgetTree.Label', 'synthetic-owned-weapon', function() return true end)
+local loadout_text_blocks = {owned_label}
+local row_properties, row_focus = 0, 0
+local owned_row = object('OwnedRow_C /Temp/Untitled_1.MenuRenderingWorld:OwnedRow', {
+    IsVisible = function() return true end, WidgetTree = {RootWidget = owned_label},
+    IsA = function() return true end, SyntheticCopyIndex = 7})
+local row_class = owned_row.GetClass
+owned_row.GetClass = function()
+    local cls = row_class()
+    local reflect = cls.ForEachProperty
+    cls.ForEachProperty = function(self, callback)
+        row_properties = row_properties + 1
+        reflect(self, callback)
+    end
+    return cls
+end
+setmetatable(owned_row, {__index = function(_, key)
+    if tostring(key):lower():find('focus', 1, true) then row_focus = row_focus + 1; error('unproven row focus getter') end
+end})
+local previous_static = env.StaticFindObject
+env.StaticFindObject = function(name)
+    if name == '/Script/EndGame.EndUserWidget' then return object('Class /Script/EndGame.EndUserWidget') end
+    return previous_static(name)
+end
+local owned_list = object('EndVirtualScrollBox ' .. equipment_path .. '.WidgetTree.EquipList', {
+    IsVisible = function() return true end, GetRenderOpacity = function() return 1 end,
+    GetParent = function() return equipment end, ItemCount = 4,
+    GetSelectedIndex = function() return 2 end, GetChildAt = function(_, index) assert(index == 2); return owned_row end})
+local foreign = {}
+local root_candidates = {}
+for i = 1, 300 do
+    foreign[#foreign + 1] = object('EndVirtualScrollBox /Engine/Transient.OtherMenu.List' .. i, {
+        GetSelectedIndex = function() foreign_reads = foreign_reads + 1; error('unrelated selection was read') end})
+    root_candidates[#root_candidates + 1] = object('RetainedHUD_C /Engine/Transient.OtherRoot' .. i, {
+        IsVisible = function() foreign_reads = foreign_reads + 1; error('unrelated root visibility was read') end})
+end
+root_candidates[#root_candidates + 1] = equipment
+foreign[#foreign + 1] = owned_list
+env.FindAllOf = function(class)
+    loadout_scans = loadout_scans + 1
+    if class == 'UserWidget' then return root_candidates end
+    if class == 'EndVirtualScrollBox' then return foreign end
+    if class == 'EndTextBlock' then return loadout_text_blocks end
+    if class == 'EndListBox' then return {} end
+    error('loadout made a broad unrelated scan: ' .. class)
+end
+local scoped = hud_request('loadoutactive', 122, 'loadoutmenu')
+assert(scoped:find('synthetic-owned-weapon', 1, true), 'selected owned row text was lost')
+assert(row_properties == 0 and row_focus == 0, 'loadout invoked unproven row getters')
+assert(scoped:find('"active":true', 1, true), 'attached equipment owner was not established')
+assert(scoped:find('"owner_address":"0x123450"', 1, true), 'one-shot owner address was lost')
+assert(not scoped:find('OtherMenu', 1, true) and foreign_reads == 0, 'retained HUD entered loadout evidence')
+local loadout_before_idle = loadout_scans
+run(125, 132)
+assert(loadout_scans == loadout_before_idle, 'loadout kept polling after its request')
+scoped = hud_request('loadoutinspect', 133, 'loadoutmenu,loadoutinspect')
+assert(row_properties == 1 and row_focus == 0, 'explicit property diagnostic used unexpected getters')
+assert(scoped:find('"SyntheticCopyIndex":"7"', 1, true), 'reflected scalar property was not preserved')
+loadout_before_idle = loadout_scans
+run(136, 141)
+assert(loadout_scans == loadout_before_idle, 'property diagnostic kept polling after its request')
+local choice_rows = {}
+loadout_text_blocks = {}
+for i = 1, 4 do
+    local prefix = '/Temp/Untitled_1.MenuRenderingWorld:ChoiceRow' .. i
+    local choice = object('ChoiceRow_C ' .. prefix, {
+        IsVisible = function() return true end, GetRenderOpacity = function() return 1 end})
+    local icon = object('EndImageSet ' .. prefix .. '.WidgetTree.Icon_Item.WidgetTree.Icon_MateriaIcon', {
+        SelectedIndex = i, IsVisible = function() return true end, GetRenderOpacity = function() return 1 end,
+        GetParent = function() return choice end})
+    choice.Icon_Item = object('Icon_Item_C ' .. prefix .. '.WidgetTree.Icon_Item', {Icon_MateriaIcon = icon})
+    choice_rows[i] = choice
+    loadout_text_blocks[i] = text_block(prefix .. '.WidgetTree.Txt_Title', 'synthetic-copy-' .. i, function() return true end)
+end
+owned_list.GetChildAt = function(_, index) return choice_rows[index + 1] end
+scoped = hud_request('loadoutchoices', 142, 'loadoutmenu,loadoutchoices')
+assert(scoped:find('"complete":true', 1, true) and scoped:find('synthetic-copy-4', 1, true), 'bounded choices were lost')
+assert(scoped:find('"selected_index":4', 1, true), 'typed icon observation was lost')
+assert(foreign_reads == 0 and row_focus == 0, 'choice census read unrelated UI or focus')
+owned_list.GetChildAt = function() return choice_rows[1] end
+scoped = hud_request('loadoutrecycledchoices', 145, 'loadoutmenu,loadoutchoices')
+assert(scoped:find('"complete":false', 1, true), 'recycled choice identities were accepted as complete')
+owned_list.ItemCount = 65
+scoped = hud_request('loadoutchoicebudget', 148, 'loadoutmenu,loadoutchoices')
+assert(scoped:find('"complete":false', 1, true) and scoped:find('"rows":[]', 1, true), 'choice budget was exceeded')
+loadout_before_idle = loadout_scans
+run(151, 156)
+assert(loadout_scans == loadout_before_idle, 'choice census kept polling after its request')
+scoped = hud_request('battlesettingowner', 157, 'battlesettingmenu')
+assert(scoped:find('loadout_menu_inactive', 1, true) and scoped:find('"owner_class":"BattleSetting_C"', 1, true),
+    'Combat Settings read adopted the equipment menu')
+assert(foreign_reads == 0 and loadout_scans == loadout_before_idle + 1, 'Combat Settings read scanned beyond its roots')
+loadout_before_idle = loadout_scans
+loadout_attached = false
+scoped = hud_request('loadoutclosed', 160, 'loadoutmenu,loadoutinspect,loadoutchoices')
+assert(scoped:find('loadout_menu_inactive', 1, true), 'closed equipment menu was reused')
+assert(loadout_scans == loadout_before_idle + 1, 'closed menu triggered list or text scans')
 print('map_query regression passed')
 return response
