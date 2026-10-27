@@ -67,6 +67,49 @@ class PassEvidenceGame(ReactiveGame):
                        queen_blood=payload)
 
 
+def test_pass_admission_failure_retains_empty_attempt_ledger_and_bad_snapshot():
+    backend = FakeRealInput()
+    game = ReactiveGame(backend)
+    game.phase = "closed"
+    service = _service(game, backend)
+
+    with pytest.raises(SafetyError, match="not active") as caught:
+        service.pass_queens_blood_turn()
+
+    details = caught.value.details
+    assert details["stage"] == "admission"
+    assert details["inputs"] == []
+    assert details["admission_snapshot"]["active"] is False
+    assert not [a for a in backend.actions if a[0] == "tap"]
+    assert not service._action_lock.locked()
+
+
+@pytest.mark.parametrize("stage", ["dispatch", "verification"])
+def test_pass_failure_after_attempt_never_claims_empty_input(stage, monkeypatch):
+    backend = FakeRealInput()
+    service = _service(ReactiveGame(backend), backend)
+
+    def fail_dispatch(button, milliseconds):
+        backend.tap(button, milliseconds)
+        raise SafetyError("injected failure after dispatch")
+
+    def fail_verification(*args, **kwargs):
+        raise SafetyError("injected failure during verification")
+
+    if stage == "dispatch":
+        monkeypatch.setattr(service, "_tap_queen_blood_confirm_or_button", fail_dispatch)
+    else:
+        monkeypatch.setattr(service, "_wait_for_queen_blood_sample", fail_verification)
+
+    with pytest.raises(SafetyError, match="injected failure") as caught:
+        service.pass_queens_blood_turn()
+
+    assert caught.value.details["stage"] == stage
+    assert caught.value.details["inputs"] == [{"button": "queen_blood_play", "milliseconds": 2200}]
+    assert len([a for a in backend.actions if a[0] == "tap"]) == 1
+    assert not service._action_lock.locked()
+
+
 @pytest.mark.parametrize("phase", ["opponent_turn", "result", "inactive"])
 def test_pass_accepts_fresh_turn_end_evidence(phase):
     backend = FakeRealInput()

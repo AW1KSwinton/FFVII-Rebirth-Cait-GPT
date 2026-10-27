@@ -191,21 +191,65 @@ def agent_call(operation: str, arguments: dict[str, Any] | None = None) -> dict[
     (Ctrl) for one pull, moving x, y (camera-relative) for milliseconds, or
     segments [[x, y, ms], ...]; only while a *_catch prompt shows. It reports
     how far Cloud moved.
+    Valves: use_field_action(command="valve_catch") grabs the valve;
+    turn_valve (milliseconds, handles, cycles) uses bounded Grab and Sprint
+    holds and reports the remaining on-screen Hold markers.
     Field menu (outside fights): read_field_menu (no input). field_menu_async
     with action cast_spell (spell, caster, target, until_hp) heals through Main
     Menu > Spells; action use_item (item, target, until_hp | until_mp | count)
     goes through Inventory > Items; poll get_field_menu_status. The first cast
     or use measures it, the rest follow back to back.
+    Loadout and Combat Settings changes (#410): field_menu_async action
+    change_loadout (change, member, execute, close_menu) with change
+    equipment (category weapon/armor/accessory, item "$Item_..." text key,
+    retain_upgrade_setting), materia (row weapon/armor, slot, copy_id from
+    read_materia_inventory, take_from when another member holds the copy),
+    weapon_skill (slot, skill "$menu_WeaponUpgrade_Core_name_..." key,
+    disable_auto_upgrade), shortcut (slot 1-4, category abilities/spells/
+    items/limit_breaks, entry text key) or party (member out of the
+    frontline, member_in from the backline). Each step is read back on screen
+    before the one Confirm; Yes/No prompts are answered only as asked, with
+    the highlight read back. verified needs the screen result and a save-data
+    diff with only the change's own fields. execute=false returns the
+    member's loadout and the party from the save data, no input. The menu is
+    left open on the result. Poll get_field_menu_status.
+    Equipment/Materia evidence: read_loadout_menu (raw, screen equipment/
+    battle_setting/member_change,
+    stage member/equipment_category/equipment_inventory/materia_inventory/
+    materia_weapon_slot/materia_armor_slot, wait_seconds 0-3).
+    inspect_properties/include_choices are explicit single-capture diagnostics,
+    never combined with waiting; they do not establish owned-copy identity.
+    The reader captures existing equipment-menu evidence without input. Its
+    normalized_loadout is unavailable until live bindings are verified.
+    field_menu_async action scan_loadout_choices (stage, execute, max_choices,
+    timeout_seconds) inspects virtualized choices using bounded Up/Down only;
+    it requires that list already open, preserves partial evidence, and leaves
+    the menu/control session open. Poll get_field_menu_status.
+    preview_loadout_change (snapshot, change, expected_snapshot_sha256) is a
+    data-only preview from supplied normalized state, never an execution or
+    game outcome. switch_combat_character (member, execute) changes actual
+    combat control with typed actor readback, separately from commanding an
+    ally. It refuses Tactical Mode, uses at most three Up pulses within eight
+    seconds and never replays an uncertain/stalled input. Native combat-switch
+    acceptance is pending.
     Climbing walls: climb_move (x, y camera-relative, milliseconds) pushes
     the stick while Cloud hangs on a wall (off the ground and still); walk
     into the yellow holds to start the climb.
-    Battle menu: battle_menu_tap (battle_command_menu, up, down, confirm,
-    cancel) presses the command menu only while a fight is in progress;
-    read_battle_command_menu (no input) lists it with the highlight;
-    use_battle_command (path e.g. ["Items", "Mega-Potion"], execute) issues
-    an ATB command by name, verifying each highlight before Confirm;
+    Battle menu: battle_menu_tap (battle_command_menu, up, down, left/right =
+    Q/E to switch the commanded member, confirm, cancel) presses the command
+    menu only while a fight is in progress; read_battle_command_menu (no
+    input) lists it with the highlight, the commanded member and each
+    member's HP/MP; use_battle_command (path e.g. ["Items", "Mega-Potion"],
+    execute, member="Sephiroth", target) issues an ATB command by name for
+    that member, verifying each highlight before Confirm;
     hold_on_enemy_skill=true sends nothing while an enemy attack is telegraphed
-    (enemy_attack_incoming), since an interrupted cast still spends the ATB.
+    (enemy_attack_incoming), since an interrupted cast still spends the ATB;
+    take_highlighted=true takes a further list's highlight (["Limit"]).
+    Combat autopilot: combat_autopilot_async (seconds, execute, heal_below)
+    commands the whole party until the fight ends (revive, heal, Ether, Limit,
+    then the attack that has measurably hurt the enemy most); poll
+    get_combat_autopilot_status. It stops on victory, Game Over, refused input
+    or its time limit, and retains observed decisions locally.
     Conversation: finish_conversation_async (timeout_seconds); poll
     get_finish_conversation_status with job_id to decline a visible Queen's
     Blood prompt or wait for field telemetry to return. Routes and travel stop

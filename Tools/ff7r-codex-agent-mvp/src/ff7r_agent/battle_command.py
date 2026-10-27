@@ -21,15 +21,39 @@ itself: the exporter names each text's owning widget instance, and the
 cursor moves until that cell reads the wanted entry.
 After a spell or item the same list shows its targets (title "Fire":
 Velociwing, Kyuvildun; help "Select a target."), chosen like any entry.
+
+Live 2026-10-22 (the Materia Guardian, Cloud and Sephiroth): Tactical Mode
+names the commanded member above the list ("Q < Sephiroth > E";
+``Command_Switching.WidgetTree.Txt_Name`` holds a party-name key) and Q/E
+switch it, so one menu commands either member. Range spells carry markup
+("Thunder<icon=range>"). The status panel's ``Status_NN`` texts give each
+member's name key, HP and MP.
 """
 from __future__ import annotations
 
+import re
 from typing import Any, Callable
 
 LIST_SUFFIX = ".Command_Switching.WidgetTree.List_00.WidgetTree.List_00"
 TITLE_SUFFIX = ".Command_Switching.WidgetTree.List_00.WidgetTree.Txt_Title"
 ENTRY_SUFFIX = "Command_Cell_00.WidgetTree.Txt_Command"
 HELP_SUFFIX = ".Command_Help.WidgetTree.Txt_Help"
+MEMBER_SUFFIX = ".Command_Switching.WidgetTree.Txt_Name"
+STATUS_PATTERN = re.compile(r"\.Status\.WidgetTree\.Status_(\d\d)\.WidgetTree\.Txt_(Name|HP_Num|MP_Num)$")
+# Party-name keys seen live; an unknown key is reported as itself.
+PARTY_NAMES = {
+    "$menu_partyname_0000_0002": "Cloud",
+    "$menu_partyname_0001_0002": "Barret",
+    "$menu_partyname_0002_0002": "Tifa",
+    "$menu_partyname_0003_0002": "Aerith",
+    "$menu_partyname_0004_0002": "Red XIII",
+    "$menu_partyname_0005_0002": "Yuffie",
+    "$menu_partyname_0008_0002": "Sephiroth",
+}
+MARKUP = re.compile(r"<[^>]*>")
+# Q / E in Tactical Mode: the previous / next party member.
+NEXT_MEMBER = "right"
+MAX_MEMBERS = 4
 # The enemy's telegraphed attack name, shown only while it winds up (live:
 # "Charge", "Backflip"; absent between attacks).
 ENEMY_SKILL_SUFFIX = ".SkillName_Enemy.WidgetTree.Txt_SkillName"
@@ -48,9 +72,36 @@ def _owner(object_id: Any) -> str | None:
     return object_id.rsplit(".", 1)[-1].rsplit(":", 1)[-1] or None
 
 
+def member_name(key: Any) -> str | None:
+    """A party member's name from its localisation key (or the text itself)."""
+    if not isinstance(key, str) or not key.strip():
+        return None
+    return PARTY_NAMES.get(key.strip(), key.strip())
+
+
+def parse_party_status(texts: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Each filled status panel slot: name, HP and MP as the HUD shows them."""
+    slots: dict[str, dict[str, Any]] = {}
+    for item in texts:
+        if not isinstance(item, dict):
+            continue
+        match = STATUS_PATTERN.search(str(item.get("path", "")))
+        if not match:
+            continue
+        slot, field = match.groups()
+        value = str(item.get("text", "")).strip()
+        row = slots.setdefault(slot, {"slot": int(slot)})
+        if field == "Name":
+            row["name"] = member_name(value)
+        elif value.replace(",", "").isdigit():
+            row["hp" if field == "HP_Num" else "mp"] = int(value.replace(",", ""))
+    return [row for _, row in sorted(slots.items()) if row.get("name") and "hp" in row]
+
+
 def parse_command_menu(texts: list[dict[str, Any]], lists: list[dict[str, Any]]) -> dict[str, Any]:
     """The command menu from one snapshot: open, title, entries, the
-    highlighted index and the highlighted entry read from its own cell."""
+    highlighted index and the highlighted entry read from its own cell, and
+    the party member it commands."""
     record = next((item for item in lists if isinstance(item, dict)
                    and str(item.get("id", "")).endswith(LIST_SUFFIX) and item.get("visible")), None)
     selected = record.get("selected_index") if record else None
@@ -60,6 +111,7 @@ def parse_command_menu(texts: list[dict[str, Any]], lists: list[dict[str, Any]])
     enemy_skill = next((text.strip() for path, text, _ in rows
                         if path.endswith(ENEMY_SKILL_SUFFIX) and text.strip()), None)
     help_text = next((text for path, text, _ in rows if path.endswith(HELP_SUFFIX)), None)
+    member = next((member_name(text) for path, text, _ in rows if path.endswith(MEMBER_SUFFIX)), None)
     cells = [(text, owner) for path, text, owner in rows
              if path.endswith(ENTRY_SUFFIX) and text.strip() not in EMPTY_ENTRIES]
     count = None
@@ -77,27 +129,45 @@ def parse_command_menu(texts: list[dict[str, Any]], lists: list[dict[str, Any]])
             "all_entries": [text for text, _ in cells] if open_ else [], "item_count": count if open_ else None,
             "selected_index": selected if open_ else None, "selected": highlighted if open_ else None,
             "help": help_text.strip() if open_ and isinstance(help_text, str) else None,
-            "enemy_skill": enemy_skill}
+            "member": member if open_ else None, "enemy_skill": enemy_skill}
+
+
+def is_target_list(menu: dict[str, Any], enemies: tuple[str, ...] = ()) -> bool:
+    """A target list: its help line starts "Select a target" (a range spell
+    adds a marker to it, live 2026-10-22: Blizzard, Thunder and Aero were
+    backed out of where Fire's exact line matched), or it lists an enemy."""
+    help_text = MARKUP.sub("", str(menu.get("help") or "")).strip()
+    return (help_text.startswith(TARGET_HELP.rstrip("."))
+            or any(names_match(entry, enemy) for entry in menu.get("all_entries") or [] for enemy in enemies))
 
 
 def names_match(entry: str | None, name: str) -> bool:
     """An entry is the name, or the name with a one-letter tag (two enemies
-    of a kind are listed "Velociwing A" and "Velociwing B")."""
+    of a kind are listed "Velociwing A" and "Velociwing B"). Icon markup
+    ("Thunder<icon=range>") is not part of the name."""
     if not isinstance(entry, str):
         return False
-    have, wanted = entry.strip().casefold(), name.strip().casefold()
+    have, wanted = MARKUP.sub("", entry).strip().casefold(), MARKUP.sub("", name).strip().casefold()
     return have == wanted or (len(have) == len(wanted) + 2 and have.startswith(wanted + " ") and have[-1].isalpha())
 
 
 def use_command(read: Callable[[], dict[str, Any]], tap: Callable[[str], Any],
                 sleep: Callable[[float], None], path: list[str], execute: bool,
-                target: str | None = None, hold_on_enemy_skill: bool = False) -> dict[str, Any]:
+                target: str | None = None, hold_on_enemy_skill: bool = False,
+                member: str | None = None, take_highlighted: bool = False,
+                enemies: tuple[str, ...] = (), prefer_child_target: bool = False) -> dict[str, Any]:
     """Open the menu, walk ``path`` (e.g. ["Items", "Mega-Potion"]) by name,
     verifying the highlight before each Confirm, and report how it ended.
     When a target list follows the last entry, ``target`` is chosen in it by
-    name, or without one the target the game already highlights (its lock)."""
+    name, or without one the target the game already highlights (its lock).
+    ``member`` first switches Tactical Mode to that party member (Q/E),
+    verified by the name it shows. ``take_highlighted`` takes the highlighted
+    entry of a further list after the path (e.g. ["Limit"] then its Limit
+    Break) instead of stopping there. ``enemies`` (names) also mark a list
+    that shows them as the target list."""
     presses: list[str] = []
     steps: list[dict[str, Any]] = []
+    top_entries: list[str] = []
 
     def press(button: str) -> dict[str, Any]:
         tap(button)
@@ -107,7 +177,8 @@ def use_command(read: Callable[[], dict[str, Any]], tap: Callable[[str], Any],
 
     def report(ok: bool, outcome: str, menu: dict[str, Any], **extra: Any) -> dict[str, Any]:
         return {"ok": ok, "outcome": outcome, "execute": execute, "path": path, "steps": steps,
-                "menu": menu, "presses": presses, "input_sent": bool(presses), **extra}
+                "menu": menu, "presses": presses, "input_sent": bool(presses), "member": member,
+                "top_entries": list(top_entries), **extra}
 
     def close(menu: dict[str, Any]) -> dict[str, Any]:
         for _ in range(MAX_PATH + 1):
@@ -127,7 +198,23 @@ def use_command(read: Callable[[], dict[str, Any]], tap: Callable[[str], Any],
         menu = press("battle_command_menu")
         if not menu["open"]:
             return report(False, "command_menu_not_opened", menu)
+    if member is not None:
+        # Each press of E shows the next member; a full lap without it means it is absent.
+        switches = 0
+        while not names_match(menu.get("member"), member):
+            if switches >= MAX_MEMBERS:
+                return report(False, "member_not_reached", close(menu), wanted=member)
+            before = menu.get("member")
+            menu = press(NEXT_MEMBER)
+            switches += 1
+            if not menu["open"]:
+                return report(False, "menu_closed_early", menu, after="member switch")
+            if menu.get("member") == before:
+                return report(False, "member_not_reached", close(menu), wanted=member)
+    # The top-level list this member offers (it shows "Limit" once a Limit is ready).
+    top_entries.extend(menu["entries"])
     names = list(path)
+    targeted = False
     depth = -1
     while depth + 1 < len(names):
         depth += 1
@@ -170,7 +257,12 @@ def use_command(read: Callable[[], dict[str, Any]], tap: Callable[[str], Any],
             # Nothing happened: the entry is unavailable (not enough ATB or
             # MP, or nothing to use it on).
             return report(False, "command_not_accepted", close(menu), wanted=name, help=steps[-1]["help"])
-        if last and menu["help"] == TARGET_HELP:
+        if last and not targeted and is_target_list(menu, enemies):
+            targeted = True
+            if target is None and prefer_child_target:
+                children = [entry for entry in menu["entries"] if "<button=child-target>" in entry]
+                if children:
+                    target = children[0]
             if target:
                 names.append(target)
                 continue
@@ -183,6 +275,11 @@ def use_command(read: Callable[[], dict[str, Any]], tap: Callable[[str], Any],
             if not menu["open"]:
                 return report(True, "menu_closed_after_command", menu, target=steps[-1]["entry"])
             return report(False, "menu_still_open", menu, note="the target list stayed open")
+        if last and take_highlighted and depth + 1 < MAX_PATH and menu["selected"] is not None:
+            # A list the caller does not name (the Limit Breaks): take the
+            # entry the game highlights, verified by its own cell, and go on.
+            names.append(menu["selected"])
+            continue
         if last:
             return report(False, "menu_still_open", menu, note="a further choice is shown")
     return report(False, "menu_still_open", menu)

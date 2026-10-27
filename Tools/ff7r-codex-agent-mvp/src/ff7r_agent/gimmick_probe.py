@@ -149,7 +149,9 @@ def probe_gimmick(
             while len(window) > 1 and now - window[1][0] >= PROBE_STALL_SECONDS:
                 window.popleft()
             first_t, first = window[0]
-            if now - first_t >= PROBE_STALL_SECONDS and math.hypot(feet.x - first.x, feet.y - first.y) / 100.0 < PROBE_MIN_PROGRESS_M:
+            # Progress counts in 3D: a ladder moves the character up or down, not across (live 2026-10-22,
+            # Mt. Nibel reactor: a 17 m ladder stopped 5 m down as "no progress" and left Cloud on it).
+            if now - first_t >= PROBE_STALL_SECONDS and math.dist((feet.x, feet.y, feet.z), (first.x, first.y, first.z)) / 100.0 < PROBE_MIN_PROGRESS_M:
                 return finish("stopped", reason="probe_no_progress")
             if not engaged and (grounded is False or math.hypot(
                     feet.x - departure.x, feet.y - departure.y) / 100.0 <= ENGAGE_RADIUS_M):

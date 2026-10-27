@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from dataclasses import replace
 
 import pytest
 
@@ -103,6 +104,21 @@ def _service(
         settled_gameplay_samples=settled_gameplay_samples,
         sleeper=lambda _seconds: None,
     )
+
+
+def test_paused_deck_select_can_resume_but_other_pauses_still_refuse():
+    prematch = _state(1, queen_blood={"screen": "deck_select", "begin_match_available": True})
+    prematch = replace(prematch, paused=True)
+    service = _service(MatchTelemetry([prematch]), FakeRealInput())
+    assert service._assert_action_allowed(
+        allow_queen_blood_dialogue_transition=True) is prematch
+    with pytest.raises(SafetyError, match="game is paused"):
+        service._assert_action_allowed()
+
+    other_menu = replace(prematch, queen_blood=_queen_blood())
+    service.telemetry = MatchTelemetry([other_menu])
+    with pytest.raises(SafetyError, match="game is paused"):
+        service._assert_action_allowed(allow_queen_blood_dialogue_transition=True)
 
 
 def test_initiate_queens_blood_match_interacts_confirms_and_starts() -> None:
@@ -1112,6 +1128,80 @@ def test_mulligan_verifies_the_kept_cards_after_the_game_reorders_the_hand() -> 
 
     assert result["outcome"] == "turn_one_hand_verified"
     assert result["kept_cards_present"] is True
+
+
+def test_mulligan_cards_waits_without_input_until_hover_identity_recovers() -> None:
+    hand = [{"hand_index": i, "card_id": f"opening-{i}", "mulligan_selected": False} for i in range(5)]
+    unknown = _state(1, queen_blood=_queen_blood(active=True, phase="dealing", screen="mulligan", hand=hand))
+    known = _state(2, queen_blood=dict(unknown.queen_blood, cursor={"area": "hand", "hand_index": 0}))
+    backend = FakeRealInput();service = _service(MatchTelemetry([unknown, known]), backend)
+    trace = [];inputs = []
+    result, _ = service._select_queens_blood_card_slot(0, action_deadline=service._monotonic() + 10,
+        max_selection_attempts=1, selection_milliseconds=25, trace=trace, selection_trace=[], inputs=inputs)
+    assert result.sequence == 2
+    assert inputs == []
+    assert not [item for item in backend.actions if item[0] in {"tap", "mouse_click"}]
+    assert trace[0]["stage"] == "cursor_not_ready"
+
+
+@pytest.mark.parametrize("change", ["identity", "phase", "turn", "marker"])
+def test_cursor_wait_still_refuses_changed_mulligan_state(change):
+    hand = [{"hand_index": i, "card_id": f"opening-{i}", "mulligan_selected": False} for i in range(5)]
+    unknown = _state(1, queen_blood=_queen_blood(active=True, phase="dealing", screen="mulligan", hand=hand))
+    payload = dict(unknown.queen_blood, cursor={"area": "hand", "hand_index": 0},
+                   hand=[dict(card) for card in hand])
+    if change == "identity":
+        payload["hand"][0]["card_id"] = "other-card"
+    elif change == "marker":
+        payload["hand"][0]["mulligan_selected"] = True
+    else:
+        payload[change] = "player_turn" if change == "phase" else 1
+    backend = FakeRealInput()
+    service = _service(MatchTelemetry([unknown, _state(2, queen_blood=payload)]), backend)
+
+    with pytest.raises(SafetyError, match="hand changed") as caught:
+        service._select_queens_blood_card_slot(0, action_deadline=service._monotonic() + 10,
+            max_selection_attempts=1, selection_milliseconds=25, trace=[], selection_trace=[], inputs=[])
+
+    assert caught.value.details["stage"] == "admission"
+    assert caught.value.details["inputs"] == []
+    assert caught.value.details["action"] == "select_queens_blood_card_slot"
+    assert not [a for a in backend.actions if a[0] in {"tap", "mouse_click"}]
+
+
+@pytest.mark.parametrize("outer_attempt,inner_attempt", [(False, False), (True, False), (False, True)])
+def test_mulligan_wrapper_preserves_admission_proof_and_either_attempt_ledger(
+    outer_attempt, inner_attempt, monkeypatch,
+):
+    hand = [{"hand_index": i, "card_id": f"opening-{i}", "name": f"Opening {i}",
+             "mulligan_selected": False} for i in range(5)]
+    state = _state(1, queen_blood=_queen_blood(active=True, phase="dealing", screen="mulligan",
+                   cursor={"area": "hand", "hand_index": 0}, hand=hand))
+    backend = FakeRealInput()
+    service = _service(MatchTelemetry([state]), backend)
+    attempt = {"button": "confirm"}
+    source_trace = [{"sequence": 1, "stage": "cursor_not_ready"}]
+
+    def fail_selection(*args, **kwargs):
+        if outer_attempt:
+            kwargs["inputs"].append(attempt)
+        if outer_attempt or inner_attempt:
+            backend.tap("confirm", 25)
+        raise SafetyError("cursor admission failed", details={
+            "action": "select_queens_blood_card_slot", "stage": "admission",
+            "inputs": [attempt] if inner_attempt else [], "trace": source_trace,
+        })
+
+    monkeypatch.setattr(service, "_select_queens_blood_card_slot", fail_selection)
+    with pytest.raises(SafetyError, match="cursor admission failed") as caught:
+        service.mulligan_cards((0,), submit_play=False)
+
+    details = caught.value.details
+    assert details["action"] == "select_queens_blood_card_slot"
+    assert details["stage"] == "admission"
+    assert details["trace"] == source_trace
+    assert bool(details["inputs"]) is (outer_attempt or inner_attempt)
+    assert not service._action_lock.locked()
 
 
 def test_mulligan_cards_does_not_input_without_hover_identity() -> None:

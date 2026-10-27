@@ -208,6 +208,8 @@ def test_repository_layout_is_the_live_calibrated_default(monkeypatch):
     monkeypatch.delenv("FF7R_SAVE_WRITE_LAYOUT", raising=False)
     layout = SaveWriteLayout.configured()
     assert DEFAULT_SAVE_WRITE_LAYOUT.is_file()
+    assert layout.empty_node == "Txt_Title_Mission"
+    assert layout.empty_texts == ("$menu_save_load_0001_0007",)
     assert (layout.yes_node, layout.no_node, layout.prompt_slot_node) == ("Btn_00", "Btn_01", "")
     assert layout.yes_text == "$menu_save_load_0002_0001" and layout.row_selection["widget_name"] == "SaveData_ScrollBox"
 
@@ -533,6 +535,103 @@ def test_occupied_only_layout_does_not_require_fabricated_empty_evidence(game, t
     refused = SaveSlotWriter(game, write_layout=configured).run(slot=9, execute=True)
     assert refused["decision"] == "save_empty_row_contract_unvalidated" and game.writes == [8]
     assert not any(p["why"] == "open_save_prompt" for p in refused["presses"])
+
+
+def test_empty_row_inspection_captures_evidence_without_authorizing_or_writing(game):
+    layout = SaveWriteLayout("Slot", None, (), "RowButton", "PromptSlot", "Yes", "No")
+    game.capture_game_window = lambda: {"ok": True, "image_path": "fixture.png"}
+    before = {n: game.path(n).read_bytes() for n in (0, 8, 13, 14)}
+    result = SaveSlotWriter(game, write_layout=layout).run(9, inspect_empty_row=True)
+    assert result["ok"] and result["state"] == "empty_row_inspected"
+    assert result["requires_review"] and result["closed"] and not result["saved"]
+    evidence = result["empty_row_evidence"]
+    assert evidence["capture"]["image_path"] == "fixture.png"
+    for frame in (evidence["before_capture"], evidence["after_capture"]):
+        assert any(any(n.get("text") == "Empty slot" for n in cell["nodes"])
+                   for cell in frame["save_cells"])
+    assert game.writes == [] and not game.path(9).exists()
+    assert not any(p["why"] == "open_save_prompt" for p in result["presses"])
+    assert before == {n: game.path(n).read_bytes() for n in before}
+    # Inspection does not change the layout or grant write authority.
+    refused = SaveSlotWriter(game, write_layout=layout).run(9, execute=True)
+    assert refused["decision"] == "save_empty_row_contract_unvalidated" and not game.writes
+
+
+def test_empty_row_inspection_supports_an_unassigned_fresh_load(game):
+    game._queen_blood_runs = QueenBloodRuns(game.directory.parent / "fresh-profiles")
+    fresh = {"slot": 14, "steam_id": "7656", "path": str(game.path(14))}
+    identity = process_identity(game._environment)
+    candidate = game._queen_blood_runs.begin_load(fresh, identity)
+    game._queen_blood_runs.complete_load(candidate, identity)
+    game.capture_game_window = lambda: {"ok": True, "image_path": "fixture.png"}
+    result = SaveSlotWriter(game, write_layout=LAYOUT).run(9, inspect_empty_row=True)
+    assert result["ok"] and result["state"] == "empty_row_inspected"
+    assert game.get_queens_blood_run_status()["assignment"] is None
+    assert not game.path(9).exists() and not game.writes
+
+
+def test_service_accepts_empty_row_inspection_offline(game, tmp_path, monkeypatch):
+    from ff7r_agent.service import AgentService
+    layout = tmp_path / "occupied-only.json"
+    layout.write_text(json.dumps({"slot_node": "Slot", "row_button_node": "RowButton",
+        "prompt_slot_node": "PromptSlot", "yes_node": "Yes", "no_node": "No"}))
+    monkeypatch.setenv("FF7R_SAVE_WRITE_LAYOUT", str(layout))
+    game._queen_blood_record_mode = lambda: "offline"
+    game.capture_game_window = lambda: {"ok": True, "image_path": "fixture.png"}
+    result = AgentService.save_game_progress(game, slot=9, inspect_empty_row=True)
+    assert result["ok"] and result["requires_review"] and not result["saved"]
+    assert not game.path(9).exists() and not game.writes
+
+
+def test_empty_row_inspection_rejects_a_previously_owned_missing_file(game):
+    game._queen_blood_runs = QueenBloodRuns(game.directory.parent / "previous-owner")
+    game.path(9).write_bytes(b"owned")
+    game._queen_blood_runs.assign({"driver": "Claude", "model_id": "other"},
+                                  {"slot": 9, "steam_id": "7656", "path": str(game.path(9))})
+    game.path(9).unlink()
+    identity = process_identity(game._environment)
+    candidate = game._queen_blood_runs.begin_load(
+        {"slot": 14, "steam_id": "7656", "path": str(game.path(14))}, identity)
+    game._queen_blood_runs.complete_load(candidate, identity)
+    result = SaveSlotWriter(game, write_layout=LAYOUT).run(9, inspect_empty_row=True)
+    assert result["decision"] == "save_empty_row_inspection_requires_unowned_empty_slot"
+    assert not game.keys and not game.writes
+
+
+@pytest.mark.parametrize("kwargs", [
+    {"slot": None, "inspect_empty_row": True},
+    {"slot": 9, "execute": True, "inspect_empty_row": True},
+    {"slot": 9, "inspect_empty_row": True, "probe_prompt": True},
+    {"slot": 9, "inspect_empty_row": True, "test_save": True},
+    {"slot": 9, "inspect_empty_row": "yes"},
+])
+def test_empty_row_inspection_rejects_incompatible_options_before_input(game, kwargs):
+    result = SaveSlotWriter(game, write_layout=LAYOUT).run(**kwargs)
+    assert not result["ok"] and not game.keys and not game.writes
+
+
+@pytest.mark.parametrize("slot", [8, 13, 14])
+def test_empty_row_inspection_rejects_occupied_or_reserved_slots(game, slot):
+    result = SaveSlotWriter(game, write_layout=LAYOUT).run(slot, inspect_empty_row=True)
+    assert not result["ok"] and not game.keys and not game.writes
+
+
+@pytest.mark.parametrize("mutation,decision", [
+    ("cursor", "save_selected_row_changed"),
+    ("file", "save_target_changed"),
+    ("process", "save_identity_changed"),
+    ("capture", "save_empty_row_inspection_capture_failed"),
+])
+def test_empty_row_inspection_refuses_changes_during_capture(game, mutation, decision):
+    def capture():
+        if mutation == "cursor": game.row = 8
+        if mutation == "file": game.path(9).write_bytes(b"external-write")
+        if mutation == "process": game._environment.tokens[42] = "restarted"
+        return {"ok": mutation != "capture"}
+    game.capture_game_window = capture
+    result = SaveSlotWriter(game, write_layout=LAYOUT).run(9, inspect_empty_row=True)
+    assert not result["ok"] and result["decision"] == decision and not game.writes
+    assert not any(p["why"] == "open_save_prompt" for p in result["presses"])
 
 
 @pytest.mark.parametrize("empty", [{"empty_node": "Empty"}, {"empty_texts": ["Empty slot"]},

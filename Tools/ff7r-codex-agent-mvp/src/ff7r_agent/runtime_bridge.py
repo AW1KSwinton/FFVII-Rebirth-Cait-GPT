@@ -258,6 +258,15 @@ ASYNC_EXPLORE_START_OPERATION = "explore_goto_async"
 ASYNC_EXPLORE_STATUS_OPERATION = "get_explore_goto_status"
 ASYNC_EXPLORE_WORK_OPERATION = "run_explore_goto"
 ASYNC_EXPLORE_ALLOWED_OPERATIONS = frozenset({ASYNC_EXPLORE_STATUS_OPERATION, "stop_all_input"})
+# Combat autopilot: issue ATB commands for the party until the fight ends, as
+# one job inside the worker (no control-session close, no stop latch on exit).
+# Background watcher modes a restarted worker keeps (its factory reads these).
+WATCHER_MODE_VARIABLES = {"set_cutscene_autoskip": "FF7R_CUTSCENE_AUTOSKIP",
+                          "set_tips_autoclose": "FF7R_TIPS_AUTOCLOSE"}
+ASYNC_COMBAT_START_OPERATION = "combat_autopilot_async"
+ASYNC_COMBAT_STATUS_OPERATION = "get_combat_autopilot_status"
+ASYNC_COMBAT_WORK_OPERATION = "run_combat_autopilot"
+ASYNC_COMBAT_ALLOWED_OPERATIONS = frozenset({ASYNC_COMBAT_STATUS_OPERATION, "stop_all_input"})
 ASYNC_SAVE_ALLOWED_OPERATIONS = frozenset({ASYNC_SAVE_STATUS_OPERATION, "stop_all_input"})
 ASYNC_RECOVERY_ALLOWED_OPERATIONS = frozenset({ASYNC_RECOVERY_STATUS_OPERATION, "stop_all_input"})
 INTERNAL_ACTIVE_ASYNC_JOB_OPERATION = "__get_active_async_job__"
@@ -360,6 +369,7 @@ ASYNC_STATUS_OPERATIONS = frozenset({
     ASYNC_SAVE_STATUS_OPERATION,
     ASYNC_RECOVERY_STATUS_OPERATION,
     ASYNC_EXPLORE_STATUS_OPERATION,
+    ASYNC_COMBAT_STATUS_OPERATION,
 })
 
 # These operations belong to the stable bridge/control plane. They must not
@@ -604,6 +614,11 @@ class RuntimeSupervisor:
         self._broker: BrokerProcess | None = None
         self._generation = 0
         self._request_id = 0
+        # Watcher modes the agent chose, given to every later worker: a
+        # restarted worker (stop_all_input) otherwise fell back to the
+        # "stream" default and stopped skipping cutscenes offline (live
+        # 2026-10-22, the Materia Guardian intro).
+        self._watcher_modes: dict[str, str] = {}
         self._started_at: float | None = None
         self._last_restart_at: float | None = None
         self._last_startup_duration_seconds: float | None = None
@@ -638,6 +653,7 @@ class RuntimeSupervisor:
 
     def _worker_environment(self) -> dict[str, str]:
         env = os.environ.copy()
+        env.update(self._watcher_modes)
         if self._broker is not None:
             env["FF7R_GAMEPAD_BROKER_PORT"] = str(self._broker.port)
         return env
@@ -1089,6 +1105,7 @@ class RuntimeSupervisor:
                     ASYNC_SAVE_WORK_OPERATION: "game save",
                     ASYNC_RECOVERY_WORK_OPERATION: "working save recovery",
                     ASYNC_EXPLORE_WORK_OPERATION: "explore walk",
+                    ASYNC_COMBAT_WORK_OPERATION: "combat autopilot",
                 }.get(request.get("operation"), "route")
                 request["state"] = "cancelled"
                 request["error"] = (
@@ -1277,6 +1294,8 @@ class RuntimeSupervisor:
                 if status_operation == ASYNC_RECOVERY_STATUS_OPERATION
                 else "explore walk"
                 if status_operation == ASYNC_EXPLORE_STATUS_OPERATION
+                else "combat autopilot"
+                if status_operation == ASYNC_COMBAT_STATUS_OPERATION
                 else "route"
             )
             return {"ok": False, "error": f"no asynchronous {label} request exists"}
@@ -1322,6 +1341,8 @@ class RuntimeSupervisor:
                 if request.get("operation") == ASYNC_RECOVERY_WORK_OPERATION
                 else "explore walk"
                 if request.get("operation") == ASYNC_EXPLORE_WORK_OPERATION
+                else "combat autopilot"
+                if request.get("operation") == ASYNC_COMBAT_WORK_OPERATION
                 else "route"
             )
             return {
@@ -1419,6 +1440,7 @@ class RuntimeSupervisor:
             ASYNC_SAVE_WORK_OPERATION: ASYNC_SAVE_ALLOWED_OPERATIONS,
             ASYNC_RECOVERY_WORK_OPERATION: ASYNC_RECOVERY_ALLOWED_OPERATIONS,
             ASYNC_EXPLORE_WORK_OPERATION: ASYNC_EXPLORE_ALLOWED_OPERATIONS,
+            ASYNC_COMBAT_WORK_OPERATION: ASYNC_COMBAT_ALLOWED_OPERATIONS,
         }.get(work_operation, ASYNC_ROUTE_ALLOWED_OPERATIONS)
         allowed = ", ".join(sorted(allowed_set | {"say_on_stream"}))
         prefix = {
@@ -1442,6 +1464,7 @@ class RuntimeSupervisor:
             ASYNC_SAVE_WORK_OPERATION: "async_save_in_progress",
             ASYNC_RECOVERY_WORK_OPERATION: "async_recovery_in_progress",
             ASYNC_EXPLORE_WORK_OPERATION: "async_explore_in_progress",
+            ASYNC_COMBAT_WORK_OPERATION: "async_combat_in_progress",
         }.get(work_operation, "async_route_in_progress")
         return (
             f"{prefix}: operation "
@@ -1473,6 +1496,7 @@ class RuntimeSupervisor:
             ASYNC_SAVE_WORK_OPERATION: ASYNC_SAVE_ALLOWED_OPERATIONS,
             ASYNC_RECOVERY_WORK_OPERATION: ASYNC_RECOVERY_ALLOWED_OPERATIONS,
             ASYNC_EXPLORE_WORK_OPERATION: ASYNC_EXPLORE_ALLOWED_OPERATIONS,
+            ASYNC_COMBAT_WORK_OPERATION: ASYNC_COMBAT_ALLOWED_OPERATIONS,
         }.get(request.get("operation"), frozenset({"stop_all_input"}))
         return sorted(allowed | {"say_on_stream"})
 
@@ -1502,6 +1526,7 @@ class RuntimeSupervisor:
             ASYNC_SAVE_WORK_OPERATION: "async_save_in_progress",
             ASYNC_RECOVERY_WORK_OPERATION: "async_recovery_in_progress",
             ASYNC_EXPLORE_WORK_OPERATION: "async_explore_in_progress",
+            ASYNC_COMBAT_WORK_OPERATION: "async_combat_in_progress",
         }.get(request.get("operation"), "async_route_in_progress")
         return {
             "ok": False,
@@ -1900,6 +1925,10 @@ class RuntimeSupervisor:
             raise RuntimeBridgeError("runtime worker returned invalid JSON; request was not retried") from exc
         if response.get("id") != request_id:
             raise RuntimeBridgeError("runtime worker response id mismatch")
+        variable = WATCHER_MODE_VARIABLES.get(operation)
+        mode = (arguments or {}).get("mode")
+        if variable is not None and response.get("ok") and isinstance(mode, str):
+            self._watcher_modes[variable] = mode
         return response
 
     def _prepare_queens_blood_deck_locked(self, arguments: dict[str, Any], *,
@@ -2058,6 +2087,9 @@ class RuntimeSupervisor:
                             else "async_explore_cancelled"
                             if self._async_request is not None
                             and self._async_request.get("operation") == ASYNC_EXPLORE_WORK_OPERATION
+                            else "async_combat_cancelled"
+                            if self._async_request is not None
+                            and self._async_request.get("operation") == ASYNC_COMBAT_WORK_OPERATION
                             else "async_route_cancelled"
                         )
                         result["result"].update({
@@ -2139,6 +2171,14 @@ class RuntimeSupervisor:
                 return self._start_async_job_locked(
                     dict(arguments or {}), start_operation=operation,
                     work_operation=ASYNC_EXPLORE_WORK_OPERATION, job_prefix="explore")
+            if operation == ASYNC_COMBAT_START_OPERATION:
+                return self._start_async_job_locked(
+                    dict(arguments or {}), start_operation=operation,
+                    work_operation=ASYNC_COMBAT_WORK_OPERATION, job_prefix="combat")
+            if operation == ASYNC_COMBAT_WORK_OPERATION:
+                return {"ok": False, "error": "combat_autopilot_requires_async",
+                        "use_operation": ASYNC_COMBAT_START_OPERATION,
+                        "status_operation": ASYNC_COMBAT_STATUS_OPERATION}
             if operation == ASYNC_EXPLORE_WORK_OPERATION:
                 return {"ok": False, "error": "explore_goto_requires_async",
                         "use_operation": ASYNC_EXPLORE_START_OPERATION,
@@ -2350,6 +2390,7 @@ class RuntimeSupervisor:
                 ASYNC_SAVE_WORK_OPERATION: "game save",
                 ASYNC_RECOVERY_WORK_OPERATION: "working save recovery",
                 ASYNC_EXPLORE_WORK_OPERATION: "explore walk",
+                ASYNC_COMBAT_WORK_OPERATION: "combat autopilot",
             }.get(active.get("operation"), "route")
             prefix = {
                 ASYNC_CAPTURE_WORK_OPERATION: "async_topology_capture_in_progress",
@@ -2370,6 +2411,7 @@ class RuntimeSupervisor:
                 ASYNC_SAVE_WORK_OPERATION: "async_save_in_progress",
                 ASYNC_RECOVERY_WORK_OPERATION: "async_recovery_in_progress",
                 ASYNC_EXPLORE_WORK_OPERATION: "async_explore_in_progress",
+                ASYNC_COMBAT_WORK_OPERATION: "async_combat_in_progress",
             }.get(active.get("operation"), "async_route_in_progress")
             raise RuntimeBridgeError(
                 prefix + ": restart refused; the active " + label + " "

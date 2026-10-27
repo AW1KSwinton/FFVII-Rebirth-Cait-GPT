@@ -79,9 +79,14 @@ SERVICE_ALIASES = {
     "retry_after_game_over": "retry_after_game_over",
     "battle_menu_tap": "battle_menu_tap",
     "grab_move": "grab_move",
+    "turn_valve": "turn_valve",
     "climb_move": "climb_move",
     "read_battle_command_menu": "read_battle_command_menu",
     "read_field_menu": "read_field_menu",
+    "read_loadout_menu": "read_loadout_menu",
+    "read_materia_inventory": "read_materia_inventory",
+    "switch_combat_character": "switch_combat_character",
+    "preview_loadout_change": "preview_loadout_change",
     "cast_field_spell": "cast_field_spell",
     "use_field_item": "use_field_item",
     "run_field_menu": "run_field_menu",
@@ -1325,6 +1330,10 @@ def _invoke_runtime(
         return _run_live_route_adapter(service, lifecycle, values)
     if operation == "capture_topology_cache":
         return _capture_topology_cache(service, lifecycle, values)
+    if operation == "run_combat_autopilot":
+        # Internal worker side of combat_autopilot_async; started only by the bridge.
+        from .combat_autopilot import run_combat_autopilot
+        return run_combat_autopilot(service, lifecycle, values)
     if operation == "run_explore_goto":
         # Internal worker side of explore_goto_async; started only by the bridge.
         from .explore_mode import run_explore_goto

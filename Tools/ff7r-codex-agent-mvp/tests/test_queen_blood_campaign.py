@@ -87,6 +87,55 @@ def test_campaign_initialises_the_30_regional_opponents_beside_model_runs(tmp_pa
     assert step["travel_spot"]["key"] == "$map1110"
 
 
+def test_other_saved_live_win_renews_exhausted_retries_without_erasing_history(tmp_path):
+    director = QueenBloodCampaign(tmp_path)
+    exhausted, other = "oba1110_Actor_CardGamer01", "oba1110_Actor_CardGamer02"
+    for i in range(3):
+        _append_finish(tmp_path, exhausted, False, at=f"2026-10-25T10:0{i}:00Z")
+    assert _opponent(director.status(ASSIGNMENT), exhausted)["retry_exhausted"]
+    profile = tmp_path / "profiles" / ASSIGNMENT["profile_id"] / "opponents.json"
+    _append_finish(tmp_path, other, True, at="2026-10-25T11:00:00Z")
+    original = profile.read_bytes()
+    restarted = QueenBloodCampaign(tmp_path)
+    status = restarted.status(ASSIGNMENT)
+    row = _opponent(status, exhausted)
+    assert row["attempts"] == row["losses"] == 3
+    assert row["retry_losses"] == 0 and row["attempts_remaining"] == 3
+    assert not row["retry_exhausted"]
+    assert restarted.next_step(ASSIGNMENT)["opponent"]["id"] == exhausted
+    assert profile.read_bytes() == original
+    for i in range(3):
+        _append_finish(tmp_path, exhausted, False, at=f"2026-10-25T12:0{i}:00Z")
+    row = _opponent(restarted.status(ASSIGNMENT), exhausted)
+    assert row["losses"] == 6 and row["retry_losses"] == 3 and row["retry_exhausted"]
+
+
+@pytest.mark.parametrize("mode,saved", [("rehearsal", True), ("test", True), ("live", False)])
+def test_uncredited_foreign_win_does_not_reset_retries(tmp_path, mode, saved):
+    director = QueenBloodCampaign(tmp_path)
+    exhausted, other = "oba1110_Actor_CardGamer01", "oba1110_Actor_CardGamer02"
+    for i in range(3):
+        _append_finish(tmp_path, exhausted, False, at=f"2026-10-25T10:0{i}:00Z")
+    _append_finish(tmp_path, other, True, at="2026-10-25T11:00:00Z", mode=mode, saved=saved)
+    row = _opponent(director.status(ASSIGNMENT), exhausted)
+    assert row["retry_exhausted"] and row["losses"] == 3 and row["retry_losses"] == 3
+
+
+def test_retry_reset_does_not_clear_blocked_evidence(tmp_path):
+    director = QueenBloodCampaign(tmp_path)
+    target, other = "oba1110_Actor_CardGamer01", "oba1110_Actor_CardGamer02"
+    for i in range(3):
+        _append_finish(tmp_path, target, False, at=f"2026-10-25T10:0{i}:00Z")
+    director.status(ASSIGNMENT)
+    data = json.loads(director.path.read_text())
+    campaign = next(iter(data["campaigns"].values()))
+    campaign["opponents"][target]["state"] = "blocked"
+    director.path.write_text(json.dumps(data))
+    _append_finish(tmp_path, other, True, at="2026-10-25T11:00:00Z")
+    row = _opponent(director.status(ASSIGNMENT), target)
+    assert row["state"] == "blocked" and row["retry_losses"] == 0
+
+
 def test_non_finish_profile_records_do_not_change_campaign_results(tmp_path: Path) -> None:
     director = QueenBloodCampaign(tmp_path)
     ned = "field_object:1110-KALMT:oba1110_Actor_CardGamer01"

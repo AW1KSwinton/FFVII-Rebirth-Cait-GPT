@@ -1,5 +1,7 @@
 {
   "slot_node": "Txt_ListNum",
+  "empty_node": "Txt_Title_Mission",
+  "empty_texts": ["$menu_save_load_0001_0007"],
   "row_button_node": "Button_00",
   "prompt_slot_node": "",
   "yes_node": "Btn_00",

@@ -1,5 +1,13 @@
 """Placement safety diagnostics survive the worker's error envelope."""
 from ff7r_agent.runtime_worker import _error_reply
+
+
+def test_map_recovery_error_preserves_native_diagnostics_and_zero_input():
+    from ff7r_agent.navigation_values import MissionError
+    evidence = {"presses": [], "menu_recovery": [{"identified": False, "reason": "ui_owner_unknown"}]}
+    reply = _error_reply(MissionError("main_menu_open", response=evidence), {"id": 8}, "travel_to_map_spot")
+    assert reply["ok"] is False and reply["error"] == "main_menu_open"
+    assert reply["details"] == evidence
 from ff7r_agent.service import SafetyError
 
 

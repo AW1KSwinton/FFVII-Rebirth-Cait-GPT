@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 from threading import RLock
 from typing import Any
+from datetime import datetime, timezone
 
 from .qb_opponents import load_opponents
 from .campaign_readiness import load_readiness, readiness_advisory
@@ -114,6 +115,16 @@ def _is_credited(item: dict[str, Any]) -> bool:
 
 def _is_unsaved_live_win(item: dict[str, Any]) -> bool:
     return _is_live(item) and item.get("won") is True and not item.get("saved_at")
+
+
+def _finish_time(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        stamp = datetime.fromisoformat(value.replace("Z", "+00:00"))
+        return stamp.replace(tzinfo=timezone.utc) if stamp.tzinfo is None else stamp.astimezone(timezone.utc)
+    except ValueError:
+        return None
 
 
 class QueenBloodCampaign:
@@ -328,10 +339,16 @@ class QueenBloodCampaign:
         changed = False
         progress = 0
         latest_region: tuple[str, str] | None = None
+        all_records = {row["id"]: self._profile_finish_records(campaign["profile_id"], row) for row in self._rows}
+        # A saved live win against any different opponent renews the loss
+        # allowance. Historical totals, finish receipts and twin wins stay intact.
+        wins = [(member_id, stamp) for records in all_records.values() for member_id, matches in records.items()
+                for item in matches if _is_credited(item) and item.get("won") is True
+                and (stamp := _finish_time(item.get("at"))) is not None]
         for row in self._rows:
             opponent_id = row["id"]
             state = campaign["opponents"][opponent_id]
-            records = self._profile_finish_records(campaign["profile_id"], row)
+            records = all_records[row["id"]]
             total_records = sum(len(matches) for matches in records.values())
             previous = state["finish_records"]
             if total_records < previous:
@@ -348,6 +365,9 @@ class QueenBloodCampaign:
                 matches = [item for item in records[member["id"]] if _is_credited(item)]
                 actual_wins = sum(1 for item in matches if item.get("won") is True)
                 member_losses = len(matches) - actual_wins
+                reset_at = max((stamp for other, stamp in wins if other != member["id"]), default=None)
+                retry_losses = sum(1 for item in matches if item.get("won") is not True
+                                   and (reset_at is None or (stamp := _finish_time(item.get("at"))) is None or stamp >= reset_at))
                 member_won = actual_wins > 0
                 credited_wins += 1 if member_won else 0
                 losses += member_losses
@@ -357,6 +377,8 @@ class QueenBloodCampaign:
                     "attempts": len(matches),
                     "wins": actual_wins,
                     "losses": member_losses,
+                    "retry_losses": retry_losses,
+                    "retry_reset_at": reset_at.isoformat() if reset_at else None,
                     "won": member_won,
                     "last_result": (
                         {
@@ -379,7 +401,16 @@ class QueenBloodCampaign:
                 # wins) no longer count; the save slot never held them.
                 state["state"] = "pending"
                 changed = True
-            if total_records != previous or state.get("member_results") != members:
+            previous_members = state.get("member_results") or {}
+            history = lambda results: {key: {k: v for k, v in value.items() if k not in {"retry_losses", "retry_reset_at"}}
+                                       for key, value in results.items()}
+            history_changed = total_records != previous or history(previous_members) != history(members)
+            if previous_members != members:
+                state["member_results"] = members
+                changed = True
+            # A renewed allowance must not clear an independent locked/blocked
+            # diagnostic. Only new finish history changes that state.
+            if history_changed:
                 state["attempts"] = credited_attempts
                 state["wins"] = credited_wins
                 state["losses"] = losses
@@ -433,7 +464,8 @@ class QueenBloodCampaign:
 
     def _retry_losses(self, row: dict[str, Any], state: dict[str, Any]) -> int:
         member = self._next_member(row, state)
-        return int(state["member_results"][member["id"]]["losses"])
+        result = state["member_results"][member["id"]]
+        return int(result.get("retry_losses", result["losses"]))
 
     def _resolve(self, selector: str | None) -> dict[str, Any] | None:
         if not isinstance(selector, str):
@@ -557,6 +589,9 @@ class QueenBloodCampaign:
             "required_matches": state["required_matches"],
             "unsaved_wins": state.get("unsaved_wins", 0),
             "retry_exhausted": retry_exhausted,
+            "retry_losses": retry_losses,
+            "attempts_remaining": max(0, MAX_LOSS_RETRIES + 1 - retry_losses) if state["state"] != "won" else 0,
+            "retry_reset_at": state["member_results"][next_member["id"]].get("retry_reset_at"),
             "last_result": state.get("last_result"),
             "locked_at_progress": locked_at,
             "revisit_after_progress": (

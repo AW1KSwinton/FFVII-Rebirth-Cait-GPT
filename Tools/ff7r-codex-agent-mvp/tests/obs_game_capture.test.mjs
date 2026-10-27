@@ -21,6 +21,27 @@ test('OBS failures redact the configured secret even without a password label', 
   assert.ok(result.includes('token=[redacted]'));
 });
 
+test('OBS failures hide URL credentials and encoded or multiword secrets', () => {
+  const secret = 'fixture $secret.with[spaces]';
+  const encoded = encodeURIComponent(secret);
+  for (const message of [
+    `Connection failed: ${secret}`,
+    `Connection failed: ${encoded.toLowerCase()}`,
+    'ws://user:other-secret@example.invalid:4455/path?token=other-secret#fragment',
+    'ws://user:other secret words@example.invalid:4455',
+    'password=multiple secret words after the equals sign',
+    'token: multiple token words',
+  ]) {
+    const result = safeCaptureError(new Error(message), {FF7R_OBS_PASSWORD: secret});
+    for (const forbidden of [secret, encoded.toLowerCase(), 'other-secret', 'secret words', 'token words']) {
+      assert(!result.includes(forbidden));
+    }
+    assert(result.includes('[redacted]') || result.includes('[redacted URL]'));
+  }
+  assert.equal(safeCaptureError(new Error('Invalid OBS game image'), {}), 'Invalid OBS game image');
+  assert.equal(safeCaptureError(new Error('failure'), {FF7R_OBS_PASSWORD: '\ud800'}), 'OBS game-source capture failed');
+});
+
 const window = 'FINAL FANTASY VII REBIRTH:UnrealWindow:ff7rebirth_.exe';
 function fixture({mode = 'window', target = window, ambiguous = false, changed = false, active = true} = {}) {
   const calls = [];

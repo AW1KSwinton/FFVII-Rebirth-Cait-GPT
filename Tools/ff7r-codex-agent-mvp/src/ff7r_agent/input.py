@@ -25,6 +25,7 @@ ALLOWED_BUTTONS = frozenset({
     "map_fast_travel", "queen_blood_begin_match", "queen_blood_left", "queen_blood_right",
     "queen_blood_play", "queen_blood_cancel", "queen_blood_details", "queen_blood_edit_deck",
     "save_shortcut", "dialogue_left", "dialogue_right", "battle_command_menu",
+    "menu_square", "menu_triangle",
 })
 
 DEFAULT_KEYMAP = {
@@ -90,6 +91,11 @@ DEFAULT_KEYMAP = {
     # The battle HUD's "Commands Menu" key (keyboard glyph C, live
     # 2026-10-20 on Mt. Nibel).
     "battle_command_menu": "c",
+    # The menus' Square and Triangle actions (glyphs live 2026-10-24): G is
+    # Remove Materia / Remove Weapon Skill and Combat Settings' Edit Party;
+    # R is Set Materia / Swap and Set as Leader.
+    "menu_square": "g",
+    "menu_triangle": "r",
 }
 
 # Some game UI actions (notably Tab/map) need a sustained press on slower
@@ -112,6 +118,8 @@ def _wasd_keys(x: float, y: float) -> list[str]:
     return keys
 # Grab is held a moment before the stick moves, so the game takes the grab first.
 GRAB_SETTLE_SECONDS = 1.0
+# A held chord, such as turning a grabbed valve, may outlast a single press.
+MAX_HOLD_BINDINGS_MS = 10000
 # Holds the game itself times. Queen's Blood passes when the Play/Pass key is
 # held until the HUD's PassGauge fills; live, 1.5 s holds were often not
 # registered, so that one key alone may be held longer.
@@ -480,6 +488,9 @@ class SimulationInput:
     def grab_move(self, segments: list[tuple[float, float, int]], *, stick: bool = False) -> None:
         self._record(RecordedAction("grab_move", {"segments": [list(segment) for segment in segments], "stick": stick}))
 
+    def hold_bindings(self, bindings: list[str], milliseconds: int) -> None:
+        self._record(RecordedAction("hold_bindings", {"bindings": list(bindings), "milliseconds": int(milliseconds)}))
+
     def look(self, dx: int, dy: int, milliseconds: int) -> None:
         dx, dy = validate_look_delta(dx, dy)
         self._record(RecordedAction("look", {"dx": dx, "dy": dy, "milliseconds": validate_duration(milliseconds)}))
@@ -555,6 +566,7 @@ class WindowsKeyboardInput:
             "queen_blood_left", "queen_blood_right", "queen_blood_play",
             "queen_blood_cancel", "queen_blood_details", "queen_blood_edit_deck", "save_shortcut",
             "dialogue_left", "dialogue_right", "battle_command_menu",
+            "menu_square", "menu_triangle",
         }:
             raise InputError("button is not enabled for real input")
         key = self.keymap.get(button)
@@ -918,6 +930,18 @@ class WindowsKeyboardInput:
                     held = [grab]
             finally:
                 self._release_keys(held)
+
+    def hold_bindings(self, bindings: list[str], milliseconds: int) -> None:
+        """Hold several keymap bindings together, e.g. both hands on a valve."""
+        keys = [self.keymap[binding] for binding in bindings]
+        mark_gameplay_input()
+        with self._lock:
+            try:
+                for key in keys:
+                    self._key_down(key)
+                time.sleep(int(milliseconds) / 1000)
+            finally:
+                self._release_keys(keys)
 
     def look(self, dx: int, dy: int, milliseconds: int) -> None:
         dx, dy = validate_look_delta(dx, dy)
@@ -1651,6 +1675,12 @@ class WindowsHybridGamepadInput:
                     self._neutral_stick()
                 finally:
                     self.keyboard._release_keys([grab])
+
+    def hold_bindings(self, bindings: list[str], milliseconds: int) -> None:
+        if self.supports_background_input:
+            raise InputError("held keyboard bindings are unavailable in background mode")
+        with self._lock:
+            self.keyboard.hold_bindings(bindings, milliseconds)
 
     def supervised_move(self, x: float, y: float, *, deadline: float,
                         stream_id: str, sequence: int, sprint: bool = False) -> dict[str, object]:

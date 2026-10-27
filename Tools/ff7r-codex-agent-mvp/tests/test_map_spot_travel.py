@@ -1,4 +1,8 @@
 import json
+from datetime import datetime, timedelta, timezone
+from threading import Lock
+from types import SimpleNamespace
+from dataclasses import replace
 import pytest
 
 from ff7r_agent import map_spot_travel
@@ -51,7 +55,7 @@ class FakeMap:
     def press(self, button: str) -> None:
         self.presses.append(button)
         if self.main_menu:
-            if button == "queen_blood_cancel":
+            if button in ("queen_blood_cancel", "cancel"):
                 if self.menu_ignores:
                     self.menu_ignores -= 1
                 else:
@@ -118,9 +122,14 @@ class FakeService:
         self.game = game
         self.now = 0.0
         self.settled = 0
+        self._action_lock = Lock()
+        self.input = SimpleNamespace(is_real=False, release_all=lambda: None)
 
     def observe(self) -> dict:
         return {
+            "running": True, "source": "test", "telemetry": {"live": True},
+            "sequence": 1, "paused": self.game.main_menu or self.game.open,
+            "in_combat": False, "loading": False, "target": None,
             "player": {"position": dict(self.game.position) if self.game.position is not None else None},
             "map_id": None if self.game.dialogue_active else "map1200",
             "interaction": {"state": "dialogue"} if self.game.dialogue_active else None,
@@ -134,6 +143,18 @@ class FakeService:
     def _monotonic(self) -> float:
         return self.now
 
+    def _wall_clock(self):
+        # Synthetic replay time, not timing measured during a reconnect.
+        return datetime(2026, 10, 13, tzinfo=timezone.utc) + timedelta(seconds=self.now)
+
+    def cutscene_state(self):
+        return {"observed": True, "active": False, "anim_cutscene": False, "playing": []}
+
+    def tap(self, button, milliseconds):
+        assert self._action_lock.locked()
+        self.game.press(button)
+        return {"ok": True, "button": button, "milliseconds": milliseconds}
+
     def _map_menu_key(self, button: str, milliseconds: int) -> None:
         self.game.press(button)
 
@@ -146,8 +167,38 @@ class FakeService:
 def game(monkeypatch):
     game = FakeMap()
     monkeypatch.setattr(map_spot_travel, "request_snapshot",
-                        lambda service, heights, flags: (game.response(), {}))
+                        lambda service, heights, flags, **kwargs: (game.response(), service.observe()))
+    monkeypatch.setattr(map_spot_travel, "menu_snapshot", fake_menu_snapshot)
+
+    original = map_spot_travel.request_snapshot
+    def snapshot(service, heights, flags, **kwargs):
+        if "uiroots" in flags:
+            return recovery_response(service, ui_roots=main_menu_roots(game)), service.observe()
+        return original(service, heights, flags, **kwargs)
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
     return game
+
+
+def recovery_response(service, **extra):
+    """Synthetic current request metadata; no raw reconnect capture is available."""
+    base = service.observe()
+    return {"source": "ue4ss_map_query", "request_id": "synthetic-recovery",
+            "source_sequence": base["sequence"], "timestamp_utc": service._wall_clock().isoformat(),
+            "map_id": base.get("map_id"), **extra}
+
+
+def main_menu_roots(game):
+    return {"observed": True, "configured_complete": True, "truncated": False, "widgets": [
+        {"class": "MainMenu_Base_C", "path": "/Temp/MainMenu_Base", "configured_root": True,
+         "is_visible": game.main_menu, "details": {"in_viewport_ex": game.main_menu}},
+        {"class": "BattleTips_C", "configured_root": True, "details": {"in_viewport_ex": False}},
+    ]}
+
+
+def fake_menu_snapshot(service):
+    texts = [{"path": "X.MainMenu_Base.WidgetTree.Txt_Title", "text": "$menu_mainmenu_0000_0000"},
+             {"path": "X.Foot.WidgetTree.Txt_Help", "text": "$help_message_0000_0011"}]
+    return recovery_response(service, texts=texts if service.game.main_menu else []), service.observe()
 
 
 def test_resolves_spots_by_key_or_display_name() -> None:
@@ -267,7 +318,9 @@ def test_an_open_main_menu_is_closed_before_the_map_key(game) -> None:
     game.main_menu = True
     report = MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=True)
     assert report["state"] == "arrived"
-    assert game.presses[:2] == ["queen_blood_cancel", "map"]
+    assert game.presses[:2] == ["cancel", "map"]
+    assert report["presses"][0]["evidence"]["identified"]
+    assert report["presses"][0]["response"]["ok"]
 
 
 def test_a_main_menu_that_ignores_quick_back_presses_still_closes(game) -> None:
@@ -277,7 +330,7 @@ def test_a_main_menu_that_ignores_quick_back_presses_still_closes(game) -> None:
     game.menu_ignores = 4
     report = MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=True)
     assert report["state"] == "arrived"
-    assert game.presses[:6] == ["queen_blood_cancel"] * 5 + ["map"]
+    assert game.presses[:6] == ["cancel"] * 5 + ["map"]
 
 
 def test_a_main_menu_that_never_closes_fails_without_the_map_key(game) -> None:
@@ -287,7 +340,7 @@ def test_a_main_menu_that_never_closes_fails_without_the_map_key(game) -> None:
     game.menu_ignores = 100
     with pytest.raises(MissionError, match="main_menu_did_not_close"):
         MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=True)
-    assert game.presses == ["queen_blood_cancel"] * len(MENU_CLOSE_SETTLES_SECONDS)
+    assert game.presses == ["cancel"] * len(MENU_CLOSE_SETTLES_SECONDS)
 
 
 def test_refuses_to_start_when_player_position_is_missing(game):
@@ -367,7 +420,7 @@ def test_start_settle_preserves_main_menu_close_and_existing_map_resume(game):
         return {"ok": True}
     service.wait_for_settled_gameplay = settle
     assert MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)["state"] == "arrived"
-    assert game.presses[0] == "queen_blood_cancel" and game.presses[1] == "map"
+    assert game.presses[0] == "cancel" and game.presses[1] == "map"
 
     game.presses.clear()
     game.open, game.travelled = True, False
@@ -382,3 +435,308 @@ def test_start_settle_preserves_main_menu_close_and_existing_map_resume(game):
     assert MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)["state"] == "arrived"
     assert settled == [map_spot_travel.ARRIVAL_WAIT_SECONDS]
     assert "map" not in game.presses
+
+
+def test_reconnect_menu_recovers_even_before_cached_in_menu_flag(game):
+    game.main_menu = True
+    service = FakeService(game)
+    observe = service.observe
+    service.observe = lambda: {**observe(), "in_menu": False}
+    report = MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+    assert report["state"] == "arrived"
+    assert game.presses[:2] == ["cancel", "map"]
+    assert service.settled == 2
+
+
+def test_native_main_menu_title_ignores_detached_hud_and_hidden_tutorial(game, monkeypatch):
+    # Native header/footer and retained SaveIcon keys captured 2026-10-23.
+    # Render flags and replay timing are synthetic producer evidence.
+    game.main_menu = True
+    original_menu = fake_menu_snapshot
+
+    def menu(service):
+        response, base = original_menu(service)
+        if game.main_menu:
+            response["texts"][0]["path"] = "X.MainMenu_Top_Window.WidgetTree.TopContent2.WidgetTree.Txt_MainTitle"
+            response["texts"] += [
+                {"path": "X.SaveIcon.WidgetTree.Txt_Info", "text": "$menu_save_load_0005_0001"},
+                {"path": "X.BattleTutorial.WidgetTree.Txt_Title", "text": "$menu_tutorial_ui_0000_0001", "rendered": False},
+            ]
+        return response, base
+
+    read = map_spot_travel.request_snapshot
+    def roots(service, **kwargs):
+        response, base = read(service, **kwargs)
+        if "uiroots" in kwargs.get("flags", ()):
+            response["ui_roots"]["widgets"].append({"class": "Command_C", "is_visible": True,
+                "in_viewport": False, "details": {"in_viewport_ex": False}})
+        return response, base
+    monkeypatch.setattr(map_spot_travel, "menu_snapshot", menu)
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", roots)
+    report = MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=True)
+    assert report["state"] == "arrived" and game.presses[0] == "cancel"
+
+
+@pytest.mark.parametrize("bound", [True, False])
+def test_native_sibling_menu_component_requires_rendered_text_owner(game, bound):
+    from ff7r_agent.field_main_menu import identify_main_menu, NATIVE_TITLE_SUFFIX
+    game.main_menu = True
+    service = FakeService(game)
+    menu, base = fake_menu_snapshot(service)
+    menu["texts"][0].update(path="X" + NATIVE_TITLE_SUFFIX, rendered=True,
+                            full_id="EndTextBlock /Temp/NativeMenu.WidgetTree.Txt_MainTitle" if bound else "EndTextBlock /Temp/Other.WidgetTree.Txt_MainTitle")
+    roots = main_menu_roots(game)
+    roots["widgets"].append({"class": "MainMenu_Top_Window_C", "path": "MainMenu_Top_Window_C /Temp/NativeMenu",
+        "configured_root": False, "is_visible": True, "in_viewport": False, "details": {"in_viewport_ex": True}})
+    cinema = {"observed": True, "active": False, "anim_cutscene": False, "playing": []}
+    assert identify_main_menu(menu, roots, base, cinema)["identified"] is bound
+
+
+def test_only_save_icon_checking_is_excluded_from_menu_signals():
+    from ff7r_agent.save_slot_load import SaveMenuScreen
+    icon = {"path": "X.SaveIcon.WidgetTree.Txt_Info", "text": "$menu_save_load_0005_0001"}
+    assert SaveMenuScreen({"texts": [icon]}, []).signals == set()
+    checking = {**icon, "path": "X.MainMenu_SaveLoad.WidgetTree.Txt_Info"}
+    assert SaveMenuScreen({"texts": [icon, checking]}, []).signals == {"checking"}
+
+
+def test_attachment_only_diagnostics_use_the_recovery_reader_without_input(monkeypatch):
+    from ff7r_agent.service import AgentService
+    from ff7r_agent import map_query
+    calls = []
+    def read(service, **kwargs):
+        calls.append(kwargs)
+        return {"ui_roots": {"observed": True}, "request_id": "diagnostic", "source_sequence": 1}, {}
+    monkeypatch.setattr(map_query, "request_snapshot", read)
+    result = AgentService.read_ui_roots(object.__new__(AgentService), attachments_only=True)
+    assert result["input_sent"] is False and result["input_authorized"] is False
+    assert calls == [{"heights": False, "flags": ("uiroots", "uirootdetails", "uiownerattachments"), "require_map": False}]
+
+
+@pytest.mark.parametrize("blocker", [None, "unknown_modal", "combat"])
+def test_native_owner_projection_identifies_only_the_field_main_menu(game, blocker):
+    import json
+    from pathlib import Path
+    from ff7r_agent.field_main_menu import identify_main_menu
+    projection = json.loads((Path(__file__).parent / "fixtures/field-main-menu-native.json").read_text(encoding="utf-8"))
+    game.main_menu = True
+    base = FakeService(game).observe()
+    if blocker == "combat":
+        base["in_combat"] = True
+    if blocker == "unknown_modal":
+        projection["roots"]["widgets"].append({"class": "UnknownModal_C", "is_visible": True,
+            "in_viewport": False, "details": {"in_viewport_ex": True}})
+    cinema = {"observed": True, "active": False, "anim_cutscene": False, "playing": []}
+    result = identify_main_menu({"texts": projection["texts"]}, projection["roots"], base, cinema)
+    assert result["identified"] is (blocker is None), result
+
+
+@pytest.mark.parametrize("owner", ["BattleTips_C", "BattleTutorial_C", "MainMenu_Tutorial_Window_C",
+    "TalkMenu_00_C", "Subtitle00_C", "Shop_C", "CardGame_Top_C", "MainMenu_Card_Top_C",
+    "Pause_00_C", "Cinema_Skip_Btn_C", "Com_Window_01_C"])
+def test_another_attached_screen_owner_is_never_cancelled(game, monkeypatch, owner):
+    game.main_menu = True
+    def snapshot(service, **kwargs):
+        roots = main_menu_roots(game)
+        roots["widgets"].append({"class": owner, "configured_root": True,
+                                 "details": {"in_viewport_ex": True}})
+        return recovery_response(service, ui_roots=roots), service.observe()
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
+    with pytest.raises(MissionError, match="main_menu_open") as exc:
+        MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=True)
+    assert game.presses == []
+    assert exc.value.response["menu_recovery"][-1]["owner"] == owner
+
+
+@pytest.mark.parametrize("fault", ["unknown_pause", "text_only", "multiple_menus", "unknown_root",
+    "unknown_attachment", "partial_scan", "truncated_scan", "missing_header", "ambiguous_footer",
+    "submenu", "other_text", "stale_read", "slow_read", "wrong_source", "sequence_regression",
+    "changed_map", "changed_actor", "simulation", "combat", "loading", "qb", "held_card",
+    "cutscene", "unknown_cutscene", "visible_unknown_child", "text_cap", "missing_root_path"])
+def test_unknown_or_conflicting_menu_evidence_stops_without_input(game, monkeypatch, fault):
+    game.main_menu = True
+    service = FakeService(game)
+    roots = main_menu_roots(game)
+    menu, _ = fake_menu_snapshot(service)
+    base = service.observe()
+    cinema = service.cutscene_state()
+    if fault == "unknown_pause": game.main_menu = False; base.update(paused=True, in_menu=False); menu["texts"] = []
+    if fault == "text_only": roots["widgets"] = []
+    if fault == "multiple_menus": roots["widgets"].append(dict(roots["widgets"][0]))
+    if fault == "unknown_root": roots["widgets"].append({"class": "UnknownMenu_C", "in_viewport": True})
+    if fault == "visible_unknown_child": roots["widgets"].append({"class": "UnknownMenu_C", "in_viewport": False, "is_visible": True})
+    if fault == "missing_root_path": roots["widgets"][0].pop("path")
+    if fault == "text_cap": menu["texts"] += [{"path": "X.Text", "text": ""}] * 400
+    if fault == "unknown_attachment": roots["widgets"][1]["details"]["in_viewport_ex"] = None
+    if fault == "partial_scan": roots["configured_complete"] = False
+    if fault == "truncated_scan": roots["truncated"] = True
+    if fault == "missing_header": menu["texts"].pop(0)
+    if fault == "ambiguous_footer": menu["texts"].append({"text": "$help_message_0000_0010"})
+    if fault == "submenu": menu["texts"].append({"text": "$help_message_0008_0001"})
+    if fault == "other_text": menu["texts"].append({"path": "X.BattleTips.WidgetTree.Txt_Title", "text": "$tutorial_Fld_01_0070"})
+    if fault == "stale_read": menu["timestamp_utc"] = (service._wall_clock() - timedelta(seconds=10)).isoformat()
+    if fault == "wrong_source": menu["source"] = "simulation"
+    if fault == "sequence_regression": menu["source_sequence"] = 0
+    if fault == "simulation": base["source"] = "simulation"
+    if fault == "combat": base["in_combat"] = True
+    if fault == "loading": base["loading"] = True
+    if fault == "qb": base["queen_blood"]["match_screen"] = True
+    if fault == "held_card": base["queen_blood"]["placement"] = {"active": True}
+    if fault == "cutscene": cinema["active"] = True
+    if fault == "unknown_cutscene": cinema["observed"] = False
+    service.observe = lambda: base
+    service.cutscene_state = lambda: cinema
+    def menu_read(_):
+        if fault == "slow_read": service.now += 4
+        if fault == "changed_map": base["map_id"] = "changed"
+        if fault == "changed_actor": base["player"] = {**base["player"], "actor_id": "changed"}
+        return menu, dict(base)
+    def snapshot(service, **kwargs):
+        return recovery_response(service, ui_roots=roots), dict(base)
+    monkeypatch.setattr(map_spot_travel, "menu_snapshot", menu_read)
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
+    with pytest.raises(MissionError, match="main_menu_open|menu_or_pause_unidentified") as exc:
+        MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+    assert game.presses == [] and not service._action_lock.locked()
+    assert exc.value.response["menu_recovery"][-1]["identified"] is False
+
+
+def test_a_screen_owner_change_after_cancel_stops_retries(game, monkeypatch):
+    game.main_menu, game.menu_ignores = True, 1
+    service = FakeService(game)
+    def snapshot(service, **kwargs):
+        roots = main_menu_roots(game)
+        if game.presses:
+            roots["widgets"][1]["details"]["in_viewport_ex"] = True
+        return recovery_response(service, ui_roots=roots), service.observe()
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
+    with pytest.raises(MissionError, match="main_menu_open") as exc:
+        MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+    assert game.presses == ["cancel"] and service.settled == 0
+    assert len(exc.value.response["menu_recovery"]) == 2
+
+
+def test_travel_leaves_a_busy_input_owner_and_its_lock_intact(game):
+    service = FakeService(game)
+    service._action_lock.acquire()
+    try:
+        with pytest.raises(MissionError, match="another input action"):
+            MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+        assert service._action_lock.locked() and game.presses == []
+    finally:
+        service._action_lock.release()
+
+
+def test_travel_holds_input_ownership_through_settling_and_arrival(game):
+    service = FakeService(game)
+    def settle(timeout):
+        assert service._action_lock.locked()
+        assert not service._action_lock.acquire(blocking=False)  # watcher must skip
+        return {"ok": True}
+    service.wait_for_settled_gameplay = settle
+    assert MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)["state"] == "arrived"
+    assert not service._action_lock.locked()
+
+
+@pytest.mark.parametrize("gate", [None, "stopped", "unarmed", "stale", "simulation", "process", "foreground"])
+def test_menu_recovery_uses_real_service_guards_with_fake_backend(game, gate):
+    # Uses AgentService's actual guards; never constructs a real input device.
+    from test_agent import FixedTelemetry, make_real_service, FakeArm, FakeEnvironment, StepClock
+    from ff7r_agent.models import Character, Vec3
+    from ff7r_agent.service import SafetyError
+    game.main_menu = True
+    state = dict(paused=True, in_menu=True, map_id="map1200",
+                 player=Character("Cloud", 10, 10, 5, 5, position=Vec3(0, 0, 0), actor_id="CloudActor"))
+    if gate == "stale": state["timestamp_utc"] = (datetime.now(timezone.utc) - timedelta(seconds=5)).isoformat()
+    if gate == "simulation": state["source"] = "simulation"
+    arm = FakeArm(armed=gate != "unarmed", stopped=gate == "stopped")
+    service, backend = make_real_service(telemetry=FixedTelemetry(**state), arm=arm,
+        environment=FakeEnvironment(process=gate != "process", foreground=gate != "foreground"),
+        monotonic=StepClock(), sleeper=lambda _: None, settled_gameplay_samples=3)
+    service.game = game
+    service.cutscene_state = lambda: {"observed": True, "active": False, "anim_cutscene": False, "playing": []}
+    # No settled field proof exists on this paused frame; Cancel must be
+    # admitted only by the menu guard, without weakening the field gate.
+    travel = MapSpotTravel(service, CATALOGUE)
+    if gate:
+        with pytest.raises((MissionError, SafetyError)):
+            travel.run("Kalm", execute=True)
+        assert backend.actions == []
+    else:
+        tap = backend.tap
+        def close(button, milliseconds):
+            assert service._action_lock.locked()
+            tap(button, milliseconds)
+            service.telemetry.state = replace(service.telemetry.state, paused=False, in_menu=False)
+            game.main_menu = False
+        backend.tap = close
+        # Exercise recovery inside the real service's action lock without
+        # faking a successful load/arrival or sending a real controller press.
+        with service._action_lock:
+            travel.close_main_menu()
+        assert backend.actions == [("tap", "cancel", 400)]
+        assert travel.presses[0]["response"]["ok"]
+    assert service._settled_gameplay_identity is None
+    assert not service._action_lock.locked()
+
+
+@pytest.mark.parametrize("failure", ["raises", "unverified"])
+def test_ambiguous_cancel_result_is_not_replayed(game, failure):
+    game.main_menu = True
+    service = FakeService(game)
+    def tap(button, milliseconds):
+        game.press(button)  # The press landed, regardless of its receipt.
+        if failure == "raises": raise MissionError("lost_cancel_receipt")
+        return {"ok": False}
+    service.tap = tap
+    with pytest.raises(MissionError) as exc:
+        MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+    assert game.presses == ["cancel"]
+    assert exc.value.response["presses"][0]["outcome"] == "unverified"
+    assert not service._action_lock.locked()
+
+
+def test_missing_native_diagnostics_returns_supported_main_menu_blocker(game, monkeypatch):
+    game.main_menu = True
+    service = FakeService(game)
+    read = map_spot_travel.request_snapshot
+    def snapshot(*args, **kwargs):
+        if "uiroots" in kwargs.get("flags", ()):
+            raise MissionError("map_query_timeout")
+        return read(*args, **kwargs)
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
+    with pytest.raises(MissionError, match="main_menu_open") as exc:
+        MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)
+    assert game.presses == []
+    assert exc.value.response["menu_recovery"][-1]["reason"] == "map_query_timeout"
+    assert "capture_game_window" in exc.value.response["recovery"]
+
+
+def test_menu_disappearing_during_identification_never_gets_a_field_cancel(game, monkeypatch):
+    game.main_menu = True
+    service = FakeService(game)
+    def menu(service):
+        game.main_menu = False
+        return fake_menu_snapshot(service)
+    monkeypatch.setattr(map_spot_travel, "menu_snapshot", menu)
+    assert MapSpotTravel(service, CATALOGUE).run("Kalm", execute=True)["state"] == "arrived"
+    assert game.presses[0] == "map" and "cancel" not in game.presses
+
+
+@pytest.mark.parametrize("execute", [True, False])
+def test_cached_map_widget_never_overrides_a_main_menu_with_another_owner(game, monkeypatch, execute):
+    # request_snapshot documents that a closed map widget can linger. A
+    # conflicting Main Menu flag must trigger owner checks before map keys,
+    # including the select-only dry run, which still sends menu input.
+    game.open, game.main_menu = True, True
+    read = map_spot_travel.request_snapshot
+    def snapshot(service, **kwargs):
+        if "uiroots" not in kwargs.get("flags", ()):
+            return read(service, **kwargs)
+        roots = main_menu_roots(game)
+        roots["widgets"][1]["details"]["in_viewport_ex"] = True
+        return recovery_response(service, ui_roots=roots), service.observe()
+    monkeypatch.setattr(map_spot_travel, "request_snapshot", snapshot)
+    with pytest.raises(MissionError, match="main_menu_open"):
+        MapSpotTravel(FakeService(game), CATALOGUE).run("Kalm", execute=execute)
+    assert game.presses == []
